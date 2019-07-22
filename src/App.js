@@ -1,28 +1,53 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import M from 'materialize-css';
+import { Route } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PrivateRoute from './component/nav/PrivateRoute';
+import {setAuthentication} from './services/actions/authAction';
+
+//components
+import Home from './component/home/Home';
+import Data from './component/data/Data';
+import Report from './component/report/Report';
+import Sales from './component/sales/Sales';
+import Purchase  from './component/purchase/Purchase';
+import Return  from './component/return/Return';
+import Setting  from './component/setting/Setting';
+import Login from './component/auth/Login';
+import Nav from './component/nav/Nav';
+
 
 class App extends Component {
+  constructor(props){
+    super(props);
+    props.setAuth(localStorage.getItem('jwt'));
+  }
   render() {
+    const isAuthenticated = localStorage.getItem('jwt');
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+          { isAuthenticated && <Nav /> }
+          <main>
+              <section className="cd-section cd-selected">
+                <PrivateRoute exact path='/' component={Home}/>
+                <Route path='/login' component={Login}></Route>
+                <Route path='/data' component={Data}></Route>
+                <Route path='/report' component={Report}></Route>
+                <Route path='/sales' component={Sales}></Route>
+                <Route path='/purchase' component={Purchase}></Route>
+                <Route path='/return' component={Return}></Route>
+                <Route path='/setting' component={Setting}></Route>
+              </section>
+          </main>
       </div>
     );
   }
 }
+const mapStateToProps = (state) => ({
+  authState : state
+});
+const mapDispatchToProps = (dispatch) => ({
+  setAuth: user => dispatch(setAuthentication(user))    
+})
 
-export default App;
+export default connect(mapStateToProps, mapDispatchToProps)(App);

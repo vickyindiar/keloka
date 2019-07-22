@@ -1,0 +1,380 @@
+@import '../partial/layout';
+@import '../partial/mixins';
+@import '../partial/variables'; 
+
+
+/* NAVIGATION */
+.cd-nav-trigger {
+	/* hamburger icon */
+	 position: fixed;
+	 z-index: 3;
+	 top: 12px;
+	 right: 5%;
+	 height: 44px;
+	 width: 44px;
+	/* image replacement */
+    overflow: hidden;
+	text-indent: 100%;
+	white-space: nowrap;
+	transition: transform 0.2s;
+
+	.nav-icon {
+		/* icon created in CSS */
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 32px;
+		height: 3px;
+		//background-color: darken($color-2, 40%);
+		background-color: black;
+		&::before, &::after {
+		/* upper and lower lines of the menu icon */
+	 		content: '';
+			position: absolute;
+			top: 0;
+			right: 0;
+			width: 100%;
+			height: 100%; 
+			background-color: inherit;
+	/* Force Hardware Acceleration in WebKit */
+			transform: translateZ(0);
+			-webkit-backface-visibility: hidden;
+			backface-visibility: hidden;
+			transition: transform 0.2s, width 0.2s;
+		}
+
+		&::before {
+			transform-origin: right top;
+			transform: translateY(-10px);
+		}
+
+		&::after {
+			transform-origin: right bottom;
+			transform: translateY(10px);
+		}
+	}
+	&:hover {
+		transform: rotate(180deg);
+		.nav-icon::after, 
+		.nav-icon::before { width: 50%;	}
+		.nav-icon::before {
+			transform: translateX(1px) translateY(1px) rotate(45deg);
+		}
+		.nav-icon::after {
+			transform: translateX(1px) translateY(-1px) rotate(-45deg);
+		}
+	}  
+	@include MQ(L) {
+		top: 38px;
+	}
+}
+
+
+.cd-nav-container {
+	position: fixed;
+	z-index: 4;
+	top: 0;
+	right: 0;
+	width: 80%;
+	height: 100%;
+	overflow-y: auto;
+	background-color: white;
+	transform: translateZ(0);
+    backface-visibility: hidden;
+    transform: translateX(100%);
+	transition: transform $animation-duration 0s, box-shadow 0s $animation-duration;
+	&.is-visible{
+		transform: translateX(0);
+		-webkit-overflow-scrolling: touch;
+		box-shadow: -4px 0 30px rgba($color: #000000, $alpha: .2);
+		transition: transform $animation-duration 0s, box-shadow 0s $animation-duration;
+	}
+	header {
+		padding: 1.5em 0 0 6.25%;
+		height: 68px;
+		position: relative;
+	}
+	h3 {
+		font: {
+			size: 1.6rem;
+			weight: bold;
+			family: $secondary-font;
+		}
+		text-transform: uppercase;
+		color: $color-8;
+	}
+
+	@include MQ(M) {
+		width: 70%;
+	
+		header {
+			height: 116px;
+			padding-top: 3em;
+		}
+	}
+}
+
+
+.cd-close-nav {
+	/* 'X' close icon */
+	position: absolute;
+	height: 44px;
+	width: 44px;
+	/* set the right position value so that it overlaps the .cd-nav-trigger*/
+	right: 6.25%;
+	@include center(y);
+	/* image replacement */
+	overflow: hidden;
+	text-indent: 100%;
+	white-space: nowrap;
+	transition: opacity .2s;
+
+	&::after, 
+	&::before {
+		/* lines of 'X' icon */
+		content: '';
+		position: absolute;
+		height: 3px;
+		width: 32px;
+		left: 50%;
+    	top: 50%;
+		background-color: black;	
+		 backface-visibility: hidden;
+	}
+
+	&::after {
+		transform: translateX(-50%) translateY(-50%) rotate(45deg);
+	}
+
+	&::before {
+		transform: translateX(-50%) translateY(-50%) rotate(-45deg);
+	}
+
+	&:hover {
+		opacity: .8;
+	}
+
+	@include MQ(M) {
+		right: 7.14%;
+	}
+}
+
+
+
+@keyframes cd-shock {
+	0% { transform: rotate(0);	}
+  	30% { transform: rotate(10deg); } 
+  	60% { transform: rotate(-10deg); }
+  	100% { transform: rotate(0); }
+}
+ 
+
+.cd-nav {
+	clear: both;
+	background-color: darken(white, 5%);
+	width: 100%;
+	height: calc(100% - 68px);
+	li {
+		@include column(.5);
+		/* 68px is the navigation header height  and the menu items will be allocated in 3 rows */
+		height: calc((100% - 68px)/4);
+		min-height: 120px;
+		border: 1px solid white;
+		border-top: none;
+		border-left: none;
+
+		&:nth-of-type(2n) {
+			border-right-width: 0;
+		}
+	}
+
+	a {
+		position: relative;
+		display: block;
+		width: 100%;
+		height: 100%;
+		text-align: center;
+		transition: background-color .2s;
+		&:hover svg {
+			animation: cd-shock .3s;
+		}
+	}
+
+    li a:hover, li a.cd-selected {
+		.nc-icon * { stroke:  lighten($color: black, $amount: 40%) }
+		em { color: white; }
+	}
+
+
+	& li:first-of-type a:hover, li:first-of-type a.cd-selected{
+		background-color: $color-1;
+	}
+	& li:nth-of-type(2) a:hover, li:nth-of-type(2) a.cd-selected{
+		background-color: darken($color-2, 10%);
+	}
+	& li:nth-of-type(3) a:hover, li:nth-of-type(3) a.cd-selected{
+		background-color: $color-3;
+	}
+	& li:nth-of-type(4) a:hover, li:nth-of-type(4) a.cd-selected{
+		background-color: $color-4;
+	}
+	& li:nth-of-type(5) a:hover, li:nth-of-type(5) a.cd-selected{
+		background-color: $color-5;
+	}
+	& li:nth-of-type(6) a:hover, li:nth-of-type(6) a.cd-selected{
+		background-color: $color-6;
+	}
+	& li:nth-of-type(7) a:hover, li:nth-of-type(7) a.cd-selected{
+		background-color: $color-7;
+	}
+	& li:nth-of-type(8) a:hover, li:nth-of-type(8) a.cd-selected{
+		background-color: $color-8;
+	}
+
+	span, em {
+		position: absolute;
+	}
+
+	span {
+		top: calc(50% - 48px);
+		left: 50%;
+		transform: translateX(-50%);
+		height: 48px;
+		width: 48px;
+		
+		* {
+			transition: stroke .2s;
+		}
+	}
+
+	em {
+		width: 100%;
+		left: 0;
+		top: calc(50% + 15px);
+		color: black;
+		transition: color .2s;
+		backface-visibility: hidden;
+	}
+
+	
+	@include MQ(M) {
+		li {
+			/* 116px is the navigation header height and the menu items will be allocated in 3 rows */
+			height: calc((100% - 116px)/3);
+			min-height: 200px;
+		}
+
+		span {
+			height: 64px;
+			width: 64px;
+			top: calc(50% - 56px);
+		}
+
+		em {
+			font-size: 2.2rem;
+			font-weight: 300;
+			top: calc(50% + 21px);
+		}
+	}
+
+	@include MQ(L) {
+		height: calc(100% - 116px);
+		li {
+			@include column(0.333);
+			/* 116px is the navigation header height  and the menu items will be allocated in 2 rows */
+			height: calc((105% - 116px)/3);
+			min-height: 150px;
+
+			&:nth-of-type(2n) {
+				border-right-width: 1px;
+			}
+			
+			&:nth-of-type(3n) {
+				border-right-width: 0;
+			}
+		}
+
+		em {
+			font-size: 2.5rem;
+		}
+	}
+}
+
+
+
+
+/* -------------------------------- 
+
+xshadow layer 
+
+-------------------------------- */
+
+.cd-overlay {
+	/* shadow layer visible when navigation is open */
+	position: fixed;
+	height: 100%;
+	width: 100%;
+	top: 0;
+	left: 0;
+	cursor: pointer;
+	background-color: rgba(#000, .35);
+	visibility: hidden;
+	opacity: 0;
+	backface-visibility: hidden;
+	transition : opacity $animation-duration 0s, visibility 0s $animation-duration;
+	&.is-visible {
+		opacity: 1;
+		visibility: visible;
+		z-index: 3;
+	    transition: opacity $animation-duration 0s, visibility 0s 0s;
+	}
+}
+
+/* -------------------------------- 
+
+xcontent 
+
+-------------------------------- */
+main {
+	position: relative;
+	height: 100vh;
+	overflow-x: hidden;
+	transition: transform $animation-duration;
+	box-shadow: 0 0 30px black;
+	&.scale-down {
+		transform: scale(.9);
+	}
+}
+
+
+.cd-section {
+	position: absolute;
+	z-index: 1;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	overflow-y: auto;
+	transform: translateX(100%);
+	transition: transform 0s $animation-duration;
+
+	&.cd-selected {
+		position: relative;
+		z-index: 2;
+		transform: translateX(0);
+		transition: transform $animation-duration 0s;
+		-webkit-overflow-scrolling: touch;
+	}
+	@include MQ(M) {
+		/* not 100vh to fix a small bug --> border visible otherwise */
+		header: 102vh;
+	}
+}
+
+.content-container {
+	width: 100%;
+	height: 100%;
+	position: relative;
+	background-color: whitesmoke;
+}

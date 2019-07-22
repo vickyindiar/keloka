@@ -1,0 +1,32 @@
+
+@import './component/_auth.scss';
+@import './component/_nav.scss';
+
+*, *::after, *::before {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+  }
+  
+html {
+	font-size: 62.5%;
+}
+
+body {
+	font: {
+		size: 1.6rem;
+		family: $primary-font; // variables inside partials > _variables.scss
+	}
+	color: black;
+	background: darken($color: $color-7, $amount: 30%);
+    //@include gradient-bg(3);
+}
+
+svg {
+	max-width: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+

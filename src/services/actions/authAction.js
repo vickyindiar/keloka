@@ -6,19 +6,50 @@ import jwt_decode from 'jwt-decode';
 import jwt from 'jsonwebtoken';
 import isEmpty from '../helper/isEmpty';
 
-
 export const setAuthentication = (decode) => {
-    return {
+    return { 
         type: SET_AUTH,
         payload : decode 
     }
+}
+
+export const register = (data, history) => dispatch => {
+    let errMessage = '';
+    let config = {
+        headers: {
+            'Accept' : 'application/json',
+            'Content-Type': 'application/json',
+          },
+    }
+    axios.post('/api/register', data, config)
+    .then(res => {
+        if(res.data.status){
+            let token = `Bearer ${res.data.data.token}`;
+            let config = {
+                headers: { Authorization: token }
+            };
+           axios.get('/api/profile', config)
+            .then(d =>{
+                localStorage.setItem('jwt', token);
+                setAuthToken(token);
+                dispatch(setAuthentication(d.data.user));
+                history.push('/');
+            });
+        }
+    })
+    .catch(err => {
+        dispatch({
+            type: ERR_AUTH,
+            payload: errMessage
+        });
+    });
 }
 
 export const login = (user, history) => dispatch =>{
     let errMessage = '';
     let config = {
         headers: {
-            Accept: 'application/json',
+            'Accept' : 'application/json',
             'Content-Type': 'application/json',
           },
     }

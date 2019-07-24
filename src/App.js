@@ -13,7 +13,7 @@ import Sales from './component/sales/Sales';
 import Purchase  from './component/purchase/Purchase';
 import Return  from './component/return/Return';
 import Setting  from './component/setting/Setting';
-import Login from './component/auth/Login';
+import Auth from './component/auth/Auth';
 import Nav from './component/nav/Nav';
 
 
@@ -30,7 +30,7 @@ class App extends Component {
           <main>
               <section className="cd-section cd-selected">
                 <PrivateRoute exact path='/' component={Home}/>
-                <Route path='/login' component={Login}></Route>
+                <Route path='/login' component={Auth}></Route>
                 <Route path='/data' component={Data}></Route>
                 <Route path='/report' component={Report}></Route>
                 <Route path='/sales' component={Sales}></Route>

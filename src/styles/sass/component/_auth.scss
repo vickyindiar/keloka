@@ -73,6 +73,7 @@
     }
     .form-signup{
       display: block;
+      height: 60%;
       @include transition(all 0.5s);
     }
   }
@@ -99,6 +100,7 @@
 
 .cont-form{
   width:20%;
+  height: auto;
   min-height:55%;
   background: lighten(white, 20%);
   position: absolute;
@@ -114,12 +116,13 @@
   @include transition(all 0.5s);
     .form-login{
       position: absolute;
-      top:25%;
+      top:20%;
       left:0;
       margin: 0 auto !important;
      // border:1px solid black;
       @include transition(all 0.5s);
       .btn{
+        margin-top: 23%;
         width: 95%;
         border-radius:15px;
       }
@@ -127,13 +130,13 @@
     .form-signup{
       display:none;
       position: absolute;
-      top:25%;
+      top:20%;
       left:0;
       margin: 0 auto !important;
       @include transition(all 0.5s);
       .btn{
         width: 90%;
-        margin-left: 5% !important;
+        //margin-left: 5% !important;
         border-radius:15px;
       }
       @include transition(all 0.5s);
@@ -141,7 +144,7 @@
 }
 .title-form{
   position: absolute;
-  top: 30px;
+  top: -15%;
   text-align: center;
  // border:1px solid black;
   width: 100%;
@@ -169,7 +172,7 @@
   }
 }
 
- input[type="text"], input[type="password"] {
+ input[type="text"], input[type="password"], input[type="email"] {
   //width: 85% !important;
   border:none !important;
   padding-left: 5% !important;

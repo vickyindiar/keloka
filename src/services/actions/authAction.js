@@ -29,7 +29,6 @@ export const register = (data, history) => dispatch => {
         if(res.data.status){
             let token = `Bearer ${res.data.data.token}`;
             localStorage.setItem('jwt', token);
-            localStorage.setItem('jwt', res.data.user);
             setAuthToken(token);
             dispatch(setAuthentication(res.data.user));
             history.push('/');
@@ -59,7 +58,6 @@ export const login = (data, history) => dispatch =>{
         if(res.data.status){
             let token = `Bearer ${res.data.token}`;
             localStorage.setItem('jwt', token);
-            localStorage.setItem('user', res.data.user);
             setAuthToken(token);
             dispatch(setAuthentication(res.data.user));
             history.push('/');

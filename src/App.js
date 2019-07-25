@@ -4,6 +4,8 @@ import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PrivateRoute from './component/nav/PrivateRoute';
 import {setAuthentication} from './services/actions/authAction';
+import jwt_decode from 'jwt-decode';
+import jwt from 'jsonwebtoken';
 
 //components
 import Home from './component/home/Home';
@@ -20,10 +22,11 @@ import Nav from './component/nav/Nav';
 class App extends Component {
   constructor(props){
     super(props);
-    props.setAuth(localStorage.getItem('jwt'));
+    let user = localStorage.getItem('user');
+    props.setAuth(user);
   }
   render() {
-    const isAuthenticated = localStorage.getItem('jwt');
+    const isAuthenticated = (localStorage.getItem('jwt'));
     return (
       <div className="App">
           { isAuthenticated && <Nav /> }

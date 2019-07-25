@@ -6,8 +6,8 @@
     width: 100%;
     height: 100%;
     position: relative;
-    @include gradient-bg(2);
-    //background: darken($color: white, $amount: 10);
+  //  @include gradient-bg(2);
+    background: darken($color: black, $amount: 10);
     padding-top: 10%;
 
 }

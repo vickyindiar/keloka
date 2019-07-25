@@ -38,8 +38,6 @@ export class Auth extends Component {
             $(".form-auth").toggleClass("signup"); 
     }
   render() {
-
-    const { username, email, password } = this.state;
     return (
         <React.Fragment>
            <div className="container-auth">
@@ -48,7 +46,7 @@ export class Auth extends Component {
                         <div className="info-auth info-sign">
                             <div className="content">
                                 <p> Have an Account</p>
-                                <a className="btn waves-effect" onClick={this.toogleFormInfo}>Login</a>
+                                <a role="button" className="btn waves-effect" onClick={this.toogleFormInfo}>Login</a>
                             </div>
                         </div>
                         <div className="info-auth info-signup">
@@ -64,13 +62,13 @@ export class Auth extends Component {
                             <div className="row">
                                 <div className="input-field col s12">
                                     <i className="material-icons prefix">person</i>
-                                    <input id="username" type="text" className="outlined" value={username} onChange={this.handleOnChange}/>
-                                    <label htmlFor="usernmae">Username</label>
+                                    <input id="email-login" type="email" name="email" className="outlined" onChange={this.handleOnChange}/>
+                                    <label htmlFor="email-login">email</label>
                                 </div>
                                 <div className="input-field col s12">
                                     <i className="material-icons prefix">lock</i>
-                                    <input id="password" type="password" className="outlined" value={password} onChange={this.handleOnChange} />
-                                    <label htmlFor="password">Password</label>
+                                    <input id="password-login" type="password" name="password" className="outlined" onChange={this.handleOnChange} />
+                                    <label htmlFor="password-login">Password</label>
                                 </div>
                                 <a className="btn waves-effect" onClick={this.handleOnSubmitLogin}>Login</a>
                             </div>
@@ -80,18 +78,18 @@ export class Auth extends Component {
                             <div className="row">
                                 <div className="input-field col s12">
                                     <i className="material-icons prefix">person</i>
-                                    <input id="username" type="text" className="outlined" value={username} onChange={this.handleOnChange} />
-                                    <label htmlFor="usernmae">Username</label>
+                                    <input id="username-signup" type="text" name="username" className="outlined" onChange={this.handleOnChange} />
+                                    <label htmlFor="username-signup">Username</label>
                                 </div>
                                 <div className="input-field col s12">
                                     <i className="material-icons prefix">mail</i>
-                                    <input id="email" type="email" className="outlined" value={email} onChange={this.handleOnChange} />
-                                    <label htmlFor="email">Email</label>
+                                    <input id="email-signup" type="email" name="email" className="outlined"  onChange={this.handleOnChange} />
+                                    <label htmlFor="email-signup">Email</label>
                                 </div>
                                 <div className="input-field col s12">
                                     <i className="material-icons prefix">lock</i>
-                                    <input id="password" type="password" className="outlined" value={password} onChange={this.handleOnChange}/>
-                                    <label htmlFor="password">Password</label>
+                                    <input id="password-signup" type="password" name="password" className="outlined" onChange={this.handleOnChange}/>
+                                    <label htmlFor="password-signup">Password</label>
                                 </div>
                                 <input type="hidden" name="role_id" id="role_id" value="2"/>
                                 <a className="btn waves-effect" onClick={this.handleOnSubmitRegister} >SIGN UP</a>

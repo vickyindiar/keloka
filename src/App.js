@@ -3,7 +3,8 @@ import M from 'materialize-css';
 import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PrivateRoute from './component/nav/PrivateRoute';
-import {setAuthentication} from './services/actions/authAction';
+import {setAuthenticatedUser} from './services/actions/authAction';
+import isEmpty from './services/helper/isEmpty';
 
 //components
 import Home from './component/home/Home';
@@ -21,10 +22,13 @@ class App extends Component {
   constructor(props){
     super(props);
     let token = localStorage.getItem('jwt');
-    this.props.setAuth(token);
+    if(token && isEmpty(props.authState.user)){
+      props.setAuth(token);
+    }
+
   }
   render() {
-    const isAuthenticated = (localStorage.getItem('jwt'));
+    const isAuthenticated = (localStorage.getItem('jwt') && !isEmpty(this.props.authState.user));
     return (
       <div className="App">
           { isAuthenticated && <Nav /> }
@@ -48,7 +52,7 @@ const mapStateToProps = (state) => ({
   authState : state
 });
 const mapDispatchToProps = (dispatch) => ({
-  setAuth: user => dispatch(setAuthentication(user))
+  setAuth: (token) => dispatch(setAuthenticatedUser(token))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

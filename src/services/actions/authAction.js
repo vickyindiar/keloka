@@ -30,7 +30,7 @@ export const register = (data, history) => dispatch => {
             let token = `Bearer ${res.data.data.token}`;
             localStorage.setItem('jwt', token);
             setAuthToken(token);
-            dispatch(setAuthentication(res.data.user));
+            // dispatch(setAuthentication(res.data.user));
             history.push('/');
         }
         else{
@@ -70,6 +70,28 @@ export const login = (data, history) => dispatch =>{
           dispatch({ type: ERR_AUTH, payload: err });
     });
 }
+
+export const setAuthenticatedUser = (token) => dispatch => {
+    let config = {
+        headers: {
+            'Accept' : 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': token
+          }
+    }
+    axios.get('http://127.0.0.1:8000/api/user', {} , config)
+        .then(res =>{
+            if(res.data.status){
+                dispatch(setAuthentication(res.data.data));
+            }else{
+                dispatch({ type: ERR_AUTH, payload: res.data.msg });
+            }
+        })
+        .catch(err => {
+            dispatch({ type: ERR_AUTH, payload: err });
+    });
+}
+
 
 export const logout = (history) => dispatch =>{
     try {

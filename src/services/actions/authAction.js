@@ -30,7 +30,7 @@ export const register = (data, history) => dispatch => {
             let token = `Bearer ${res.data.data.token}`;
             localStorage.setItem('jwt', token);
             setAuthToken(token);
-            // dispatch(setAuthentication(res.data.user));
+            dispatch(setAuthentication(res.data.data.user));
             history.push('/');
         }
         else{
@@ -56,10 +56,10 @@ export const login = (data, history) => dispatch =>{
     axios.post('http://127.0.0.1:8000/api/login', paramaters, config)
     .then(res =>{
         if(res.data.status){
-            let token = `Bearer ${res.data.token}`;
+            let token = `Bearer ${res.data.data.token}`;
             localStorage.setItem('jwt', token);
             setAuthToken(token);
-            dispatch(setAuthentication(res.data.user));
+            dispatch(setAuthentication(res.data.data.user));
             history.push('/');
         }
         else{
@@ -74,12 +74,10 @@ export const login = (data, history) => dispatch =>{
 export const setAuthenticatedUser = (token) => dispatch => {
     let config = {
         headers: {
-            'Accept' : 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': token
+            Authorization: token
           }
     }
-    axios.get('http://127.0.0.1:8000/api/user', {} , config)
+    axios.get('http://127.0.0.1:8000/api/user', config)
         .then(res =>{
             if(res.data.status){
                 dispatch(setAuthentication(res.data.data));

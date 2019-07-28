@@ -22,13 +22,14 @@ class App extends Component {
   constructor(props){
     super(props);
     let token = localStorage.getItem('jwt');
-    if(token && isEmpty(props.authState.user)){
-      props.setAuth(token);
+    if(token){
+      if(isEmpty(props.authState.user)){
+        props.setAuth(token);
+      }
     }
-
   }
   render() {
-    const isAuthenticated = (localStorage.getItem('jwt') && !isEmpty(this.props.authState.user));
+    const isAuthenticated = localStorage.getItem('jwt');
     return (
       <div className="App">
           { isAuthenticated && <Nav /> }

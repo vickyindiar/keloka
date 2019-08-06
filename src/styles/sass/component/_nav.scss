@@ -6,17 +6,18 @@
 /* NAVIGATION */
 .cd-nav-trigger {
 	/* hamburger icon */
-	 position: fixed;
+	 position: absolute;
 	 z-index: 3;
-	 top: 12px;
+	 top: 12px !important;
 	 right: 5%;
-	 height: 44px;
-	 width: 44px;
+	 height: 60px;
+	 width: 60px;
 	/* image replacement */
     overflow: hidden;
 	text-indent: 100%;
 	white-space: nowrap;
 	transition: transform 0.2s;
+	//border: black solid 2px;
 
 	.nav-icon {
 		/* icon created in CSS */
@@ -24,10 +25,10 @@
 		top: 50%;
 		left: 50%;
 		transform: translateX(-50%);
-		width: 32px;
-		height: 3px;
+		width: 45px;
+		height: 5px;
 		//background-color: darken($color-2, 40%);
-		background-color: black;
+		background-color: white;
 		&::before, &::after {
 		/* upper and lower lines of the menu icon */
 	 		content: '';
@@ -46,12 +47,12 @@
 
 		&::before {
 			transform-origin: right top;
-			transform: translateY(-10px);
+			transform: translateY(-15px);
 		}
 
 		&::after {
 			transform-origin: right bottom;
-			transform: translateY(10px);
+			transform: translateY(15px);
 		}
 	}
 	&:hover {

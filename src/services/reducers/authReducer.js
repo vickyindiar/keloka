@@ -4,7 +4,8 @@ import isEmpty from '../helper/isEmpty';
 const initialState = {
     isAuthenticated : false,
     errAuthMessage:'',
-    user: ""
+    loading: true,
+    user: ''
 };
 export default function(state = initialState, action){
     switch (action.type) {
@@ -13,11 +14,14 @@ export default function(state = initialState, action){
                 ...state,
                 isAuthenticated : !isEmpty(action.payload),
                 user: action.payload,
+                loading: false
             }
         case ERR_AUTH:
             return {
                 ...state, 
-                errAuthMessage: action.payload
+                isAuthenticated: false,
+                errAuthMessage: action.payload,
+                loading: false
             }
 
         default:

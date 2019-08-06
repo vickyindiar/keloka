@@ -7,7 +7,8 @@ import $ from 'jquery';
 export class Nav extends Component {
   handleLogout = () =>{
       this.toggleNav(false);
-      this.props.doLogout(this.props.history);
+      let token = localStorage.getItem('jwt');
+      this.props.doLogout(token, this.props.history);
   }
 
   handleNavClick = (e) => {
@@ -193,7 +194,7 @@ export class Nav extends Component {
 }
 
 const mapAction = dispatch => ({
-    doLogout : (history) => dispatch(logout(history))
+    doLogout : (token, history) => dispatch(logout(token, history))
 });
 
 

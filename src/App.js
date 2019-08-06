@@ -16,6 +16,7 @@ import Return  from './component/return/Return';
 import Setting  from './component/setting/Setting';
 import Auth from './component/auth/Auth';
 import Nav from './component/nav/Nav';
+import Spinner from './component/_lib/_spinner/Spinner';
 
 
 class App extends Component {
@@ -29,22 +30,23 @@ class App extends Component {
     }
   }
   render() {
-    const isAuthenticated = localStorage.getItem('jwt');
+    const { isAuthenticated, loading } = this.props.authState.authReducer;
     return (
       <div className="App">
+          { loading && <Spinner /> }
           { isAuthenticated && <Nav /> }
-          <main>
-              <section className="cd-section cd-selected">
-                <PrivateRoute exact path='/' component={Home}/>
-                <Route path='/login' component={Auth}></Route>
-                <Route path='/data' component={Data}></Route>
-                <Route path='/report' component={Report}></Route>
-                <Route path='/sales' component={Sales}></Route>
-                <Route path='/purchase' component={Purchase}></Route>
-                <Route path='/return' component={Return}></Route>
-                <Route path='/setting' component={Setting}></Route>
-              </section>
-          </main>
+              <main>
+                <section className="cd-section cd-selected">
+                  <PrivateRoute exact path='/' authenticed={isAuthenticated} component={Home}/>
+                  <Route path='/login' component={Auth}></Route>
+                  <Route path='/data' component={Data}></Route>
+                  <Route path='/report' component={Report}></Route>
+                  <Route path='/sales' component={Sales}></Route>
+                  <Route path='/purchase' component={Purchase}></Route>
+                  <Route path='/return' component={Return}></Route>
+                  <Route path='/setting' component={Setting}></Route>
+                </section>
+             </main>
       </div>
     );
   }

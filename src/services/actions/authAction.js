@@ -79,10 +79,10 @@ export const setAuthenticatedUser = (token) => dispatch => {
     }
     axios.get('http://127.0.0.1:8000/api/user', config)
         .then(res =>{
-            if(res.data.status){
+            if(res.data.status === true){
                 dispatch(setAuthentication(res.data.data));
             }else{
-                dispatch({ type: ERR_AUTH, payload: res.data.msg });
+                dispatch({ type: ERR_AUTH, payload: res.data.status });
             }
         })
         .catch(err => {
@@ -91,9 +91,14 @@ export const setAuthenticatedUser = (token) => dispatch => {
 }
 
 
-export const logout = (history) => dispatch =>{
+export const logout = (history, token) => dispatch =>{
     try {
-        axios.post('http://127.0.0.1:8000/api/logout')
+        let config = {
+            headers: {
+                Authorization: token
+              }
+        }
+        axios.post('http://127.0.0.1:8000/api/logout', config)
         .then(res =>{
             if(res.data.status){
                 localStorage.removeItem('jwt');

@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import "../../../styles/sass/component/_lib/_table/DataTable.scss";
+import "../../../styles/sass/component/_lib/_table/_dataTable.scss";
 import { withStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";

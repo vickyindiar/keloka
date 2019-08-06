@@ -18,7 +18,7 @@ body {
 		family: $primary-font; // variables inside partials > _variables.scss
 	}
 	color: black;
-	background: darken($color: $color-7, $amount: 30%);
+	background: lighten($color: $color-5, $amount: 40%);
     //@include gradient-bg(3);
 }
 

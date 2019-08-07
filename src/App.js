@@ -6,6 +6,7 @@ import PrivateRoute from './component/nav/PrivateRoute';
 import {setAuthenticatedUser} from './services/actions/authAction';
 import isEmpty from './services/helper/isEmpty';
 import { withRouter } from 'react-router-dom';
+import { STOP_SPNNER } from './services/types/authType';
 
 //components
 import Home from './component/home/Home';
@@ -28,6 +29,9 @@ class App extends Component {
       if(isEmpty(props.authState.user)){
         props.setAuth(token, props.history);
       }
+    }
+    else{
+      props.stopSpinner();
     }
   }
   render() {
@@ -56,7 +60,8 @@ const mapStateToProps = (state) => ({
   authState : state
 });
 const mapDispatchToProps = (dispatch) => ({
-  setAuth: (token, history) => dispatch(setAuthenticatedUser(token, history))
+  setAuth: (token, history) => dispatch(setAuthenticatedUser(token, history)),
+  stopSpinner: () => dispatch({type: STOP_SPNNER, payload: false})
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(App));

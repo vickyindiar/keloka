@@ -7,10 +7,7 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import { connect } from "react-redux";
 import { changeTabIndex } from "../../services/actions/dataAction";
-import { makeStyles, withStyles } from '@material-ui/styles';
 import DataTable from "../_lib/_table/DataTable";
-
-
 
 export class Data extends Component {
     constructor(props) {
@@ -35,7 +32,6 @@ export class Data extends Component {
       this.props.setTabActive(index);
     };
     render() {
-      const { classes } = this.props;
       const { value } = this.state;
     return (
       <React.Fragment>
@@ -47,7 +43,7 @@ export class Data extends Component {
                   <div className="card card-data grey lighten-3 z-depth-3">
                       <div className="card-content">
                           <div className="card-title"> */}
-                          <div  className={classes.root}>
+                          <div  className="tab-data">
                               <AppBar position="static" color="default">
                                 <Tabs value={value} onChange={this.handleChange} variant="fullWidth" >
                                   <Tab label="Barang" id="tab-0" aria-controls="tabpanel-0" />
@@ -93,13 +89,5 @@ const propsState = state => ({ tab: state.tabActive, data: state.dataConfig });
 const propsAction = dispatch => ({
  setTabActive: tab => dispatch(changeTabIndex(tab))
 });
-const useStyles = {
-  root: {
-    flexGrow: 1,
-    fontSize:'2em'
-  },
-};
 
-
-
-export default connect( propsState, propsAction )(withStyles(useStyles)(Data));
+export default connect( propsState, propsAction )(Data);

@@ -14,7 +14,7 @@ export class Auth extends Component {
         }
     }
     componentDidMount = () => {
-        const { isAuthenticated } = this.props.authState;
+        const { isAuthenticated } = this.props.authState.authReducer;
         if(isAuthenticated){
             this.props.history.push('/');
         }

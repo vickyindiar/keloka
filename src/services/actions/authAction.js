@@ -71,7 +71,7 @@ export const login = (data, history) => dispatch =>{
     });
 }
 
-export const setAuthenticatedUser = (token) => dispatch => {
+export const setAuthenticatedUser = (token, history) => dispatch => {
     let config = {
         headers: {
             Authorization: token
@@ -81,6 +81,7 @@ export const setAuthenticatedUser = (token) => dispatch => {
         .then(res =>{
             if(res.data.status === true){
                 dispatch(setAuthentication(res.data.data));
+                history.push('/');
             }else{
                 dispatch({ type: ERR_AUTH, payload: res.data.status });
             }

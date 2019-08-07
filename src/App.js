@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import PrivateRoute from './component/nav/PrivateRoute';
 import {setAuthenticatedUser} from './services/actions/authAction';
 import isEmpty from './services/helper/isEmpty';
+import { withRouter } from 'react-router-dom';
 
 //components
 import Home from './component/home/Home';
@@ -25,7 +26,7 @@ class App extends Component {
     let token = localStorage.getItem('jwt');
     if(token){
       if(isEmpty(props.authState.user)){
-        props.setAuth(token);
+        props.setAuth(token, props.history);
       }
     }
   }
@@ -35,18 +36,18 @@ class App extends Component {
       <div className="App">
           { loading && <Spinner /> }
           { isAuthenticated && <Nav /> }
-              <main>
-                <section className="cd-section cd-selected">
-                  <PrivateRoute exact path='/' authenticed={isAuthenticated} component={Home}/>
-                  <Route path='/login' component={Auth}></Route>
-                  <Route path='/data' component={Data}></Route>
-                  <Route path='/report' component={Report}></Route>
-                  <Route path='/sales' component={Sales}></Route>
-                  <Route path='/purchase' component={Purchase}></Route>
-                  <Route path='/return' component={Return}></Route>
-                  <Route path='/setting' component={Setting}></Route>
-                </section>
-             </main>
+          <main>
+            <section className="cd-section cd-selected">
+              <PrivateRoute exact path='/' authenticed={isAuthenticated} component={Home}/>
+              <Route path='/login' component={Auth}></Route>
+              <Route path='/data' component={Data}></Route>
+              <Route path='/report' component={Report}></Route>
+              <Route path='/sales' component={Sales}></Route>
+              <Route path='/purchase' component={Purchase}></Route>
+              <Route path='/return' component={Return}></Route>
+              <Route path='/setting' component={Setting}></Route>
+            </section>
+          </main>
       </div>
     );
   }
@@ -55,7 +56,7 @@ const mapStateToProps = (state) => ({
   authState : state
 });
 const mapDispatchToProps = (dispatch) => ({
-  setAuth: (token) => dispatch(setAuthenticatedUser(token))
+  setAuth: (token, history) => dispatch(setAuthenticatedUser(token, history))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(App));

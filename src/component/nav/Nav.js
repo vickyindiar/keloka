@@ -24,7 +24,6 @@ export class Nav extends Component {
     else if(className === 'cd-selected' || className === "a-nav"){
         this.toggleNav(false);
     }
-
   }
 
   toggleNav = (bool) => {

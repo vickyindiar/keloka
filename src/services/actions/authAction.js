@@ -71,27 +71,6 @@ export const login = (data, history) => dispatch =>{
     });
 }
 
-export const setAuthenticatedUser = (token, history) => dispatch => {
-    let config = {
-        headers: {
-            Authorization: token
-          }
-    }
-    axios.get('http://127.0.0.1:8000/api/user', config)
-        .then(res =>{
-            if(res.data.status === true){
-                dispatch(setAuthentication(res.data.data));
-                history.push('/');
-            }else{
-                dispatch({ type: ERR_AUTH, payload: res.data.status });
-            }
-        })
-        .catch(err => {
-            dispatch({ type: ERR_AUTH, payload: err });
-    });
-}
-
-
 export const logout = (history, token) => dispatch =>{
     try {
         let config = {
@@ -117,3 +96,24 @@ export const logout = (history, token) => dispatch =>{
         dispatch({ type: ERR_AUTH, payload: err.message });
     }
 }
+
+export const setAuthenticatedUser = (token, history) => dispatch => {
+    let config = {
+        headers: {
+            Authorization: token
+          }
+    }
+    axios.get('http://127.0.0.1:8000/api/user', config)
+        .then(res =>{
+            if(res.data.status === true){
+                dispatch(setAuthentication(res.data.data));
+                history.push('/');
+            }else{
+                dispatch({ type: ERR_AUTH, payload: res.data.status });
+            }
+        })
+        .catch(err => {
+            dispatch({ type: ERR_AUTH, payload: err });
+    });
+}
+

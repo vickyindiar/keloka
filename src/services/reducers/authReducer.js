@@ -1,4 +1,4 @@
-import { SET_AUTH, ERR_AUTH } from '../types/authType';
+import { SET_AUTH, ERR_AUTH, STOP_SPNNER } from '../types/authType';
 import isEmpty from '../helper/isEmpty';
 
 const initialState = {
@@ -23,7 +23,11 @@ export default function(state = initialState, action){
                 errAuthMessage: action.payload,
                 loading: false
             }
-
+        case STOP_SPNNER:
+            return {
+                ...state,
+                loading: false
+            }
         default:
             return state;
     }

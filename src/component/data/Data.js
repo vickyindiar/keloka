@@ -14,11 +14,10 @@ export class Data extends Component {
       super(props);
       this.state = {
         value: 0,
-        tabActive: -1,
         dataCongfig: []
       };
 
-      if(props.tabActive === -1){
+      if(props.dataState.dataReducer.tabActive === -1){
         props.setTabActive(0);
       }
     }
@@ -84,7 +83,7 @@ export class Data extends Component {
   }
 }
 
-const propsState = state => ({ tab: state.tabActive, data: state.dataConfig });
+const propsState = state => ({ dataState: state });
 
 const propsAction = dispatch => ({
  setTabActive: tab => dispatch(changeTabIndex(tab))

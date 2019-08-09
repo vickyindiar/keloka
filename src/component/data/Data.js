@@ -55,7 +55,7 @@ export class Data extends Component {
                               </AppBar>
                               <SwipeableViews index={value} onChangeIndex={this.handleChangeIndex}>
                                 <div id="tabpanel-0" aria-labelledby="tab-0" value={value}  hidden={value !== 0} index={0}  >
-                                  {/* <DataTable dataConfig={this.props.data} /> */}
+                                  <DataTable dataConfig={this.props.data} />
                                 </div>
                                 <div id="tabpanel-1" aria-labelledby="tab-1"  value={value} hidden={value !== 1} index={1} >
                                   {/* <DataTable dataConfig={this.props.data} /> */}

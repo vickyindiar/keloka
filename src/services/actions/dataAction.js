@@ -15,11 +15,12 @@ export const changeTabIndex = tab => dispatch => {
      }
 
     if(tab === 0) { url = 'http://127.0.0.1:8000/api/product'; } 
-    axios.get(tab, config).then(res =>{
-        if(res.data.status === true){
+    axios.get(url, config).then(res =>{
+
+        if(res.status === 200){
           dispatch({
             type: SET_TAB,
-            payload: {  tabActive: tab, dataConfig: data  }
+            payload: {  tabActive: tab, dataConfig: res.data  }
           });
         }else{
             dispatch({ type: SET_TAB, payload: {  tabActive: tab, dataConfig: []  }});

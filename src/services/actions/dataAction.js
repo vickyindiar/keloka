@@ -1,15 +1,10 @@
 import { SET_TAB } from "../types/dataType";
 import axios from 'axios';
-<<<<<<< HEAD
-
-=======
->>>>>>> eaf811c3f47dbabbaeb36bfd904277ba66d76963
 
 export const changeTabIndex = tab => dispatch => {
     let data = [];
     let url = '';
     let token = localStorage.getItem('jwt');
-
     let config = {
       headers: {
           'Accept' : 'application/json',
@@ -33,7 +28,5 @@ export const changeTabIndex = tab => dispatch => {
     .catch(err => {
       dispatch({ type: SET_TAB, payload: {  tabActive: tab, dataConfig: []  }});
     });
-
- 
   };
   

@@ -57,8 +57,8 @@ class DataTable extends React.Component {
     super(props);
     this.state = {
       title: "Data Table",
-      data: this.props.dataConfig.data,
-      column: this.props.dataConfig.column,
+      data: this.props.dataState.data,
+      columns: this.props.dataState.columns,
       order: "asc",
       orderBy: "",
       selected: [],
@@ -140,9 +140,8 @@ class DataTable extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { rowsPerPage, page, order, orderBy, data, column } = this.state;
-    const emptyRows =
-      rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
+    const { rowsPerPage, page, order, orderBy, data, columns } = this.state;
+    const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
     const sortingData = stableSort(data, getSorting(order, orderBy));
     const slicingData = sortingData.slice(
       page * rowsPerPage,
@@ -152,14 +151,13 @@ class DataTable extends React.Component {
     return (
       <Paper className={classes.root}>
         <DataTableTools
-          dataConfig={this.state}
+          dataState={this.state}
           onFilterChanged={this.handleFilterChange}
         />
 
         <div className={classes.tableWrapper}>
           <Table className={classes.table} aria-labelledby="tableTitle">
             <DataTableHead
-              dataConfig={this.props.dataConfig}
               dataState={this.state}
               onSelectAllClick={this.handleSelectAllClick}
               onRequestSort={this.handleRequestSort}
@@ -180,7 +178,7 @@ class DataTable extends React.Component {
                     <TableCell padding="checkbox">
                       <Checkbox checked={isSelected} />
                     </TableCell>
-                    {column.map((col, index) => {
+                    {columns.map((col, index) => {
                       if (index === 0) {
                         return (
                           <TableCell component="th" scope="row" padding="none">

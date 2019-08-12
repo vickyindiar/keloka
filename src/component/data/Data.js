@@ -14,11 +14,8 @@ export class Data extends Component {
       super(props);
       this.state = {
         value: 0,
-        dataCongfig: []
       };
-      if(props.dataState.dataReducer.tabActive === -1){
-        props.setTabActive(0);
-      }
+  
     }
 
     handleChange = (event, newValue) => {
@@ -27,8 +24,13 @@ export class Data extends Component {
 
     handleChangeIndex = index => {
       this.setState({ value: index });
-      this.props.setTabActive(index);
+
     };
+
+    componentDidMount = () => {
+      this.props.setTabActive(this.state.value);
+    }
+
     render() {
       const { value } = this.state;
     return (
@@ -53,7 +55,7 @@ export class Data extends Component {
                               </AppBar>
                               <SwipeableViews index={value} onChangeIndex={this.handleChangeIndex}>
                                 <div id="tabpanel-0" aria-labelledby="tab-0" value={value}  hidden={value !== 0} index={0}  >
-                                  {/* <DataTable dataConfig={this.props.data} /> */}
+                                  <DataTable dataState={this.props.dataState.dataConfig} />
                                 </div>
                                 <div id="tabpanel-1" aria-labelledby="tab-1"  value={value} hidden={value !== 1} index={1} >
                                   {/* <DataTable dataConfig={this.props.data} /> */}
@@ -82,7 +84,7 @@ export class Data extends Component {
   }
 }
 
-const propsState = state => ({ dataState : state });
+const propsState = state => ({ dataState : state.dataReducer });
 
 const propsAction = dispatch => ({
  setTabActive: tab => dispatch(changeTabIndex(tab))

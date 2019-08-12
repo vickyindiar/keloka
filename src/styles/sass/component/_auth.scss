@@ -65,7 +65,6 @@
   z-index:1;
   display:flex;
   padding: 20% 10px 10px 0;
-  //border:1px solid black;
   text-align: center;
   @include transition(all 0.5s);
     .form-login{
@@ -117,7 +116,7 @@
   height:48px;
   box-shadow: inset 0 0 0 1px #b2b2b2 !important;
   border-radius: 10px 0 0 10px;
-  padding: 12px 0 0 7px;
+  padding: 7px 0 0 7px;
 
   &.active{
       outline: none !important;
@@ -148,7 +147,7 @@
 label {
   position: absolute !important; 
   left: 1.75rem !important; 
-  top: 1rem !important;
+  top: 0.4rem !important;
   color: grey !important;
   transition: all .15s ease !important;
   padding: 0px !important; 
@@ -164,6 +163,6 @@ label {
 .outlined:focus + label {
   color: #ffb300 !important;
   padding: 0 3px !important;
-  top: 1rem !important;
+  top: 0.6rem !important;
 }
 

@@ -45,7 +45,7 @@ const toolbarStyles = theme => ({
     marginLeft: 0,
     width: "100%",
     [theme.breakpoints.up("sm")]: {
-      marginLeft: theme.spacing(1),
+    //  marginLeft: theme.spacing(1),
       width: "auto"
     }
   },
@@ -87,7 +87,7 @@ class DataTableTools extends React.Component {
   };
   render() {
     const { classes } = this.props;
-    const { selected, title, showFilter } = this.props.dataConfig;
+    const { selected, title, showFilter } = this.props.dataState;
 
     const showFilterSearch = showFilter ? (
       <div className={classes.search}>

@@ -325,3 +325,6 @@
 [0808/214618.437:ERROR:crash_report_database_win.cc(469)] failed to stat report
 [0808/214618.437:ERROR:crash_report_database_win.cc(469)] failed to stat report
 >>>>>>> eaf811c3f47dbabbaeb36bfd904277ba66d76963
+[0810/202643.337:ERROR:crash_report_database_win.cc(469)] failed to stat report
+[0810/202643.354:ERROR:crash_report_database_win.cc(469)] failed to stat report
+[0810/202643.355:ERROR:crash_report_database_win.cc(469)] failed to stat report

@@ -34,9 +34,8 @@ class DataTableHead extends React.Component {
 
     render() {
       const { classes } = this.props;
-      const { column, data } = this.props.dataConfig;
-      const { order, orderBy, selected } = this.props.dataState;
-      const rowCount = data.length;
+      const { order, orderBy, selected, columns, dataSource } = this.props.dataState;
+      const rowCount = dataSource.length;
       return (
         <TableHead >
           <TableRow > 
@@ -48,7 +47,7 @@ class DataTableHead extends React.Component {
                 className={classes.cell}
               />
             </TableCell>
-            {column.map(
+            {columns.map(
               row => (
                 <TableCell  className={classes.root} key={row.id}  align={row.align}  padding={row.disablePadding ? 'none' : 'default'} sortDirection={orderBy === row.id ? order : false} >
                     <TableSortLabel className={classes.root}  active={orderBy === row.id} direction={order} onClick={this.createSortHandler(row.id)} >

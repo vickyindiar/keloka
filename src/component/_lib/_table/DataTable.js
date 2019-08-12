@@ -11,6 +11,7 @@ import Paper from "@material-ui/core/Paper";
 import Checkbox from "@material-ui/core/Checkbox";
 import DataTableTools from "./DataTableTools";
 import DataTableHead from "./DataTableHead";
+import isEmpty from '../../../services/helper/isEmpty';
 
 function desc(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -56,16 +57,17 @@ class DataTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      title: "Data Table",
-      data: this.props.dataConfig.data,
-      column: this.props.dataConfig.column,
+      title: '',
+      dataSource: [],
+      columns: [],
       order: "asc",
       orderBy: "",
       selected: [],
       page: 0,
       rowsPerPage: 5,
       selectTable: false,
-      showFilter: true
+      showFilter: true,
+      //isSet: false
     };
   }
 
@@ -138,17 +140,19 @@ class DataTable extends React.Component {
 
   isSelected = id => this.state.selected.indexOf(id) !== -1;
 
-  render() {
-    const { classes } = this.props;
-    const { rowsPerPage, page, order, orderBy, data, column } = this.state;
-    const emptyRows =
-      rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
-    const sortingData = stableSort(data, getSorting(order, orderBy));
-    const slicingData = sortingData.slice(
-      page * rowsPerPage,
-      page * rowsPerPage + rowsPerPage
-    );
+  componentDidMount(){
+    // if(!this.state.isSet){
+    //   this.setState({dataSource: this.props.dataSource, columns: this.props.columns, isSet: true});
+    // }
+    // this.setState({ dataSource: this.props.dataSource, columns: this.props.columns });
+  }
 
+  render() {
+    const { classes, dataSource, columns } = this.props;
+    const { rowsPerPage, page, order, orderBy } = this.state;
+    const emptyRows = rowsPerPage - Math.min(rowsPerPage, dataSource.length - page * rowsPerPage);
+    const sortingData = stableSort(dataSource, getSorting(order, orderBy));
+    const slicingData = sortingData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
     return (
       <Paper className={classes.root}>
         <DataTableTools
@@ -159,7 +163,6 @@ class DataTable extends React.Component {
         <div className={classes.tableWrapper}>
           <Table className={classes.table} aria-labelledby="tableTitle">
             <DataTableHead
-              dataConfig={this.props.dataConfig}
               dataState={this.state}
               onSelectAllClick={this.handleSelectAllClick}
               onRequestSort={this.handleRequestSort}
@@ -180,7 +183,7 @@ class DataTable extends React.Component {
                     <TableCell padding="checkbox">
                       <Checkbox checked={isSelected} />
                     </TableCell>
-                    {column.map((col, index) => {
+                    {columns.map((col, index) => {
                       if (index === 0) {
                         return (
                           <TableCell component="th" scope="row" padding="none">
@@ -205,7 +208,7 @@ class DataTable extends React.Component {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={data.length}
+          count={dataSource.length}
           rowsPerPage={rowsPerPage}
           page={page}
           backIconButtonProps={{ "aria-label": "Previous Page" }}

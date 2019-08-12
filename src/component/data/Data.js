@@ -15,7 +15,6 @@ export class Data extends Component {
       this.state = {
         value: 0,
       };
-  
     }
 
     handleChange = (event, newValue) => {
@@ -23,60 +22,50 @@ export class Data extends Component {
     };
 
     handleChangeIndex = index => {
-      this.setState({ value: index });
-
+      this.setState({ value: index }, this.props.setTabActive(index));
     };
 
-    componentDidMount = () => {
-      this.props.setTabActive(this.state.value);
+    componentDidMount = () =>{
+      if(this.props.dt.dataReducer.tabActive === -1){
+        this.props.setTabActive(0);
+      }
     }
-
     render() {
       const { value } = this.state;
+      const { columns, dataSource } = this.props.dt.dataReducer;
     return (
       <React.Fragment>
         <div className="content-container data">
         <Header />
         <div className="content-data">
-             {/* <div className="row">
-               <div className="col s12 m12">
-                  <div className="card card-data grey lighten-3 z-depth-3">
-                      <div className="card-content">
-                          <div className="card-title"> */}
-                          <div  className="tab-data">
-                              <AppBar position="static" color="default">
-                                <Tabs value={value} onChange={this.handleChange} variant="fullWidth" >
-                                  <Tab label="Barang" id="tab-0" aria-controls="tabpanel-0" />
-                                  <Tab label="Supplier" id="tab-1" aria-controls="tabpanel-1" />
-                                  <Tab label="Pelanggan" id="tab-2" aria-controls="tabpanel-2" />
-                                  <Tab label="Kategori" id="tab-3" aria-controls="tabpanel-3" />
-                                  <Tab label="Satuan" id="tab-4" aria-controls="tabpanel-4" />
-                                </Tabs>
-                              </AppBar>
-                              <SwipeableViews index={value} onChangeIndex={this.handleChangeIndex}>
-                                <div id="tabpanel-0" aria-labelledby="tab-0" value={value}  hidden={value !== 0} index={0}  >
-                                  <DataTable dataState={this.props.dataState.dataConfig} />
-                                </div>
-                                <div id="tabpanel-1" aria-labelledby="tab-1"  value={value} hidden={value !== 1} index={1} >
-                                  {/* <DataTable dataConfig={this.props.data} /> */}
-                                </div>
-                                <div id="tabpanel-2" aria-labelledby="tab-2"  value={value} hidden={value !== 2} index={2} >
-                                  z
-                                </div>
-                                <div id="tabpanel-3" aria-labelledby="tab-3"  value={value} hidden={value !== 3} index={3} >
-                                  a
-                                </div>
-                                <div id="tabpanel-4" aria-labelledby="tab-4"  value={value} hidden={value !== 4} index={4} >
-                                  b
-                                </div>
-                              </SwipeableViews>
-                          </div>
-                            
-                          {/* </div>
-                      </div>
-                  </div> 
-               </div>
-             </div>*/}
+          <div  className="tab-data">
+              <AppBar position="static" color="default">
+                <Tabs value={value} onChange={this.handleChange} variant="fullWidth" >
+                  <Tab label="Barang" id="tab-0" aria-controls="tabpanel-0" />
+                  <Tab label="Supplier" id="tab-1" aria-controls="tabpanel-1" />
+                  <Tab label="Pelanggan" id="tab-2" aria-controls="tabpanel-2" />
+                  <Tab label="Kategori" id="tab-3" aria-controls="tabpanel-3" />
+                  <Tab label="Satuan" id="tab-4" aria-controls="tabpanel-4" />
+                </Tabs>
+              </AppBar>
+              <SwipeableViews index={value} onChangeIndex={this.handleChangeIndex}>
+                <div id="tabpanel-0" aria-labelledby="tab-0" value={value}  hidden={value !== 0} index={0}  >
+                  <DataTable title={'Data Barang'} columns={columns} dataSource={dataSource} />
+                </div>
+                <div id="tabpanel-1" aria-labelledby="tab-1"  value={value} hidden={value !== 1} index={1} >
+                  {/* <DataTable dataConfig={this.props.data} /> */}
+                </div>
+                <div id="tabpanel-2" aria-labelledby="tab-2"  value={value} hidden={value !== 2} index={2} >
+                  z
+                </div>
+                <div id="tabpanel-3" aria-labelledby="tab-3"  value={value} hidden={value !== 3} index={3} >
+                  a
+                </div>
+                <div id="tabpanel-4" aria-labelledby="tab-4"  value={value} hidden={value !== 4} index={4} >
+                  b
+                </div>
+              </SwipeableViews>
+          </div>
         </div>
       </div>
       </React.Fragment>
@@ -84,7 +73,7 @@ export class Data extends Component {
   }
 }
 
-const propsState = state => ({ dataState : state.dataReducer });
+const propsState = state => ({ dt : state });
 
 const propsAction = dispatch => ({
  setTabActive: tab => dispatch(changeTabIndex(tab))

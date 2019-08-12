@@ -34,8 +34,8 @@ class DataTableHead extends React.Component {
 
     render() {
       const { classes } = this.props;
-      const { order, orderBy, selected, columns, data} = this.props.dataState;
-      const rowCount = data.length;
+      const { order, orderBy, selected, columns, dataSource } = this.props.dataState;
+      const rowCount = dataSource.length;
       return (
         <TableHead >
           <TableRow > 

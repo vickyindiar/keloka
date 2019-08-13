@@ -24,7 +24,7 @@ function desc(a, b, orderBy) {
 }
 
 function stableSort(array, cmp) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
+  const stabilizedThis = Object.values(array).map((el, index) => [el, index]);
   stabilizedThis.sort((a, b) => {
     const order = cmp(a[0], b[0]);
     if (order !== 0) return order;
@@ -59,7 +59,7 @@ class DataTable extends React.Component {
     this.state = {
       title: this.props.title,
       dataSource: this.props.dataSource,
-      columns: this.props.columns,
+      columns: !isEmpty(this.props.columns) ? this.props.columns : [],
       order: "asc",
       orderBy: "",
       selected: [],
@@ -142,11 +142,11 @@ class DataTable extends React.Component {
 
 
   render() {
-    const { classes,  } = this.props;
-    const { rowsPerPage, page, order, orderBy, dataSource, columns } = this.state;
-    const emptyRows = rowsPerPage - Math.min(rowsPerPage, dataSource.length - page * rowsPerPage);
-   // const sortingData = stableSort(dataSource, getSorting(order, orderBy));
-   // const slicingData = sortingData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+    const { classes, dataSource, columns } = this.props;
+    const { rowsPerPage, page, order, orderBy } = this.state;
+    const emptyRows = rowsPerPage - Math.min(rowsPerPage, Object.values(dataSource).length - page * rowsPerPage);
+    const sortingData = stableSort(dataSource, getSorting(order, orderBy));
+    const slicingData = sortingData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
     return (
       <Paper className={classes.root}>
         <DataTableTools
@@ -163,55 +163,52 @@ class DataTable extends React.Component {
               onSelectAllClick={this.handleSelectAllClick}
               onRequestSort={this.handleRequestSort}
             />
-            {/* <TableBody>
+            <TableBody>
               {slicingData.map(n => {
                 const isSelected = this.isSelected(n.id);
                 return (
-                  <TableRow
-                    hover
-                    role="checkbox"
-                    key={n.id}
-                    tabIndex={-1}
-                    onClick={event => this.handleClick(event, n.id)}
-                    aria-checked={isSelected}
-                    selected={isSelected}
-                  >
+                  <TableRow hover role="checkbox" key={n.id} tabIndex={-1} onClick={event => this.handleClick(event, n.id)} aria-checked={isSelected} selected={isSelected} >
                     <TableCell padding="checkbox">
-                      <Checkbox checked={isSelected} />
+                       <Checkbox checked={isSelected} />
                     </TableCell>
-                    {columns.map((col, index) => {
-                      if (index === 0) {
-                        return (
-                          <TableCell component="th" scope="row" padding="none">
-                            {col[index]}
-                          </TableCell>
-                        );
-                      } else {
-                        return <TableCell align="right">{n[index]}</TableCell>;
-                      }
+                    {Object.values(columns).map((col, index) => {
+                       return <TableCell align="center" key={col.id+index}>  {
+                         typeof(n[col.field]) === 'object' && n[col.field] !== null ? n[col.field].name : n[col.field]
+                        }
+                        </TableCell>;
+
+                      // if (index === 0) {
+                      //   return (
+                      //     <TableCell component="th" scope="row" padding="none" key={index}>
+                      //       {n[col.field]}
+                      //     </TableCell>
+                      //   );
+                      // } else {
+                      //   return <TableCell align="right" key={index}>{n[col.field]}</TableCell>;
+                      // }
                     })}
                   </TableRow>
                 );
               })}
-              {emptyRows > 0 && (
+              {/* {emptyRows > 0 && (
                 <TableRow style={{ height: 49 * emptyRows }}>
                   <TableCell colSpan={6} />
                 </TableRow>
-              )}
-            </TableBody> */}
+              )} */}
+            </TableBody>
           </Table>
         </div>
-        {/* <TablePagination
+        <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={dataSource.length}
+          count={Object.values(dataSource).length}
           rowsPerPage={rowsPerPage}
           page={page}
           backIconButtonProps={{ "aria-label": "Previous Page" }}
           nextIconButtonProps={{ "aria-label": "Next Page" }}
           onChangePage={this.handleChangePage}
           onChangeRowsPerPage={this.handleChangeRowsPerPage}
-        /> */}
+        />
       </Paper>
     );
   }

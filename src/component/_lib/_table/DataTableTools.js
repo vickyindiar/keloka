@@ -87,7 +87,7 @@ class DataTableTools extends React.Component {
   };
   render() {
     const { classes } = this.props;
-    const { selected, title, showFilter } = this.props.dataConfig;
+    const { selected, title, showFilter } = this.props.dataState;
 
     const showFilterSearch = showFilter ? (
       <div className={classes.search}>

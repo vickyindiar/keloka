@@ -57,9 +57,9 @@ class DataTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      title: '',
-      dataSource: [],
-      columns: [],
+      title: this.props.title,
+      dataSource: this.props.dataSource,
+      columns: this.props.columns,
       order: "asc",
       orderBy: "",
       selected: [],
@@ -140,34 +140,30 @@ class DataTable extends React.Component {
 
   isSelected = id => this.state.selected.indexOf(id) !== -1;
 
-  componentDidMount(){
-    // if(!this.state.isSet){
-    //   this.setState({dataSource: this.props.dataSource, columns: this.props.columns, isSet: true});
-    // }
-    // this.setState({ dataSource: this.props.dataSource, columns: this.props.columns });
-  }
 
   render() {
-    const { classes, dataSource, columns } = this.props;
-    const { rowsPerPage, page, order, orderBy } = this.state;
+    const { classes,  } = this.props;
+    const { rowsPerPage, page, order, orderBy, dataSource, columns } = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, dataSource.length - page * rowsPerPage);
-    const sortingData = stableSort(dataSource, getSorting(order, orderBy));
-    const slicingData = sortingData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+   // const sortingData = stableSort(dataSource, getSorting(order, orderBy));
+   // const slicingData = sortingData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
     return (
       <Paper className={classes.root}>
         <DataTableTools
-          dataConfig={this.state}
+          dataState={this.state}
           onFilterChanged={this.handleFilterChange}
         />
 
         <div className={classes.tableWrapper}>
           <Table className={classes.table} aria-labelledby="tableTitle">
             <DataTableHead
-              dataState={this.state}
+              dataConfig={this.state}
+              columns={columns}
+              dataSource={dataSource}
               onSelectAllClick={this.handleSelectAllClick}
               onRequestSort={this.handleRequestSort}
             />
-            <TableBody>
+            {/* <TableBody>
               {slicingData.map(n => {
                 const isSelected = this.isSelected(n.id);
                 return (
@@ -202,10 +198,10 @@ class DataTable extends React.Component {
                   <TableCell colSpan={6} />
                 </TableRow>
               )}
-            </TableBody>
+            </TableBody> */}
           </Table>
         </div>
-        <TablePagination
+        {/* <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
           count={dataSource.length}
@@ -215,7 +211,7 @@ class DataTable extends React.Component {
           nextIconButtonProps={{ "aria-label": "Next Page" }}
           onChangePage={this.handleChangePage}
           onChangeRowsPerPage={this.handleChangeRowsPerPage}
-        />
+        /> */}
       </Paper>
     );
   }

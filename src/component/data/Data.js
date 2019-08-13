@@ -15,7 +15,6 @@ export class Data extends Component {
       this.state = {
         value: 0,
       };
-
     }
 
     handleChange = (event, newValue) => {

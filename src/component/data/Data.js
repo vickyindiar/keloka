@@ -17,22 +17,36 @@ export class Data extends Component {
       };
     }
 
-    handleChange = (event, newValue) => {
-      this.setState({ value: newValue });
-    };
-
-    handleChangeIndex = index => {
-      this.setState({ value: index }, this.props.setTabActive(index));
-    };
-
     componentDidMount = () =>{
       if(this.props.dt.dataReducer.tabActive === -1){
         this.props.setTabActive(0);
       }
     }
+
+    handleChange = (event, newValue) => {
+      this.setState({ value: newValue }, this.props.setTabActive(newValue));
+    };
+
+    handleChangeIndex = index => {
+      this.setState({ value: index });
+    };
+
+    createTabList = (value, columns, dataSource, isLoading) => {
+      let title = ['Barang', 'Supplier', 'Pelanggan', 'Merk', 'Kategori', 'Satuan']
+      let tab = [];
+      for (let index = 0; index < 6; index++) {
+        tab.push( 
+        <div id={`tabpanel-${index}`} aria-labelledby={`tab-${index}`} value={value}  hidden={value !== index} index={index} key={index}  >
+          <DataTable title={`Data ${title[index]}`} columns={columns} dataSource={dataSource} isLoading={isLoading} key={index}  />
+        </div>
+        );
+     }
+      return tab;
+    }
+
     render() {
       const { value } = this.state;
-      const { columns, dataSource } = this.props.dt.dataReducer;
+      const { columns, dataSource, isLoading } = this.props.dt.dataReducer;
     return (
       <React.Fragment>
         <div className="content-container data">
@@ -44,26 +58,15 @@ export class Data extends Component {
                   <Tab label="Barang" id="tab-0" aria-controls="tabpanel-0" />
                   <Tab label="Supplier" id="tab-1" aria-controls="tabpanel-1" />
                   <Tab label="Pelanggan" id="tab-2" aria-controls="tabpanel-2" />
-                  <Tab label="Kategori" id="tab-3" aria-controls="tabpanel-3" />
-                  <Tab label="Satuan" id="tab-4" aria-controls="tabpanel-4" />
+                  <Tab label="Merk" id="tab-3" aria-controls="tabpanel-3" />
+                  <Tab label="Kategori" id="tab-4" aria-controls="tabpanel-4" />
+                  <Tab label="Satuan" id="tab-5" aria-controls="tabpanel-5" />
                 </Tabs>
               </AppBar>
               <SwipeableViews index={value} onChangeIndex={this.handleChangeIndex}>
-                <div id="tabpanel-0" aria-labelledby="tab-0" value={value}  hidden={value !== 0} index={0}  >
-                  <DataTable title={'Data Barang'} columns={columns} dataSource={dataSource} />
-                </div>
-                <div id="tabpanel-1" aria-labelledby="tab-1"  value={value} hidden={value !== 1} index={1} >
-                  {/* <DataTable dataConfig={this.props.data} /> */}
-                </div>
-                <div id="tabpanel-2" aria-labelledby="tab-2"  value={value} hidden={value !== 2} index={2} >
-                  z
-                </div>
-                <div id="tabpanel-3" aria-labelledby="tab-3"  value={value} hidden={value !== 3} index={3} >
-                  a
-                </div>
-                <div id="tabpanel-4" aria-labelledby="tab-4"  value={value} hidden={value !== 4} index={4} >
-                  b
-                </div>
+                {
+                    this.createTabList(value, columns, dataSource, isLoading)
+                }
               </SwipeableViews>
           </div>
         </div>

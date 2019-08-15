@@ -12,6 +12,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import DataTableTools from "./DataTableTools";
 import DataTableHead from "./DataTableHead";
 import isEmpty from '../../../services/helper/isEmpty';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 function desc(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -50,6 +51,9 @@ const styles = theme => ({
   },
   tableWrapper: {
     overflowX: "auto"
+  },
+  loading:{
+    margin: "0 auto"
   }
 });
 
@@ -64,10 +68,10 @@ class DataTable extends React.Component {
       orderBy: "",
       selected: [],
       page: 0,
-      rowsPerPage: 5,
+      rowsPerPage: 7,
       selectTable: false,
       showFilter: true,
-      //isSet: false
+      isLoading: this.props.isLoading
     };
   }
 
@@ -137,64 +141,50 @@ class DataTable extends React.Component {
     }
     this.setState({ data: filtered });
   };
-
   isSelected = id => this.state.selected.indexOf(id) !== -1;
-
-
+  
   render() {
-    const { classes, dataSource, columns } = this.props;
+    const { classes, dataSource, columns, isLoading } = this.props;
     const { rowsPerPage, page, order, orderBy } = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, Object.values(dataSource).length - page * rowsPerPage);
     const sortingData = stableSort(dataSource, getSorting(order, orderBy));
     const slicingData = sortingData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
     return (
       <Paper className={classes.root}>
-        <DataTableTools
-          dataState={this.state}
-          onFilterChanged={this.handleFilterChange}
-        />
-
+        <DataTableTools dataState={this.state}  onFilterChanged={this.handleFilterChange} />
         <div className={classes.tableWrapper}>
           <Table className={classes.table} aria-labelledby="tableTitle">
-            <DataTableHead
-              dataConfig={this.state}
-              columns={columns}
-              dataSource={dataSource}
-              onSelectAllClick={this.handleSelectAllClick}
-              onRequestSort={this.handleRequestSort}
-            />
+            <DataTableHead  dataConfig={this.state} columns={columns} dataSource={dataSource} onSelectAllClick={this.handleSelectAllClick} onRequestSort={this.handleRequestSort} />
             <TableBody>
-              {slicingData.map(n => {
+              {
+                slicingData.map((n, i) => {
                 const isSelected = this.isSelected(n.id);
                 return (
                   <TableRow hover role="checkbox" key={n.id} tabIndex={-1} onClick={event => this.handleClick(event, n.id)} aria-checked={isSelected} selected={isSelected} >
-                    <TableCell padding="checkbox">
+                    <TableCell padding="checkbox" key={`checkbox-row-${i}`}>
                        <Checkbox checked={isSelected} />
                     </TableCell>
-                    {Object.values(columns).map((col, index) => {
-                       return <TableCell align="center" key={col.id+index}>  {
-                         typeof(n[col.field]) === 'object' && n[col.field] !== null ? n[col.field].name : n[col.field]
-                        }
-                        </TableCell>;
-
-                      // if (index === 0) {
-                      //   return (
-                      //     <TableCell component="th" scope="row" padding="none" key={index}>
-                      //       {n[col.field]}
-                      //     </TableCell>
-                      //   );
-                      // } else {
-                      //   return <TableCell align="right" key={index}>{n[col.field]}</TableCell>;
-                      // }
-                    })}
+                    {
+                      Object.values(columns).map((col, index) => {
+                       return <TableCell align="center" key={col.id+index}> 
+                                {
+                                 typeof(n[col.field]) === 'object' && n[col.field] !== null ? n[col.field].name : n[col.field]
+                                }
+                              </TableCell>;
+                      })
+                    }
                   </TableRow>
                 );
-              })}
-              {/* {emptyRows > 0 && (
+              })
+              }
+              {
+                emptyRows > 0 && (
                 <TableRow style={{ height: 49 * emptyRows }}>
-                  <TableCell colSpan={6} />
+                  {/* <TableCell colSpan={6} /> */}
+                  { isLoading && <CircularProgress /> }
                 </TableRow>
-              )} */}
+                )
+              }
             </TableBody>
           </Table>
         </div>

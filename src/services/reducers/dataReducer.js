@@ -3,7 +3,8 @@ import { SET_TAB } from "../types/dataType";
 const initialState = {
     tabActive: -1,
     columns: [],
-    dataSource: []
+    dataSource: [],
+    isLoading: true
  };
   export default function(state = initialState, action) {
     switch (action.type) {
@@ -11,8 +12,9 @@ const initialState = {
         return {
           ...state,
           tabActive: action.payload.tabActive,
-          columns: {...state.columns, ...action.payload.columns },
-          dataSource: {...state.dataSource, ...action.payload.dataSource }
+          columns: {...action.payload.columns },
+          dataSource: {...action.payload.dataSource },
+          isLoading: action.payload.isLoading
         };
       default:
         return state;

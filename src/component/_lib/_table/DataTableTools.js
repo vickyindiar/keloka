@@ -37,7 +37,7 @@ const toolbarStyles = theme => ({
   },
   search: {
     position: "relative",
-    borderRadius: "20px",
+    borderRadius: "15px",
     backgroundColor: fade(theme.palette.common.black, 0.15),
     "&:hover": {
       backgroundColor: fade(theme.palette.common.black, 0.25)

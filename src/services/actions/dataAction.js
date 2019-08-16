@@ -16,11 +16,21 @@ export const changeTabIndex = tab => dispatch => {
     if(tab === 0) { 
       url = 'http://127.0.0.1:8000/api/product'; 
       columns = [
-        { id: "name", field: "name", caption: "Name", align: "center", disablePadding: true },
-        { id: "brand", field: "brand", caption: "Brand", align: "center", disablePadding: false },
-        { id: "price", field: "price", caption: "Price", align: "center", disablePadding: false },
-        { id: "stock", field: "stock", caption: "Stock", align: "center", disablePadding: false },
-        { id: "supplier", field: "supplier", caption: "Supplier", align: "center", disablePadding: false }
+        { id: "name", field: "name", caption: "NAMA", align: "center", disablePadding: true },
+        { id: "brand", field: "brand", caption: "MERK", align: "center", disablePadding: false },
+
+        { id: "bprice", field: "bprice", caption: "BELI", align: "center", disablePadding: false },
+        { id: "sprice", field: "sprice", caption: "JUAL", align: "center", disablePadding: false },
+
+        { id: "stock", field: "stock", caption: "STOCK", align: "center", disablePadding: false },
+        { id: "qtytype", field: "qtytype", caption: "SATUAN", align: "center", disablePadding: false },
+
+        { id: "category", field: "category", caption: "KATEGORI", align: "center", disablePadding: false },
+        { id: "color", field: "color", caption: "WARNA", align: "center", disablePadding: false },
+        { id: "supplier", field: "supplier", caption: "PEMASOK", align: "center", disablePadding: false },
+        { id: "image", field: "image", caption: "GAMBAR", align: "center", disablePadding: false },
+        { id: "desc", field: "desc", caption: "KET.", align: "center", disablePadding: false },
+
       ];
     } 
     axios.get(url, config).then(res =>{

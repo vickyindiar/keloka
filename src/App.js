@@ -44,12 +44,12 @@ class App extends Component {
             <section className="cd-section cd-selected">
               <PrivateRoute exact path='/' authenticed={isAuthenticated} component={Home}/>
               <Route path='/login' component={Auth}></Route>
-              <Route path='/data' component={Data}></Route>
-              <Route path='/report' component={Report}></Route>
-              <Route path='/sales' component={Sales}></Route>
-              <Route path='/purchase' component={Purchase}></Route>
-              <Route path='/return' component={Return}></Route>
-              <Route path='/setting' component={Setting}></Route>
+              <PrivateRoute authenticed={isAuthenticated} path='/data' component={Data}></PrivateRoute>
+              <PrivateRoute authenticed={isAuthenticated} path='/report' component={Report}></PrivateRoute>
+              <PrivateRoute authenticed={isAuthenticated} path='/sales' component={Sales}></PrivateRoute>
+              <PrivateRoute authenticed={isAuthenticated} path='/purchase' component={Purchase}></PrivateRoute>
+              <PrivateRoute authenticed={isAuthenticated} path='/return' component={Return}></PrivateRoute>
+              <PrivateRoute authenticed={isAuthenticated} path='/setting' component={Setting}></PrivateRoute>
             </section>
           </main>
       </div>

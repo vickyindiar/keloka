@@ -99,33 +99,12 @@ export const changeTabIndex = tab => dispatch => {
         },
      }
     if(tab === 0) { 
-<<<<<<< HEAD
-      url = 'http://127.0.0.1:8000/api/product'; 
-      columns = [
-        { id: "name", field: "name", caption: "NAMA", align: "center", disablePadding: true },
-        { id: "brand", field: "brand", caption: "MERK", align: "center", disablePadding: false },
-
-        { id: "bprice", field: "bprice", caption: "BELI", align: "center", disablePadding: false },
-        { id: "sprice", field: "sprice", caption: "JUAL", align: "center", disablePadding: false },
-
-        { id: "stock", field: "stock", caption: "STOCK", align: "center", disablePadding: false },
-        { id: "qtytype", field: "qtytype", caption: "SATUAN", align: "center", disablePadding: false },
-
-        { id: "category", field: "category", caption: "KATEGORI", align: "center", disablePadding: false },
-        { id: "color", field: "color", caption: "WARNA", align: "center", disablePadding: false },
-        { id: "supplier", field: "supplier", caption: "PEMASOK", align: "center", disablePadding: false },
-        { id: "image", field: "image", caption: "GAMBAR", align: "center", disablePadding: false },
-        { id: "desc", field: "desc", caption: "KET.", align: "center", disablePadding: false },
-
-      ];
-=======
        url  = productsTable.url;
        columns = productsTable.columns;
     } 
     else if(tab === 1) { 
       url  = suppliersTable.url;
       columns = suppliersTable.columns;
->>>>>>> 4dc1a10ff713194a5489b742b8b232b5f8380a71
     } 
     else if(tab === 2){
        url  = customersTable.url;

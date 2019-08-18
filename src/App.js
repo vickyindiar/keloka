@@ -35,10 +35,10 @@ class App extends Component {
     }
   }
   render() {
-    const { isAuthenticated, loading } = this.props.authState.authReducer;
+    const { isAuthenticated, spinner } = this.props.authState;
     return (
       <div className="App">
-          { loading && <Spinner /> }
+          { spinner && <Spinner /> }
           { isAuthenticated && <Nav /> }
           <main>
             <section className="cd-section cd-selected">
@@ -57,7 +57,7 @@ class App extends Component {
   }
 }
 const mapStateToProps = (state) => ({
-  authState : state
+  authState : state.authReducer
 });
 const mapDispatchToProps = (dispatch) => ({
   setAuth: (token, history) => dispatch(setAuthenticatedUser(token, history)),

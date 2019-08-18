@@ -9,7 +9,7 @@ import { fade } from "@material-ui/core/styles/colorManipulator";
 import SearchIcon from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
 import M from "materialize-css";
-// import $ from 'jquery';
+//import $ from 'jquery';
 
 const toolbarStyles = theme => ({
   root: { paddingRight: theme.spacing.unit },
@@ -24,7 +24,7 @@ const toolbarStyles = theme => ({
           backgroundColor: theme.palette.secondary.dark
         },
   spacer: {
-    flex: "1 1 200px"
+    flex: "1 1 50%"
   },
   actions: {
     color: theme.palette.text.secondary
@@ -37,7 +37,7 @@ const toolbarStyles = theme => ({
   },
   search: {
     position: "relative",
-    borderRadius: "15px",
+    borderRadius: "20px",
     backgroundColor: fade(theme.palette.common.black, 0.15),
     "&:hover": {
       backgroundColor: fade(theme.palette.common.black, 0.25)
@@ -45,7 +45,7 @@ const toolbarStyles = theme => ({
     marginLeft: 0,
     width: "100%",
     [theme.breakpoints.up("sm")]: {
-      //marginLeft: theme.spacing(1),
+    //  marginLeft: theme.spacing(1),
       width: "auto"
     }
   },
@@ -113,7 +113,7 @@ class DataTableTools extends React.Component {
 
     document.addEventListener("DOMContentLoaded", function() {
       var elems = document.querySelectorAll(".tooltipped");
-      var instances = M.Tooltip.init(elems);
+   //   var instances = M.Tooltip.init(elems);
     });
 
     return (

@@ -1,4 +1,4 @@
-import { SET_AUTH, ERR_AUTH } from '../types/authType';
+import { SET_AUTH, ERR_AUTH, TOOGLE_LOADING } from '../types/authType';
 import setAuthToken from '../helper/setAuthToken';
 import axios from 'axios';
 
@@ -29,9 +29,10 @@ export const register = (data, history) => dispatch => {
         if(res.data.status){
             let token = `Bearer ${res.data.data.token}`;
             localStorage.setItem('jwt', token);
-            setAuthToken(token);
+            setAuthToken(token);    
+            dispatch({ type: TOOGLE_LOADING, payload: false});
             dispatch(setAuthentication(res.data.data.user));
-            history.push('/');
+            history.push('/'); 
         }
         else{
             dispatch({ type: ERR_AUTH, payload: res.data.msg });
@@ -58,7 +59,8 @@ export const login = (data, history) => dispatch =>{
         if(res.data.status){
             let token = `Bearer ${res.data.data.token}`;
             localStorage.setItem('jwt', token);
-            setAuthToken(token);
+            setAuthToken(token);      
+            dispatch({type: TOOGLE_LOADING, payload: false});
             dispatch(setAuthentication(res.data.data.user));
             history.push('/');
         }

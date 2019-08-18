@@ -1,0 +1,72 @@
+
+// --- Customize Here ---
+$duration: 512ms;
+$dot-color: black;
+$direction: normal;
+$ease-type: ease;
+$dot-growth: 0.3rem;
+$dot-initial-size: 1rem;
+$dot-distance-between: 1.5rem;
+$shift-y-anchor: -0.5; // -1 through 1
+// ----------------------
+
+$delay-1: $duration * 0.333333;
+$delay-2: $duration * 0.666667;
+$delay-3: $duration;
+
+.loading {
+  animation: expand $duration infinite $delay-2 $ease-type $direction;
+  background-color: $dot-color;
+  border-radius: 50%;
+  display: block;
+  font-size: 0;
+  height: $dot-initial-size;
+  margin: 0 $dot-distance-between;
+  overflow: visible;
+  position: relative;
+  width: $dot-initial-size;
+
+  &:after, 
+  &:before {
+    animation: expand $duration infinite $ease-type $direction;
+    background-color: $dot-color;
+    border-radius: 50%;
+    content: "";
+    height: $dot-initial-size;
+    position: absolute;
+    width: $dot-initial-size;
+  }
+  &:before {
+    animation-delay: $delay-1;
+    right: $dot-distance-between;
+  }
+  &:after {
+    animation-delay: $delay-3;
+    left: $dot-distance-between;
+  }
+}
+
+@keyframes expand {
+  0% {
+    box-shadow: 0 0 0 0 $dot-color, inset 0 0 0 0.4rem $dot-color;
+  }
+  25% {
+    box-shadow: 0 ($dot-growth * $shift-y-anchor) 0 $dot-growth $dot-color, inset 0 0 0 0.4rem  $dot-color;
+  }
+  100% {
+    box-shadow: 0 0 0 0 $dot-color, inset 0 0 0 0.4rem  $dot-color;
+  }
+}
+
+.positioning-loading {
+  .data-table{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    bottom: 0;
+    right: 0;
+  }
+  .auth{
+    margin-left: 7vw;
+  }
+}

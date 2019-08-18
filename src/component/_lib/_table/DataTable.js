@@ -13,6 +13,7 @@ import DataTableTools from "./DataTableTools";
 import DataTableHead from "./DataTableHead";
 import isEmpty from '../../../services/helper/isEmpty';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import LoadingDot from "../_spinner/LoadingDot";
 
 function desc(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -68,11 +69,7 @@ class DataTable extends React.Component {
       orderBy: "",
       selected: [],
       page: 0,
-<<<<<<< HEAD
-      rowsPerPage: 10,
-=======
       rowsPerPage: 7,
->>>>>>> 4dc1a10ff713194a5489b742b8b232b5f8380a71
       selectTable: false,
       showFilter: true,
       isLoading: this.props.isLoading
@@ -185,7 +182,7 @@ class DataTable extends React.Component {
                 emptyRows > 0 && (
                 <TableRow style={{ height: 49 * emptyRows }}>
                   {/* <TableCell colSpan={6} /> */}
-                  { isLoading && <CircularProgress /> }
+                  { isLoading && <LoadingDot nclass="data-table"/> }
                 </TableRow>
                 )
               }

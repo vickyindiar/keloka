@@ -1,10 +1,11 @@
-import { SET_AUTH, ERR_AUTH, STOP_SPNNER } from '../types/authType';
+import { SET_AUTH, ERR_AUTH, TOOGLE_LOADING, STOP_SPNNER } from '../types/authType';
 import isEmpty from '../helper/isEmpty';
 
 const initialState = {
     isAuthenticated : false,
     errAuthMessage:'',
-    loading: true,
+    loading: false,
+    spinner: true,
     user: ''
 };
 export default function(state = initialState, action){
@@ -14,19 +15,24 @@ export default function(state = initialState, action){
                 ...state,
                 isAuthenticated : !isEmpty(action.payload),
                 user: action.payload,
-                loading: false
+                spinner: false,
             }
         case ERR_AUTH:
             return {
                 ...state, 
                 isAuthenticated: false,
                 errAuthMessage: action.payload,
-                loading: false
+                spinner: false
+            }
+        case TOOGLE_LOADING: 
+            return{
+                ...state,
+                loading: action.payload
             }
         case STOP_SPNNER:
             return {
                 ...state,
-                loading: false
+                spinner: false
             }
         default:
             return state;

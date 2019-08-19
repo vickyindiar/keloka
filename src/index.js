@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import 'materialize-css/dist/css/materialize.min.css';
 import './styles/sass/reset.scss';
 import './styles/sass/index.scss';
-import { ThemeProvider } from '@material-ui/styles';
 
 import App from './App';
 import * as serviceWorker from './serviceWorker';
@@ -18,11 +17,9 @@ const theme = {
   };
 ReactDOM.render(
     <Provider store = {store}>
-        <ThemeProvider theme={theme}>
             <Router>
                 <App />
             </Router>
-        </ThemeProvider>
     </Provider>
 ,
 document.getElementById('root'));

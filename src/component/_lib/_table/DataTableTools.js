@@ -24,7 +24,7 @@ const toolbarStyles = theme => ({
           backgroundColor: theme.palette.secondary.dark
         },
   spacer: {
-    flex: "1 1 50%"
+    flex: "1 1 200px"
   },
   actions: {
     color: theme.palette.text.secondary
@@ -45,7 +45,7 @@ const toolbarStyles = theme => ({
     marginLeft: 0,
     width: "100%",
     [theme.breakpoints.up("sm")]: {
-    //  marginLeft: theme.spacing(1),
+      marginLeft: theme.spacing(1),
       width: "auto"
     }
   },

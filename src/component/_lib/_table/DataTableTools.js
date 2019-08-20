@@ -9,10 +9,10 @@ import { fade } from "@material-ui/core/styles/colorManipulator";
 import SearchIcon from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
 import M from "materialize-css";
-//import $ from 'jquery';
+import $ from 'jquery';
 
 const toolbarStyles = theme => ({
-  root: { paddingRight: theme.spacing.unit },
+  root: { paddingRight: theme.spacing() },
   highlight:
     theme.palette.type === "light"
       ? {
@@ -50,13 +50,14 @@ const toolbarStyles = theme => ({
     }
   },
   searchIcon: {
-    width: theme.spacing.unit * 9,
+    width: theme.spacing(9),
     height: "100%",
     position: "absolute",
     pointerEvents: "none",
     display: "flex",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    border: "1px red solid"
   },
   visibleColumn: {
     // borderRadius:'20px',
@@ -87,9 +88,9 @@ class DataTableTools extends React.Component {
   };
   render() {
     const { classes } = this.props;
-    const { selected, title, showFilter } = this.props.dataState;
+    const { selected, title } = this.props.dataState;
 
-    const showFilterSearch = showFilter ? (
+    const showFilterSearch = (
       <div className={classes.search}>
         <div className={classes.searchIcon}>
           <SearchIcon />
@@ -107,9 +108,7 @@ class DataTableTools extends React.Component {
         />
         <label htmlFor="search-input" />
       </div>
-    ) : (
-      <div />
-    );
+    ); 
 
     document.addEventListener("DOMContentLoaded", function() {
       var elems = document.querySelectorAll(".tooltipped");

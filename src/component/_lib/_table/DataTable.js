@@ -63,7 +63,7 @@ class DataTable extends React.Component {
     super(props);
     this.state = {
       title: this.props.title,
-      dataSource: this.props.dataSource,
+      dataSource: [],
       columns: this.props.columns,
       order: "asc",
       orderBy: "",
@@ -124,14 +124,38 @@ class DataTable extends React.Component {
     this.setState({ rowsPerPage: event.target.value });
   };
 
-  handleFilterChange = (value, visibleColumn) => {
+  shouldComponentUpdate(nextProps, nextState){
+    debugger;
+    let result = false;
+    if(JSON.stringify(this.state.dataSource) !==  JSON.stringify(nextProps.dataSource)){
+      this.setState({dataSource: nextProps.dataSource });
+      result = true;
+    }
+    return result;
+  }
+
+  handleFilterChange = (value) => {
     let filtered = [];
-    let { data } = this.props.dataConfig;
-    if (data.length > 0) {
-      filtered = data.filter(e => {
+    let cols = [];
+    let { dataSource, columns } = this.props;
+
+    for(var prop in columns){ 
+      cols.push(columns[prop].field);
+    }
+
+    if ( Object.values(dataSource).length > 0) {
+      filtered = Object.values(dataSource).filter(e => {
         return Object.keys(e).some(s => {
-          if (visibleColumn.includes(s)) {
-            return e[s].toString().includes(value.toString());
+          if (cols.includes(s)) {
+            if(e[s] === undefined || e[s] === null){
+                return false;
+            }
+            else if(typeof(e[s]) === 'object' ){
+                return e[s].name.toString().includes(value.toString());
+            }
+            else{
+                return e[s].toString().includes(value.toString());
+            }
           } else {
             return false;
           }
@@ -140,13 +164,13 @@ class DataTable extends React.Component {
     } else {
       filtered = [];
     }
-    this.setState({ data: filtered });
+    this.setState({ dataSource: filtered });
   };
   isSelected = id => this.state.selected.indexOf(id) !== -1;
   
   render() {
-    const { classes, dataSource, columns, isLoading } = this.props;
-    const { rowsPerPage, page, order, orderBy } = this.state;
+    const { classes, isLoading } = this.props;
+    const { rowsPerPage, page, order, orderBy, dataSource, columns } = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, Object.values(dataSource).length - page * rowsPerPage);
     const sortingData = stableSort(dataSource, getSorting(order, orderBy));
     const slicingData = sortingData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);

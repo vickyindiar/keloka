@@ -42,7 +42,7 @@ const toolbarStyles = theme => ({
     "&:hover": {
       backgroundColor: fade(theme.palette.common.black, 0.25)
     },
-    marginLeft: 0,
+    marginLeft: theme.spacing(3),
     width: "100%",
     [theme.breakpoints.up("sm")]: {
       marginLeft: theme.spacing(1),
@@ -50,14 +50,13 @@ const toolbarStyles = theme => ({
     }
   },
   searchIcon: {
-    width: theme.spacing(9),
+    width: theme.spacing(6),
     height: "100%",
     position: "absolute",
     pointerEvents: "none",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    border: "1px red solid"
   },
   visibleColumn: {
     // borderRadius:'20px',
@@ -83,8 +82,7 @@ class DataTableTools extends React.Component {
 
   FilterChange = e => {
     this.setState({ valueSearch: e.target.value });
-    let visibleColumn = ["name", "calories", "fat", "carbs", "protein"];
-    this.props.onFilterChanged(e.target.value, visibleColumn);
+    this.props.onFilterChanged(e.target.value);
   };
   render() {
     const { classes } = this.props;

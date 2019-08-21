@@ -63,7 +63,7 @@ class DataTable extends React.Component {
     super(props);
     this.state = {
       title: this.props.title,
-      dataSource: [],
+      dataSource: this.props.dataSource,
       columns: this.props.columns,
       order: "asc",
       orderBy: "",
@@ -124,15 +124,14 @@ class DataTable extends React.Component {
     this.setState({ rowsPerPage: event.target.value });
   };
 
-  shouldComponentUpdate(nextProps, nextState){
-    debugger;
-    let result = false;
-    if(JSON.stringify(this.state.dataSource) !==  JSON.stringify(nextProps.dataSource)){
-      this.setState({dataSource: nextProps.dataSource });
-      result = true;
-    }
-    return result;
-  }
+  // shouldComponentUpdate(nextProps, nextState){
+  //   let result = false;
+  //   if(JSON.stringify(this.state.dataSource) !==  JSON.stringify(nextProps.dataSource)){
+  //     this.setState({dataSource: nextProps.dataSource });
+  //     result = true;
+  //   }
+  //   return result;
+  // }
 
   handleFilterChange = (value) => {
     let filtered = [];
@@ -169,8 +168,8 @@ class DataTable extends React.Component {
   isSelected = id => this.state.selected.indexOf(id) !== -1;
   
   render() {
-    const { classes, isLoading } = this.props;
-    const { rowsPerPage, page, order, orderBy, dataSource, columns } = this.state;
+    const { classes, isLoading, dataSource, columns  } = this.props;
+    const { rowsPerPage, page, order, orderBy } = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, Object.values(dataSource).length - page * rowsPerPage);
     const sortingData = stableSort(dataSource, getSorting(order, orderBy));
     const slicingData = sortingData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);

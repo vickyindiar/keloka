@@ -29,7 +29,8 @@ class DataTableHead extends React.Component {
     };
 
     selectAllHandler = (e) => {
-      this.props.onSelectAllClick(e);
+      alert('nyoh');
+      //this.props.onSelectAllClick(e);
     }
 
     render() {

@@ -27,7 +27,7 @@ class App extends Component {
     let token = localStorage.getItem('jwt');
     if(token){
       if(isEmpty(props.authState.user)){
-        props.setAuth(token, props.history);
+        props.setAuth(token, props.history, props.location);
       }
     }
     else{
@@ -42,14 +42,15 @@ class App extends Component {
           { isAuthenticated && <Nav /> }
           <main>
             <section className="cd-section cd-selected">
-              <PrivateRoute exact path='/' authenticed={isAuthenticated} component={Home}/>
+              <PrivateRoute exact path='/' authenticed={isAuthenticated} component={Home} />
+              <PrivateRoute exact authenticed={isAuthenticated} path='/data' component={Data} />
+              <PrivateRoute exact authenticed={isAuthenticated} path='/report' component={Report} />
+              <PrivateRoute exact authenticed={isAuthenticated} path='/sales' component={Sales} />
+              <PrivateRoute exact authenticed={isAuthenticated} path='/purchase' component={Purchase} />
+              <PrivateRoute exact authenticed={isAuthenticated} path='/return' component={Return} />
+              <PrivateRoute exact authenticed={isAuthenticated} path='/setting' component={Setting} />
               <Route path='/login' component={Auth}></Route>
-              <PrivateRoute authenticed={isAuthenticated} path='/data' component={Data}></PrivateRoute>
-              <PrivateRoute authenticed={isAuthenticated} path='/report' component={Report}></PrivateRoute>
-              <PrivateRoute authenticed={isAuthenticated} path='/sales' component={Sales}></PrivateRoute>
-              <PrivateRoute authenticed={isAuthenticated} path='/purchase' component={Purchase}></PrivateRoute>
-              <PrivateRoute authenticed={isAuthenticated} path='/return' component={Return}></PrivateRoute>
-              <PrivateRoute authenticed={isAuthenticated} path='/setting' component={Setting}></PrivateRoute>
+
             </section>
           </main>
       </div>
@@ -60,7 +61,7 @@ const mapStateToProps = (state) => ({
   authState : state.authReducer
 });
 const mapDispatchToProps = (dispatch) => ({
-  setAuth: (token, history) => dispatch(setAuthenticatedUser(token, history)),
+  setAuth: (token, history, location) => dispatch(setAuthenticatedUser(token, history, location)),
   stopSpinner: () => dispatch({type: STOP_SPNNER, payload: false})
 })
 

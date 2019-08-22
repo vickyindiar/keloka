@@ -99,7 +99,7 @@ export const logout = (history, token) => dispatch =>{
     }
 }
 
-export const setAuthenticatedUser = (token, history) => dispatch => {
+export const setAuthenticatedUser = (token, history, location) => dispatch => {
     let config = {
         headers: {
             Authorization: token
@@ -109,7 +109,7 @@ export const setAuthenticatedUser = (token, history) => dispatch => {
         .then(res =>{
             if(res.data.status === true){
                 dispatch(setAuthentication(res.data.data));
-                history.push('/');
+                history.push(location);
             }else{
                 dispatch({ type: ERR_AUTH, payload: res.data.status });
             }

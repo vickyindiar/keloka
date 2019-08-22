@@ -98,30 +98,12 @@ export const changeTabIndex = tab => dispatch => {
           Authorization: token
         },
      }
-    if(tab === 0) { 
-       url  = productsTable.url;
-       columns = productsTable.columns;
-    } 
-    else if(tab === 1) { 
-      url  = suppliersTable.url;
-      columns = suppliersTable.columns;
-    } 
-    else if(tab === 2){
-       url  = customersTable.url;
-       columns = customersTable.columns;
-    }
-    else if(tab === 3){
-     url  = brandsTable.url;
-     columns = brandsTable.columns;
-    }
-    else if(tab === 4){
-     url  = categoriesTable.url;
-     columns = categoriesTable.columns;
-    }
-    else if(tab === 5){
-     url  = qtytypesTable.url;
-     columns = qtytypesTable.columns;
-    }
+    if(tab === 0) {      url = productsTable.url; columns = productsTable.columns; } 
+    else if(tab === 1) { url = suppliersTable.url; columns = suppliersTable.columns; } 
+    else if(tab === 2) { url = customersTable.url; columns = customersTable.columns; }
+    else if(tab === 3) { url = brandsTable.url; columns = brandsTable.columns; }
+    else if(tab === 4) { url = categoriesTable.url; columns = categoriesTable.columns; }
+    else if(tab === 5) { url = qtytypesTable.url; columns = qtytypesTable.columns; }
 
     axios.get(url, config).then(res =>{
         if(res.status === 200){

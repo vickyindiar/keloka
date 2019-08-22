@@ -7,9 +7,6 @@ import Typography from "@material-ui/core/Typography";
 import { lighten } from "@material-ui/core/styles/colorManipulator";
 import { fade } from "@material-ui/core/styles/colorManipulator";
 import SearchIcon from "@material-ui/icons/Search";
-import ViewColumn from "@material-ui/icons/ViewColumn";
-import M from "materialize-css";
-import $ from 'jquery';
 
 const toolbarStyles = theme => ({
   root: { paddingRight: theme.spacing() },
@@ -109,8 +106,8 @@ class DataTableTools extends React.Component {
     ); 
 
     document.addEventListener("DOMContentLoaded", function() {
-      var elems = document.querySelectorAll(".tooltipped");
-   //   var instances = M.Tooltip.init(elems);
+      // var elems = document.querySelectorAll(".tooltipped");
+      // var instances = M.Tooltip.init(elems);
     });
 
     return (

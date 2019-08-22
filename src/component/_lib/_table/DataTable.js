@@ -11,8 +11,6 @@ import Paper from "@material-ui/core/Paper";
 import Checkbox from "@material-ui/core/Checkbox";
 import DataTableTools from "./DataTableTools";
 import DataTableHead from "./DataTableHead";
-import isEmpty from '../../../services/helper/isEmpty';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import LoadingDot from "../_spinner/LoadingDot";
 
 function desc(a, b, orderBy) {
@@ -63,8 +61,9 @@ class DataTable extends React.Component {
     super(props);
     this.state = {
       title: this.props.title,
-      dataSource: this.props.dataSource,
-      columns: this.props.columns,
+      prevDataSource: [],
+      dataSource: [],
+      columns: [],
       order: "asc",
       orderBy: "",
       selected: [],
@@ -72,7 +71,8 @@ class DataTable extends React.Component {
       rowsPerPage: 7,
       selectTable: false,
       showFilter: true,
-      isLoading: this.props.isLoading
+      isLoading: this.props.isLoading,
+      stae: false
     };
   }
 
@@ -88,8 +88,9 @@ class DataTable extends React.Component {
   };
 
   handleSelectAllClick = event => {
+    debugger;
     if (event.target.checked) {
-      this.setState(state => ({ selected: this.state.data.map(n => n.id) }));
+      this.setState(state => ({ selected: this.state.dataSource.map(n => n.id) }));
       return;
     }
     this.setState({ selected: [] });
@@ -124,14 +125,16 @@ class DataTable extends React.Component {
     this.setState({ rowsPerPage: event.target.value });
   };
 
-  // shouldComponentUpdate(nextProps, nextState){
-  //   let result = false;
-  //   if(JSON.stringify(this.state.dataSource) !==  JSON.stringify(nextProps.dataSource)){
-  //     this.setState({dataSource: nextProps.dataSource });
-  //     result = true;
-  //   }
-  //   return result;
-  // }
+  static getDerivedStateFromProps(nextProps, prevState){
+    if (JSON.stringify(nextProps.dataSource) !== JSON.stringify(prevState.prevDataSource)) {
+        return { 
+          prevDataSource: nextProps.dataSource,
+          dataSource: nextProps.dataSource, 
+          columns: nextProps.columns 
+        };
+    }
+    else return null; // Triggers no change in the state
+  }
 
   handleFilterChange = (value) => {
     let filtered = [];
@@ -141,20 +144,13 @@ class DataTable extends React.Component {
     for(var prop in columns){ 
       cols.push(columns[prop].field);
     }
-
     if ( Object.values(dataSource).length > 0) {
       filtered = Object.values(dataSource).filter(e => {
         return Object.keys(e).some(s => {
           if (cols.includes(s)) {
-            if(e[s] === undefined || e[s] === null){
-                return false;
-            }
-            else if(typeof(e[s]) === 'object' ){
-                return e[s].name.toString().includes(value.toString());
-            }
-            else{
-                return e[s].toString().includes(value.toString());
-            }
+            if(e[s] === undefined || e[s] === null){  return false;  }
+            else if(typeof(e[s]) === 'object'){return e[s].name.toString().toUpperCase().includes(value.toString().toUpperCase()); }
+            else{ return e[s].toString().toUpperCase().includes(value.toString().toUpperCase()); }
           } else {
             return false;
           }
@@ -168,19 +164,22 @@ class DataTable extends React.Component {
   isSelected = id => this.state.selected.indexOf(id) !== -1;
   
   render() {
-    const { classes, isLoading, dataSource, columns  } = this.props;
-    const { rowsPerPage, page, order, orderBy } = this.state;
+    const { classes, isLoading } = this.props;
+    const { rowsPerPage, page, order, orderBy, dataSource, columns } = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, Object.values(dataSource).length - page * rowsPerPage);
     const sortingData = stableSort(dataSource, getSorting(order, orderBy));
     const slicingData = sortingData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
     return (
+  
       <Paper className={classes.root}>
+        { isLoading && <LoadingDot nclass="data-table"/> }
         <DataTableTools dataState={this.state}  onFilterChanged={this.handleFilterChange} />
         <div className={classes.tableWrapper}>
           <Table className={classes.table} aria-labelledby="tableTitle">
             <DataTableHead  dataConfig={this.state} columns={columns} dataSource={dataSource} onSelectAllClick={this.handleSelectAllClick} onRequestSort={this.handleRequestSort} />
             <TableBody>
               {
+           
                 slicingData.map((n, i) => {
                 const isSelected = this.isSelected(n.id);
                 return (
@@ -204,8 +203,7 @@ class DataTable extends React.Component {
               {
                 emptyRows > 0 && (
                 <TableRow style={{ height: 49 * emptyRows }}>
-                  {/* <TableCell colSpan={6} /> */}
-                  { isLoading && <LoadingDot nclass="data-table"/> }
+                  <TableCell colSpan={6} />         
                 </TableRow>
                 )
               }

@@ -1,4 +1,4 @@
-import { SET_TAB } from "../types/dataType";
+import { SET_TAB, TOOGLE_LOADING } from "../types/dataType";
 
 const initialState = {
     tabActive: -1,
@@ -16,6 +16,11 @@ const initialState = {
           dataSource: {...action.payload.dataSource },
           isLoading: action.payload.isLoading
         };
+      case TOOGLE_LOADING: 
+        return{
+            ...state,
+            isLoading: action.payload
+        }
       default:
         return state;
     }

@@ -8,6 +8,7 @@ import Tab from "@material-ui/core/Tab";
 import { connect } from "react-redux";
 import { changeTabIndex } from "../../services/actions/dataAction";
 import DataTable from "../_lib/_table/DataTable";
+import {TOOGLE_LOADING} from '../../services/types/dataType';
 
 export class Data extends Component {
     constructor(props) {
@@ -51,6 +52,7 @@ export class Data extends Component {
           );
         }
      }
+     console.log(tab);
       return tab;
     }
 
@@ -89,7 +91,8 @@ export class Data extends Component {
 const propsState = state => ({ dt : state });
 
 const propsAction = dispatch => ({
- setTabActive: tab => dispatch(changeTabIndex(tab))
+ setTabActive: tab => dispatch(changeTabIndex(tab)),
+ showLoading: () => dispatch({type: TOOGLE_LOADING, payload: true}) 
 });
 
 export default connect( propsState, propsAction )(Data);

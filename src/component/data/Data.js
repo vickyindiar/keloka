@@ -9,6 +9,7 @@ import { connect } from "react-redux";
 import { changeTabIndex } from "../../services/actions/dataAction";
 import DataTable from "../_lib/_table/DataTable";
 import {TOOGLE_LOADING} from '../../services/types/dataType';
+import LoadingDot from "../_lib/_spinner/LoadingDot";
 
 export class Data extends Component {
     constructor(props) {
@@ -52,7 +53,6 @@ export class Data extends Component {
           );
         }
      }
-     console.log(tab);
       return tab;
     }
 
@@ -66,7 +66,7 @@ export class Data extends Component {
         <div className="content-data">
           <div  className="tab-data">
               <AppBar position="static" color="default">
-                <Tabs value={value} onChange={this.handleChange} variant="fullWidth" >
+                <Tabs value={value} onChange={this.handleChange.bind(this)} variant="fullWidth" >
                   <Tab label="Barang" id="tab-0" aria-controls="tabpanel-0" />
                   <Tab label="Supplier" id="tab-1" aria-controls="tabpanel-1" />
                   <Tab label="Pelanggan" id="tab-2" aria-controls="tabpanel-2" />

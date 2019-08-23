@@ -8,7 +8,7 @@ import Tab from "@material-ui/core/Tab";
 import { connect } from "react-redux";
 import { changeTabIndex } from "../../services/actions/dataAction";
 import DataTable from "../_lib/_table/DataTable";
-import {TOOGLE_LOADING} from '../../services/types/dataType';
+import { TOOGLE_LOADING } from '../../services/types/dataType';
 import LoadingDot from "../_lib/_spinner/LoadingDot";
 
 export class Data extends Component {
@@ -37,21 +37,26 @@ export class Data extends Component {
       let title = ['Barang', 'Supplier', 'Pelanggan', 'Merk', 'Kategori', 'Satuan']
       let tab = [];
       for (let index = 0; index < 6; index++) {
-        if(value === index){
-          tab.push( 
-            <div id={`tabpanel-${index}`} aria-labelledby={`tab-${index}`} value={value}  hidden={value !== index} index={index} key={index}  >
-              <DataTable title={`Data ${title[index]}`} columns={columns} dataSource={dataSource} isLoading={isLoading} key={index}  />
-            </div>
-          );
-        }
-        else
-        {
-          tab.push( 
-            <div id={`tabpanel-${index}`} aria-labelledby={`tab-${index}`} value={value}  hidden={value !== index} index={index} key={index}  >
-              <DataTable title={`Data ${title[index]}`} columns={[]} dataSource={[]} isLoading={isLoading} key={index}  />
-            </div>
-          );
-        }
+        tab.push( 
+          <div id={`tabpanel-${index}`} aria-labelledby={`tab-${index}`} value={value}  hidden={value !== index} index={index} key={index}  >
+            <DataTable title={`Data ${title[index]}`} columns={[]} dataSource={[]} isLoading={isLoading} key={index}  />
+          </div>
+        );
+        // if(value === index){
+        //   tab.push( 
+        //     <div id={`tabpanel-${index}`} aria-labelledby={`tab-${index}`} value={value}  hidden={value !== index} index={index} key={index}  >
+        //       <DataTable title={`Data ${title[index]}`} columns={columns} dataSource={dataSource} isLoading={isLoading} key={index}  />
+        //     </div>
+        //   );
+        // }
+        // else
+        // {
+        //   tab.push( 
+        //     <div id={`tabpanel-${index}`} aria-labelledby={`tab-${index}`} value={value}  hidden={value !== index} index={index} key={index}  >
+        //       <DataTable title={`Data ${title[index]}`} columns={[]} dataSource={[]} isLoading={isLoading} key={index}  />
+        //     </div>
+        //   );
+        // }
      }
       return tab;
     }

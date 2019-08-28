@@ -90,7 +90,7 @@ class DataTableTools extends React.Component {
         <div className={classes.searchIcon}>
           <SearchIcon />
         </div>
-        <input
+        <input 
           id="search-input"
           placeholder="Search"
           value={this.state.valueSearch}

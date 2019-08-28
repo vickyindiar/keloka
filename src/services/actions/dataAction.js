@@ -1,4 +1,11 @@
-import { SET_TAB } from "../types/dataType";
+import { CHANGE_TAB, 
+  OPEN_PRODUCT,
+  OPEN_SUPPLIER,
+  OPEN_CUSTOMER,
+  OPEN_BRAND,
+  OPEN_CATEGORY,
+  OPEN_QTYTYPE
+} from "../types/dataType";
 import axios from 'axios';
 
 const productsTable =  {
@@ -80,7 +87,6 @@ const qtytypesTable =  {
   ]
 }
 
-
 const generateNumber = (dataSource) => {
   let number = 1;
   dataSource.forEach(d => { d.number = number++; });  
@@ -107,16 +113,19 @@ export const changeTabIndex = tab => dispatch => {
 
     axios.get(url, config).then(res =>{
         if(res.status === 200){
-          dispatch({
-            type: SET_TAB,
-            payload: {  tabActive: tab, columns:columns, dataSource: generateNumber(res.data.data), isLoading: false  }
-          });
+          dispatch({ type: CHANGE_TAB, payload: { tabActive: tab, isLoading: false } });
+          if(tab === 0)      { dispatch({ type: OPEN_PRODUCT, payload: { dataSource: generateNumber(res.data.data),  columns: columns, isLoading: false  } }); } 
+          else if(tab === 1) { dispatch({ type: OPEN_SUPPLIER, payload: { dataSource: generateNumber(res.data.data), columns: columns, isLoading: false  } }); } 
+          else if(tab === 2) { dispatch({ type: OPEN_CUSTOMER, payload: { dataSource: generateNumber(res.data.data), columns: columns, isLoading: false  } }); }
+          else if(tab === 3) { dispatch({ type: OPEN_BRAND, payload: { dataSource: generateNumber(res.data.data),    columns: columns, isLoading: false  } }); }
+          else if(tab === 4) { dispatch({ type: OPEN_CATEGORY, payload: { dataSource: generateNumber(res.data.data), columns: columns, isLoading: false  } }); }
+          else if(tab === 5) { dispatch({ type: OPEN_QTYTYPE, payload: { dataSource: generateNumber(res.data.data),  columns: columns, isLoading: false  } }); }
         }else{
-            dispatch({ type: SET_TAB, payload: { tabActive: tab, columns: {}, dataSource: {}, isLoading: false }});
+          dispatch({ type: CHANGE_TAB, payload: { tabActive: tab, isLoading: false } });
         }
     })
     .catch(err => {
-      dispatch({ type: SET_TAB, payload: {  tabActive: tab, columns: {}, dataSource: {}, isLoading: false }});
+      dispatch({ type: CHANGE_TAB, payload: { tabActive: tab, isLoading: false } });
     });
   };
   

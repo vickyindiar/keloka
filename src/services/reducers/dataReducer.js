@@ -1,10 +1,10 @@
-import {  SET_TAB, 
-          UPDATE_PRODUCT,
-          UPDATE_SUPPLIER,
-          UPDATE_CUSTOMER,
-          UPDATE_BRAND,
-          UPDATE_CATEGORY,
-          UPDATE_QTYTYPE,
+import {  CHANGE_TAB, 
+          OPEN_PRODUCT,
+          OPEN_SUPPLIER,
+          OPEN_CUSTOMER,
+          OPEN_BRAND,
+          OPEN_CATEGORY,
+          OPEN_QTYTYPE,
           TOOGLE_LOADING } from "../types/dataType";
 
 const initialState = {
@@ -20,37 +20,47 @@ const initialState = {
  };
   export default function(state = initialState, action) {
     switch (action.type) {
-      case SET_TAB:
+      case CHANGE_TAB:
         return {
           ...state,
           tabActive: action.payload.tabActive,
-          columns: {...action.payload.columns },
-          dataSource: {...action.payload.dataSource },
           isLoading: action.payload.isLoading
         }
-      case UPDATE_PRODUCT:
+      case OPEN_PRODUCT:
         return{
-
+          ...state,
+          columns: {...action.payload.columns },
+          dataProduct: {...action.payload.dataSource },
         }
-      case UPDATE_SUPPLIER:
+      case OPEN_SUPPLIER:
         return {
-
+          ...state,
+          columns: {...action.payload.columns },
+          dataSupplier: {...action.payload.dataSource },
         }
-      case UPDATE_CUSTOMER:
+      case OPEN_CUSTOMER:
         return {
-
+          ...state,
+          columns: {...action.payload.columns },
+          dataCustomer: {...action.payload.dataSource },
         }
-      case UPDATE_BRAND:
+      case OPEN_BRAND:
         return {
-
+          ...state,
+          columns: {...action.payload.columns },
+          dataBrand: {...action.payload.dataSource },
         }
-      case UPDATE_CATEGORY: 
+      case OPEN_CATEGORY: 
         return {
-
+          ...state,
+          columns: {...action.payload.columns },
+          dataCategory: {...action.payload.dataSource },
         }
-      case UPDATE_QTYTYPE:
+      case OPEN_QTYTYPE:
           return {
-
+            ...state,
+            columns: {...action.payload.columns },
+            dataQtytype: {...action.payload.dataSource },
           }
       case TOOGLE_LOADING: 
         return{

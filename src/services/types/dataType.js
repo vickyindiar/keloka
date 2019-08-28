@@ -1,4 +1,12 @@
-export const SET_TAB = "SET_TAB";
+export const CHANGE_TAB = "CHANGE_TAB";
+
+export const OPEN_PRODUCT = "OPEN_PRODUCT";
+export const OPEN_SUPPLIER = "OPEN_SUPPLIER";
+export const OPEN_CUSTOMER = "OPEN_CUSTOMER";
+export const OPEN_BRAND = "OPEN_BRAND";
+export const OPEN_CATEGORY = "OPEN_CATEGORY";
+export const OPEN_QTYTYPE = "OPEN_QTYTYPE";
+
 export const UPDATE_PRODUCT = "UPDATE_PRODUCT";
 export const UPDATE_SUPPLIER = "UPDATE_SUPPLIER";
 export const UPDATE_CUSTOMER = "UPDATE_CUSTOMER";

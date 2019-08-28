@@ -26,44 +26,15 @@ export class Data extends Component {
     }
 
     handleChange = (event, newValue) => {
-      this.setState({ value: newValue }, this.props.setTabActive(newValue));
+      this.props.showLoading(); 
+      this.setState({ value: newValue }, this.props.setTabActive(newValue)); 
     };
 
-    handleChangeIndex = index => {
-      this.setState({ value: index });
-    };
-
-    createTabList = (value, columns, dataSource, isLoading) => {
-      let title = ['Barang', 'Supplier', 'Pelanggan', 'Merk', 'Kategori', 'Satuan']
-      let tab = [];
-      for (let index = 0; index < 6; index++) {
-        tab.push( 
-          <div id={`tabpanel-${index}`} aria-labelledby={`tab-${index}`} value={value}  hidden={value !== index} index={index} key={index}  >
-            <DataTable title={`Data ${title[index]}`} columns={[]} dataSource={[]} isLoading={isLoading} key={index}  />
-          </div>
-        );
-        // if(value === index){
-        //   tab.push( 
-        //     <div id={`tabpanel-${index}`} aria-labelledby={`tab-${index}`} value={value}  hidden={value !== index} index={index} key={index}  >
-        //       <DataTable title={`Data ${title[index]}`} columns={columns} dataSource={dataSource} isLoading={isLoading} key={index}  />
-        //     </div>
-        //   );
-        // }
-        // else
-        // {
-        //   tab.push( 
-        //     <div id={`tabpanel-${index}`} aria-labelledby={`tab-${index}`} value={value}  hidden={value !== index} index={index} key={index}  >
-        //       <DataTable title={`Data ${title[index]}`} columns={[]} dataSource={[]} isLoading={isLoading} key={index}  />
-        //     </div>
-        //   );
-        // }
-     }
-      return tab;
-    }
+    handleChangeIndex = index => { this.setState({ value: index }); };
 
     render() {
       const { value } = this.state;
-      const { columns, dataSource, isLoading } = this.props.dt.dataReducer;
+      const { columns, dataProduct, dataSupplier, dataCustomer, dataBrand, dataCategory, dataQtytype, isLoading } = this.props.dt.dataReducer;
     return (
       <React.Fragment>
         <div className="content-container data">
@@ -81,9 +52,24 @@ export class Data extends Component {
                 </Tabs>
               </AppBar>
               <SwipeableViews index={value} onChangeIndex={this.handleChangeIndex}>
-                {
-                    this.createTabList(value, columns, dataSource, isLoading)
-                }
+                <div id="tabpanel-0" aria-labelledby="tab-0" value={value}  hidden={value !== 0} index={0} key={0}  >
+                  <DataTable title="Data Barang" columns={columns} dataSource={dataProduct} isLoading={isLoading} key={0}  />
+                </div>
+                <div id="tabpanel-1" aria-labelledby="tab-1" value={value}  hidden={value !== 1} index={1} key={1}  >
+                  <DataTable title="Data Supplier" columns={columns} dataSource={dataSupplier} isLoading={isLoading} key={1}  />
+                </div>
+                <div id="tabpanel-2" aria-labelledby="tab-2" value={value}  hidden={value !== 2} index={2} key={2}  >
+                  <DataTable title="Data Pelanggan" columns={columns} dataSource={dataCustomer} isLoading={isLoading} key={2}  />
+                </div>
+                <div id="tabpanel-3" aria-labelledby="tab-3" value={value}  hidden={value !== 3} index={3} key={3}  >
+                  <DataTable title="Data Merk" columns={columns} dataSource={dataBrand} isLoading={isLoading} key={3}  />
+                </div>
+                <div id="tabpanel-4" aria-labelledby="tab-4" value={value}  hidden={value !== 4} index={4} key={4}  >
+                  <DataTable title="Data Kategori" columns={columns} dataSource={dataCategory} isLoading={isLoading} key={4}  />
+                </div>
+                <div id="tabpanel-5" aria-labelledby="tab-5" value={value}  hidden={value !== 5} index={5} key={5}  >
+                  <DataTable title="Data Satuan" columns={columns} dataSource={dataQtytype} isLoading={isLoading} key={5}  />
+                </div>
               </SwipeableViews>
           </div>
         </div>

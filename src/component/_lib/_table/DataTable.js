@@ -179,7 +179,6 @@ class DataTable extends React.Component {
             <DataTableHead  dataConfig={this.state} columns={columns} dataSource={dataSource} onSelectAllClick={this.handleSelectAllClick} onRequestSort={this.handleRequestSort} />
             <TableBody>
               {
-           
                 slicingData.map((n, i) => {
                 const isSelected = this.isSelected(n.id);
                 return (
@@ -203,8 +202,7 @@ class DataTable extends React.Component {
               {
                 emptyRows > 0 && (
                 <TableRow style={{ height: 49 * emptyRows }}>
-                  {/* <TableCell colSpan={6} />          */}
-                { isLoading && <LoadingDot nclass="data-table"/> }
+                  <TableCell colSpan={6} />         
                 </TableRow>
                 )
               }

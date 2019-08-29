@@ -10,6 +10,10 @@ import { changeTabIndex } from "../../services/actions/dataAction";
 import DataTable from "../_lib/_table/DataTable";
 import { TOOGLE_LOADING } from '../../services/types/dataType';
 import LoadingDot from "../_lib/_spinner/LoadingDot";
+import M from 'materialize-css';
+
+
+import FormProduct from './FormProduct';
 
 export class Data extends Component {
     constructor(props) {
@@ -37,7 +41,7 @@ export class Data extends Component {
       const { columns, dataProduct, dataSupplier, dataCustomer, dataBrand, dataCategory, dataQtytype, isLoading } = this.props.dt.dataReducer;
     return (
       <React.Fragment>
-        <div className="content-container data">
+      <div className="content-container data">
         <Header />
         <div className="content-data">
           <div  className="tab-data">
@@ -53,7 +57,13 @@ export class Data extends Component {
               </AppBar>
               <SwipeableViews index={value} onChangeIndex={this.handleChangeIndex}>
                 <div id="tabpanel-0" aria-labelledby="tab-0" value={value}  hidden={value !== 0} index={0} key={0}  >
-                  <DataTable title="Data Barang" columns={columns} dataSource={dataProduct} isLoading={isLoading} key={0}  />
+                  <DataTable 
+                    title="Data Barang" 
+                    columns={columns} 
+                    dataSource={dataProduct} 
+                    isLoading={isLoading}
+                    key={0}  
+                   />
                 </div>
                 <div id="tabpanel-1" aria-labelledby="tab-1" value={value}  hidden={value !== 1} index={1} key={1}  >
                   <DataTable title="Data Supplier" columns={columns} dataSource={dataSupplier} isLoading={isLoading} key={1}  />
@@ -74,6 +84,9 @@ export class Data extends Component {
           </div>
         </div>
       </div>
+
+      <FormProduct />
+
       </React.Fragment>
     )
   }

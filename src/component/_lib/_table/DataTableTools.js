@@ -7,6 +7,9 @@ import Typography from "@material-ui/core/Typography";
 import { lighten } from "@material-ui/core/styles/colorManipulator";
 import { fade } from "@material-ui/core/styles/colorManipulator";
 import SearchIcon from "@material-ui/icons/Search";
+import ToolsActionButtons from '../../_lib/_table/ToolsActionButtons';
+
+import M from 'materialize-css';
 
 const toolbarStyles = theme => ({
   root: { paddingRight: theme.spacing() },
@@ -111,11 +114,7 @@ class DataTableTools extends React.Component {
     });
 
     return (
-      <Toolbar
-        className={classNames(classes.root, {
-          [classes.highlight]: selected.length > 0
-        })}
-      >
+      <Toolbar className={classNames(classes.root, {[classes.highlight]: selected.length > 0 })} >
         <div className={classes.title}>
           <Typography variant="h6" id="tableTitle">
             {" "}
@@ -136,6 +135,7 @@ class DataTableTools extends React.Component {
             </div>
           </a>
         </div> */}
+        <ToolsActionButtons />
         {showFilterSearch}
       </Toolbar>
     );

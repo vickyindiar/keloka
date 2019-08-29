@@ -51,7 +51,7 @@ class DataTableHead extends React.Component {
             {
               Object.values(columns).map(
               row => (
-                <TableCell  className={classes.root} key={row.id}  align={row.align}  padding={row.disablePadding ? 'none' : 'default'} sortDirection={orderBy === row.id ? order : false} >
+                <TableCell  className={classes.root} key={row.id}  align={row.align}  padding="none" /* padding={row.disablePadding ? 'none' : 'default'} */ sortDirection={orderBy === row.id ? order : false} >
                     <TableSortLabel className={classes.root}  active={orderBy === row.id} direction={order} onClick={this.createSortHandler(row.id)} >
                       {row.caption}
                     </TableSortLabel>
@@ -74,6 +74,4 @@ DataTableHead.propTypes = {
   // rowCount: PropTypes.number.isRequired,
 };
   
-
-
-  export default withStyles(style)(DataTableHead)
+export default withStyles(style)(DataTableHead)

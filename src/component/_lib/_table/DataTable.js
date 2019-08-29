@@ -173,7 +173,10 @@ class DataTable extends React.Component {
   
       <Paper className={classes.root}>
         { isLoading && <LoadingDot nclass="data-table"/> }
-        <DataTableTools dataState={this.state}  onFilterChanged={this.handleFilterChange} />
+        <DataTableTools 
+          dataState={this.state} 
+          onFilterChanged={this.handleFilterChange} 
+        />
         <div className={classes.tableWrapper}>
           <Table className={classes.table} aria-labelledby="tableTitle">
             <DataTableHead  dataConfig={this.state} columns={columns} dataSource={dataSource} onSelectAllClick={this.handleSelectAllClick} onRequestSort={this.handleRequestSort} />

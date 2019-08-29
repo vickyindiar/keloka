@@ -36,6 +36,24 @@ input.search-field:focus:hover {
   background: #f7f7f7 !important;
 }
 
+.btn-group{
+  #btnAdd{
+    background: lighten($color: blue, $amount: 20%) !important;
+    border-radius: 10px 0 0 10px;
+  }
+  #btnEdit{
+    border-radius: 0 0 0 0;
+  }
+  #btnSave{
+    background: lighten($color: lightgray, $amount: 5%) !important;
+    border-radius: 0 0 0 0;
+  }
+  #btnDelete{
+    background: lighten($color: red, $amount: 15%) !important;
+    border-radius: 0 10px 10px 0;
+  }
+}
+
 @media only screen and (max-width: 600px) {
   ::placeholder {
     color: transparent !important;
@@ -63,5 +81,4 @@ input.search-field:focus:hover {
     width: 100px !important;
     padding: 8px 8px 8px 50px !important;
   }
-
 }

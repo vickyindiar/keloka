@@ -170,7 +170,7 @@ export class Nav extends Component {
                     </li>
 
                     <li className="nav-li nav-logout">
-                      <a href="#" role="button" className="a-nav" onClick={this.handleLogout}>
+                      <a className="a-nav" onClick={this.handleLogout}>
                         <span>
                           <svg xmlns="http://www.w3.org/2000/svg"  className="nc-icon outline"  viewBox="0 0 64 64" aria-labelledby="title" aria-describedby="desc" role="img" xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="64" height="64">
                             <title>Shutdown</title>

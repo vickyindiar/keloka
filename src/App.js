@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import M from 'materialize-css';
 import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PrivateRoute from './component/nav/PrivateRoute';

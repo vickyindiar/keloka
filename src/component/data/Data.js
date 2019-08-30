@@ -11,8 +11,6 @@ import DataTable from "../_lib/_table/DataTable";
 import { TOOGLE_LOADING } from '../../services/types/dataType';
 import LoadingDot from "../_lib/_spinner/LoadingDot";
 import M from 'materialize-css';
-
-
 import FormProduct from './FormProduct';
 
 export class Data extends Component {
@@ -57,16 +55,14 @@ export class Data extends Component {
               </AppBar>
               <SwipeableViews index={value} onChangeIndex={this.handleChangeIndex}>
                 <div id="tabpanel-0" aria-labelledby="tab-0" value={value}  hidden={value !== 0} index={0} key={0}  >
-                  <DataTable 
-                    title="Data Barang" 
-                    columns={columns} 
-                    dataSource={dataProduct} 
-                    isLoading={isLoading}
-                    key={0}  
-                   />
+                  <DataTable title="Data Barang" columns={columns}  dataSource={dataProduct} isLoading={isLoading}  key={0} >
+                     <FormProduct />
+                   </DataTable>
                 </div>
                 <div id="tabpanel-1" aria-labelledby="tab-1" value={value}  hidden={value !== 1} index={1} key={1}  >
-                  <DataTable title="Data Supplier" columns={columns} dataSource={dataSupplier} isLoading={isLoading} key={1}  />
+                  <DataTable title="Data Supplier" columns={columns} dataSource={dataSupplier} isLoading={isLoading} key={1}>
+               
+                  </DataTable>
                 </div>
                 <div id="tabpanel-2" aria-labelledby="tab-2" value={value}  hidden={value !== 2} index={2} key={2}  >
                   <DataTable title="Data Pelanggan" columns={columns} dataSource={dataCustomer} isLoading={isLoading} key={2}  />
@@ -86,7 +82,6 @@ export class Data extends Component {
       </div>
 
       <FormProduct />
-
       </React.Fragment>
     )
   }

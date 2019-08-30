@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-
+import TextField from '@material-ui/core/TextField';
 class FormProduct extends Component {
     constructor(props){
         super(props);
         this.state = {
-            title: ''
+            title: 'Barang'
         }
     }
 
@@ -14,21 +14,20 @@ class FormProduct extends Component {
 
     render() {
         return (
-            <React.Fragment>
-                <div className="modalBarang modal">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h3> {this.state.title} </h3>
-                        </div>
-                        <div className="modal-form">
-                            <form onSubmit={this.handleOnSubmit}>
-
-                            </form>
-                        </div>
+            <React.Fragment>        
+            <form>
+                <div className="row">
+                    <div className="col s4">
+                        <TextField id="name" label="Name" name="name" margin="normal" variant="outlined" />
                     </div>
-                    <div className="modal-footer">
-                    </div>   
-                </div> 
+                    <div className="col s4">
+                        <TextField id="sprice" label="Jual" name="sprice" margin="normal" variant="outlined" />
+                    </div>
+                    <div className="col s4">
+                        <TextField id="stock" label="Stock" name="stock" margin="normal" variant="outlined" />
+                    </div>
+                </div>
+            </form>
             </React.Fragment>
         )
     }

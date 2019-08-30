@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import 'materialize-css/dist/css/materialize.min.css';
 import './styles/sass/reset.scss';
 import './styles/sass/index.scss';
 

@@ -135,7 +135,9 @@ class DataTableTools extends React.Component {
             </div>
           </a>
         </div> */}
-        <ToolsActionButtons />
+        <ToolsActionButtons>
+          {this.props.children}
+        </ToolsActionButtons>
         {showFilterSearch}
       </Toolbar>
     );

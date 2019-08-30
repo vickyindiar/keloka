@@ -4,7 +4,7 @@ class FormProduct extends Component {
     constructor(props){
         super(props);
         this.state = {
-            title: ''
+            title: 'Barang'
         }
     }
 
@@ -15,20 +15,8 @@ class FormProduct extends Component {
     render() {
         return (
             <React.Fragment>
-                <div className="modalBarang modal">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h3> {this.state.title} </h3>
-                        </div>
-                        <div className="modal-form">
-                            <form onSubmit={this.handleOnSubmit}>
-
-                            </form>
-                        </div>
-                    </div>
-                    <div className="modal-footer">
-                    </div>   
-                </div> 
+                    <span><h4>INI CONTENT PRODUCT</h4></span>
+               
             </React.Fragment>
         )
     }

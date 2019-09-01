@@ -10,7 +10,6 @@ import { changeTabIndex } from "../../services/actions/dataAction";
 import DataTable from "../_lib/_table/DataTable";
 import { TOOGLE_LOADING } from '../../services/types/dataType';
 import LoadingDot from "../_lib/_spinner/LoadingDot";
-import M from 'materialize-css';
 import FormProduct from './FormProduct';
 
 export class Data extends Component {

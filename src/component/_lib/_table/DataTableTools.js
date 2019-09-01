@@ -9,8 +9,6 @@ import { fade } from "@material-ui/core/styles/colorManipulator";
 import SearchIcon from "@material-ui/icons/Search";
 import ToolsActionButtons from '../../_lib/_table/ToolsActionButtons';
 
-import M from 'materialize-css';
-
 const toolbarStyles = theme => ({
   root: { paddingRight: theme.spacing() },
   highlight:

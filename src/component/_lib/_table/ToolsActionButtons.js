@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import M from "materialize-css";
 import { withStyles } from "@material-ui/core/styles";
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -44,17 +43,8 @@ export class ToolsActionButtons extends Component {
     }
 
     render() {
-        const { classes } = this.props;
         return (
             <React.Fragment>
-                {/* <div className="btn-group">
-                    <a id="btnAdd" data-target="modal-data" className="waves-effect waves-light btn-small modal-trigger"><i className="material-icons right">note_add</i>Tambah</a>
-                    <a id="btnEdit" className="waves-effect waves-light btn-small"><i className="material-icons right">edit</i>Ubah</a>
-                    <a id="btnDelete" className="waves-effect waves-light btn-small"><i className="material-icons right">delete</i>Hapus</a>
-                </div>
-                <div ref={Modal => { this.Modal = Modal;}} id="modal-data" className="modal" >
-                    { this.props.children }
-                </div> */}
                 <ButtonGroup size="small" aria-label="small outlined button group">
                         <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
                             TAMBAH

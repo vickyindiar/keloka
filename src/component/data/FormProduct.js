@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withStyles } from "@material-ui/core/styles";
 import { Grid, FormControl, InputLabel, Select, OutlinedInput, TextField } from '@material-ui/core';
+import { getData } from "../../services/actions/dataAction";
 
 
 const styles = theme => ({
@@ -28,6 +29,9 @@ class FormProduct extends Component {
     handChangeBrand = (e) => {
         alert(e.target.value);
     }
+    handleClickBrand = () => {
+       
+    }
 
     setLabelWidth = (v) =>{
         this.setState({ labelWidth : v });
@@ -35,11 +39,18 @@ class FormProduct extends Component {
 
     componentDidMount = () => {
         this.setLabelWidth(this.state.inputLabel.current.offsetWidth);
+        if(this.props.dt.dataBrand.length === 0){
+          this.props.setDataSource(3);
+
+        }
     }
 
 
+
+
     render() {
-        const { classes, dataProduct, dataSupplier, dataCustomer, dataBrand, dataCategory, dataQtytype } = this.props;
+        const { classes } = this.props;
+        const { dataProduct, dataSupplier, dataCustomer, dataBrand, dataCategory, dataQtytype } = this.props.dt;
         const { inputLabel } = this.state;
         return (
             <React.Fragment>        
@@ -52,14 +63,13 @@ class FormProduct extends Component {
                    <FormControl variant="outlined" className={classes.formControl} margin="dense">
                         <InputLabel ref={inputLabel} htmlFor="outlined-merk-native-simple"> Merk </InputLabel>
 
-                        <Select native value={ this.state.brand } onChange={ this.handChangeBrand }
+                        <Select native value={ this.state.brand } onChange={ this.handChangeBrand } onClick = {this.handleClickBrand} 
                                 input={<OutlinedInput name="merk" labelWidth={this.state.labelWidth} id="outlined-merk-native-simple"/> }> 
-
-                        <option value="" />
+                        <option value="" />>
                         {
                             Object.values(dataBrand).map((v, i) =>{
                                 return(
-                                    <option value={v.id}> {v.name} </option>
+                                    <option value={v.id} key={i}> {v.name} </option>
                                 )
                             })
                         }
@@ -77,4 +87,9 @@ class FormProduct extends Component {
 }
 const propsState = state => ({ dt : state.dataReducer });
 
-export default withStyles(styles)(connect( propsState , {})(FormProduct))
+const propsAction = dispatch => ({
+    setDataSource: tab => dispatch(getData(tab)), 
+   // showLoading: () => dispatch({type: TOOGLE_LOADING, payload: true}) 
+});
+
+export default withStyles(styles)(connect( propsState , propsAction)(FormProduct))

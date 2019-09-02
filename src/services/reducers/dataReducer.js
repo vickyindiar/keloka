@@ -1,10 +1,10 @@
 import {  CHANGE_TAB, 
-          OPEN_PRODUCT,
-          OPEN_SUPPLIER,
-          OPEN_CUSTOMER,
-          OPEN_BRAND,
-          OPEN_CATEGORY,
-          OPEN_QTYTYPE,
+          GET_PRODUCT,
+          GET_SUPPLIER,
+          GET_CUSTOMER,
+          GET_BRAND,
+          GET_CATEGORY,
+          GET_QTYTYPE,
           TOOGLE_LOADING } from "../types/dataType";
 
 const initialState = {
@@ -26,37 +26,37 @@ const initialState = {
           tabActive: action.payload.tabActive,
           isLoading: action.payload.isLoading
         }
-      case OPEN_PRODUCT:
+      case GET_PRODUCT:
         return{
           ...state,
           columns: {...action.payload.columns },
           dataProduct: {...action.payload.dataSource },
         }
-      case OPEN_SUPPLIER:
+      case GET_SUPPLIER:
         return {
           ...state,
           columns: {...action.payload.columns },
           dataSupplier: {...action.payload.dataSource },
         }
-      case OPEN_CUSTOMER:
+      case GET_CUSTOMER:
         return {
           ...state,
           columns: {...action.payload.columns },
           dataCustomer: {...action.payload.dataSource },
         }
-      case OPEN_BRAND:
+      case GET_BRAND:
         return {
           ...state,
           columns: {...action.payload.columns },
           dataBrand: {...action.payload.dataSource },
         }
-      case OPEN_CATEGORY: 
+      case GET_CATEGORY: 
         return {
           ...state,
           columns: {...action.payload.columns },
           dataCategory: {...action.payload.dataSource },
         }
-      case OPEN_QTYTYPE:
+      case GET_QTYTYPE:
           return {
             ...state,
             columns: {...action.payload.columns },

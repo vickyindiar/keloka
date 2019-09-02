@@ -2,14 +2,12 @@ import React, { Component } from 'react';
 import '../../styles/sass/component/_data.scss';
 import Header from '../template/Header';
 import SwipeableViews from "react-swipeable-views";
-import AppBar from "@material-ui/core/AppBar";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
+import { AppBar, Tabs, Tab } from "@material-ui/core";
 import { connect } from "react-redux";
-import { changeTabIndex } from "../../services/actions/dataAction";
-import DataTable from "../_lib/_table/DataTable";
+import { changeTabIndex, getData } from "../../services/actions/dataAction";
 import { TOOGLE_LOADING } from '../../services/types/dataType';
-import LoadingDot from "../_lib/_spinner/LoadingDot";
+
+import DataTable from "../_lib/_table/DataTable";
 import FormProduct from './FormProduct';
 import FormSupplier from './FormSupplier';
 
@@ -24,12 +22,13 @@ export class Data extends Component {
     componentDidMount = () =>{
       if(this.props.dt.tabActive === -1){
         this.props.setTabActive(0);
+        this.props.setDataSource(0);
       }
     }
 
     handleChange = (event, newValue) => {
       this.props.showLoading(); 
-      this.setState({ value: newValue }, this.props.setTabActive(newValue)); 
+      this.setState({ value: newValue }, this.props.setTabActive(newValue), this.props.setDataSource(newValue)); 
     };
 
     handleChangeIndex = index => { this.setState({ value: index }); };
@@ -89,6 +88,7 @@ const propsState = state => ({ dt : state.dataReducer });
 
 const propsAction = dispatch => ({
  setTabActive: tab => dispatch(changeTabIndex(tab)),
+ setDataSource: tab => dispatch(getData(tab)), 
  showLoading: () => dispatch({type: TOOGLE_LOADING, payload: true}) 
 });
 

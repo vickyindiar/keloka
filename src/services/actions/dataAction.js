@@ -1,10 +1,10 @@
 import { CHANGE_TAB, 
-  OPEN_PRODUCT,
-  OPEN_SUPPLIER,
-  OPEN_CUSTOMER,
-  OPEN_BRAND,
-  OPEN_CATEGORY,
-  OPEN_QTYTYPE
+  GET_PRODUCT,
+  GET_SUPPLIER,
+  GET_CUSTOMER,
+  GET_BRAND,
+  GET_CATEGORY,
+  GET_QTYTYPE
 } from "../types/dataType";
 import axios from 'axios';
 
@@ -93,7 +93,18 @@ const generateNumber = (dataSource) => {
   return dataSource;
 }
 
-export const changeTabIndex = tab => dispatch => {
+
+const getAction = (index, res, columns) => {
+    if(index === 0)      { return { type: GET_PRODUCT, payload: { dataSource: generateNumber(res.data.data),  columns: columns, isLoading: false  } }; } 
+    else if(index === 1) { return { type: GET_SUPPLIER, payload: { dataSource: generateNumber(res.data.data), columns: columns, isLoading: false  } }; } 
+    else if(index === 2) { return { type: GET_CUSTOMER, payload: { dataSource: generateNumber(res.data.data), columns: columns, isLoading: false  } }; }
+    else if(index === 3) { return { type: GET_BRAND, payload: { dataSource: generateNumber(res.data.data),    columns: columns, isLoading: false  } }; }
+    else if(index === 4) { return { type: GET_CATEGORY, payload: { dataSource: generateNumber(res.data.data), columns: columns, isLoading: false  } }; }
+    else if(index === 5) { return { type: GET_QTYTYPE, payload: { dataSource: generateNumber(res.data.data),  columns: columns, isLoading: false  } }; }
+    else return {}
+}
+
+export const getData = (tab) => dispatch => {
     let columns = [];
     let url = '';
     let token = localStorage.getItem('jwt');
@@ -104,28 +115,29 @@ export const changeTabIndex = tab => dispatch => {
           Authorization: token
         },
      }
-    if(tab === 0) {      url = productsTable.url; columns = productsTable.columns; } 
-    else if(tab === 1) { url = suppliersTable.url; columns = suppliersTable.columns; } 
-    else if(tab === 2) { url = customersTable.url; columns = customersTable.columns; }
-    else if(tab === 3) { url = brandsTable.url; columns = brandsTable.columns; }
-    else if(tab === 4) { url = categoriesTable.url; columns = categoriesTable.columns; }
-    else if(tab === 5) { url = qtytypesTable.url; columns = qtytypesTable.columns; }
-
+     if(tab === 0) {      url = productsTable.url; columns = productsTable.columns;   } 
+     else if(tab === 1) { url = suppliersTable.url; columns = suppliersTable.columns; } 
+     else if(tab === 2) { url = customersTable.url; columns = customersTable.columns; }
+     else if(tab === 3) { url = brandsTable.url; columns = brandsTable.columns; }
+     else if(tab === 4) { url = categoriesTable.url; columns = categoriesTable.columns; }
+     else if(tab === 5) { url = qtytypesTable.url; columns = qtytypesTable.columns; }
+     else { url = productsTable.url; columns = productsTable.columns; }
     axios.get(url, config).then(res =>{
         if(res.status === 200){
-          dispatch({ type: CHANGE_TAB, payload: { tabActive: tab, isLoading: false } });
-          if(tab === 0)      { dispatch({ type: OPEN_PRODUCT, payload: { dataSource: generateNumber(res.data.data),  columns: columns, isLoading: false  } }); } 
-          else if(tab === 1) { dispatch({ type: OPEN_SUPPLIER, payload: { dataSource: generateNumber(res.data.data), columns: columns, isLoading: false  } }); } 
-          else if(tab === 2) { dispatch({ type: OPEN_CUSTOMER, payload: { dataSource: generateNumber(res.data.data), columns: columns, isLoading: false  } }); }
-          else if(tab === 3) { dispatch({ type: OPEN_BRAND, payload: { dataSource: generateNumber(res.data.data),    columns: columns, isLoading: false  } }); }
-          else if(tab === 4) { dispatch({ type: OPEN_CATEGORY, payload: { dataSource: generateNumber(res.data.data), columns: columns, isLoading: false  } }); }
-          else if(tab === 5) { dispatch({ type: OPEN_QTYTYPE, payload: { dataSource: generateNumber(res.data.data),  columns: columns, isLoading: false  } }); }
+          dispatch(getAction(tab, res, columns));
         }else{
-          dispatch({ type: CHANGE_TAB, payload: { tabActive: tab, isLoading: false } });
+          console.log('error get data !');
         }
     })
     .catch(err => {
-      dispatch({ type: CHANGE_TAB, payload: { tabActive: tab, isLoading: false } });
+      console.log('error get data !');
     });
+}
+
+export const changeTabIndex = tab => dispatch => {
+     dispatch({ type: CHANGE_TAB, payload: { tabActive: tab, isLoading: false } });
   };
+
+
+  
   

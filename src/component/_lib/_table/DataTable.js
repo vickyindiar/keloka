@@ -72,7 +72,6 @@ class DataTable extends React.Component {
       selectTable: false,
       showFilter: true,
       isLoading: this.props.isLoading,
-      stae: false
     };
   }
 
@@ -88,7 +87,6 @@ class DataTable extends React.Component {
   };
 
   handleSelectAllClick = event => {
-    debugger;
     if (event.target.checked) {
       this.setState(state => ({ selected: this.state.dataSource.map(n => n.id) }));
       return;
@@ -172,10 +170,13 @@ class DataTable extends React.Component {
     return (
   
       <Paper className={classes.root}>
+
         { isLoading && <LoadingDot nclass="data-table"/> }
-        <DataTableTools  dataState={this.state} onFilterChanged={this.handleFilterChange}>
+
+        <DataTableTools dataState={this.state} onFilterChanged={this.handleFilterChange}>
           { this.props.children }
         </DataTableTools>
+
         <div className={classes.tableWrapper}>
           <Table className={classes.table} aria-labelledby="tableTitle">
             <DataTableHead  dataConfig={this.state} columns={columns} dataSource={dataSource} onSelectAllClick={this.handleSelectAllClick} onRequestSort={this.handleRequestSort} />

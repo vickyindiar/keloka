@@ -56,7 +56,6 @@ export const login = (data, history) => dispatch =>{
     }
     axios.post('http://127.0.0.1:8000/api/login', paramaters, config)
     .then(res =>{
-        debugger;
         if(res.data.status){
             let token = `Bearer ${res.data.data.token}`;
             localStorage.setItem('jwt', token);

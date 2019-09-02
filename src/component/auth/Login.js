@@ -41,7 +41,6 @@ class Login extends Component {
 
     handleOnSubmitLogin = (e) =>{
         e.preventDefault();
-        debugger;
         this.props.showLoading();
         this.props.doLogin({...this.state}, this.props.history);
     }

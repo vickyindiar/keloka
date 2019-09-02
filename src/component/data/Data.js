@@ -11,6 +11,7 @@ import DataTable from "../_lib/_table/DataTable";
 import { TOOGLE_LOADING } from '../../services/types/dataType';
 import LoadingDot from "../_lib/_spinner/LoadingDot";
 import FormProduct from './FormProduct';
+import FormSupplier from './FormSupplier';
 
 export class Data extends Component {
     constructor(props) {
@@ -21,7 +22,7 @@ export class Data extends Component {
     }
 
     componentDidMount = () =>{
-      if(this.props.dt.dataReducer.tabActive === -1){
+      if(this.props.dt.tabActive === -1){
         this.props.setTabActive(0);
       }
     }
@@ -35,7 +36,7 @@ export class Data extends Component {
 
     render() {
       const { value } = this.state;
-      const { columns, dataProduct, dataSupplier, dataCustomer, dataBrand, dataCategory, dataQtytype, isLoading } = this.props.dt.dataReducer;
+      const { columns, dataProduct, dataSupplier, dataCustomer, dataBrand, dataCategory, dataQtytype, isLoading } = this.props.dt;
     return (
       <React.Fragment>
       <div className="content-container data">
@@ -55,12 +56,12 @@ export class Data extends Component {
               <SwipeableViews index={value} onChangeIndex={this.handleChangeIndex}>
                 <div id="tabpanel-0" aria-labelledby="tab-0" value={value}  hidden={value !== 0} index={0} key={0}  >
                   <DataTable title="Data Barang" columns={columns}  dataSource={dataProduct} isLoading={isLoading}  key={0} >
-                     <FormProduct />
+                     <FormProduct title="Barang"/>
                    </DataTable>
                 </div>
                 <div id="tabpanel-1" aria-labelledby="tab-1" value={value}  hidden={value !== 1} index={1} key={1}  >
                   <DataTable title="Data Supplier" columns={columns} dataSource={dataSupplier} isLoading={isLoading} key={1}>
-               
+                   <FormSupplier />
                   </DataTable>
                 </div>
                 <div id="tabpanel-2" aria-labelledby="tab-2" value={value}  hidden={value !== 2} index={2} key={2}  >
@@ -79,14 +80,12 @@ export class Data extends Component {
           </div>
         </div>
       </div>
-
-      <FormProduct />
       </React.Fragment>
     )
   }
 }
 
-const propsState = state => ({ dt : state });
+const propsState = state => ({ dt : state.dataReducer });
 
 const propsAction = dispatch => ({
  setTabActive: tab => dispatch(changeTabIndex(tab)),

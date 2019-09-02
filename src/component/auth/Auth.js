@@ -1,11 +1,21 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withStyles } from "@material-ui/core/styles";
 import $ from 'jquery';
-import LoadingDot from '../_lib/_spinner/LoadingDot';
 import '../../styles/sass/component/_auth.scss';
-
+import LoadingDot from '../_lib/_spinner/LoadingDot';
 import Login from './Login';
 import Register from './Register';
+import Button from '@material-ui/core/Button';
+
+
+const styles = theme => ({
+    button: {
+        background: '#012A56',
+        color: 'white',
+        boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+    },
+});
 
 class Auth extends Component {
     constructor(props){
@@ -27,6 +37,7 @@ class Auth extends Component {
     }
   render() {
     const { loading } = this.props.authState;
+    const { classes } = this.props;
     return (
         <React.Fragment>
            <div className="container-auth">
@@ -42,8 +53,10 @@ class Auth extends Component {
                             :
                             <div className="info-auth info-sign">
                                 <div className="content">
-                                    <p> Have an Account</p>
-                                    <a role="button" className="btn waves-effect light-blue darken-4" onClick={this.toogleFormInfo}>Login</a>
+                                    <p> Have an Account ?</p>
+                                    <Button className={classes.button} onClick={this.toogleFormInfo}>
+                                        Login
+                                    </Button>
                                 </div>
                              </div>
                         }
@@ -57,8 +70,10 @@ class Auth extends Component {
                             :
                             <div className="info-auth info-signup">
                                 <div className="content">
-                                    <p> Don't Have an Account</p>
-                                    <a className="btn waves-effect light-blue darken-4" onClick={this.toogleFormInfo}>Sign Up</a>   
+                                    <p> Don't Have an Account ?</p>
+                                    <Button className={classes.button} onClick={this.toogleFormInfo}>
+                                       Sign Up
+                                    </Button>
                                 </div>
                             </div>
                         }
@@ -90,4 +105,4 @@ const mapState = (state) => ({
     authState: state.authReducer
 });
   
-export default connect(mapState, {})(Auth)
+export default withStyles(styles)(connect(mapState, {})(Auth))

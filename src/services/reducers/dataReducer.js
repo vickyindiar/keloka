@@ -5,6 +5,7 @@ import {  CHANGE_TAB,
           GET_BRAND,
           GET_CATEGORY,
           GET_QTYTYPE,
+          GET_COLOR,
           TOOGLE_LOADING } from "../types/dataType";
 
 const initialState = {
@@ -16,6 +17,7 @@ const initialState = {
     dataBrand: [],
     dataCategory: [],
     dataQtytype: [],
+    dataColor: [],
     isLoading: true
  };
   export default function(state = initialState, action) {
@@ -62,6 +64,12 @@ const initialState = {
             columns: {...action.payload.columns },
             dataQtytype: {...action.payload.dataSource },
           }
+      case GET_COLOR:
+        return {
+          ...state,
+          columns: {...action.payload.columns },
+          dataColor: {...action.payload.dataSource },
+        }
       case TOOGLE_LOADING: 
         return{
             ...state,

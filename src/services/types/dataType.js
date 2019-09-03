@@ -6,6 +6,7 @@ export const GET_CUSTOMER = "GET_CUSTOMER";
 export const GET_BRAND = "GET_BRAND";
 export const GET_CATEGORY = "GET_CATEGORY";
 export const GET_QTYTYPE = "GET_QTYTYPE";
+export const GET_COLOR = "GET_COLOR";
 
 export const UPDATE_PRODUCT = "UPDATE_PRODUCT";
 export const UPDATE_SUPPLIER = "UPDATE_SUPPLIER";

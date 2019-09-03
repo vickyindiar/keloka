@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withStyles } from "@material-ui/core/styles";
-import { Grid, FormControl, InputLabel, Select, OutlinedInput, TextField } from '@material-ui/core';
+import { Grid, FormControl, InputLabel, Input, Select, OutlinedInput, TextField, InputAdornment } from '@material-ui/core';
 import { getData } from "../../services/actions/dataAction";
+import { DropzoneArea } from 'material-ui-dropzone'
 
 
 const styles = theme => ({
@@ -17,6 +18,14 @@ class FormProduct extends Component {
         this.state = {
             name:'',
             brand:'',
+            category: '',
+            sprice: '',
+            bprice: '',
+            stock:'',
+            qtytype: '',
+            supplier: '',
+            color: '',
+            image: '',
             labelWidth: 0,
             inputLabel : React.createRef()
         }
@@ -26,11 +35,8 @@ class FormProduct extends Component {
         e.preventDefault();
     }
 
-    handChangeBrand = (e) => {
-        alert(e.target.value);
-    }
-    handleClickBrand = () => {
-       
+    handleChange = prop => e => {
+       this.setState({ ...this.state, [prop]: e.target.value });
     }
 
     setLabelWidth = (v) =>{
@@ -39,33 +45,42 @@ class FormProduct extends Component {
 
     componentDidMount = () => {
         this.setLabelWidth(this.state.inputLabel.current.offsetWidth);
+        if(this.props.dt.dataSupplier.length === 0){
+            this.props.setDataSource(1);
+        }
         if(this.props.dt.dataBrand.length === 0){
           this.props.setDataSource(3);
-
         }
+        if(this.props.dt.dataCategory.length === 0){
+            this.props.setDataSource(4);
+        }
+        if(this.props.dt.dataQtytype.length === 0){
+            this.props.setDataSource(5);
+        }
+        if(this.props.dt.dataColor.length === 0){
+            this.props.setDataSource(6);
+        }
+   
     }
-
-
-
 
     render() {
         const { classes } = this.props;
-        const { dataProduct, dataSupplier, dataCustomer, dataBrand, dataCategory, dataQtytype } = this.props.dt;
+        const { dataSupplier, dataBrand, dataCategory, dataQtytype, dataColor } = this.props.dt;
         const { inputLabel } = this.state;
         return (
             <React.Fragment>        
             <form>
             <Grid container spacing={2}>
                 <Grid item xs={4}>
-                    <TextField id="name" label="Name" name="name" margin="dense" variant="outlined" />
+                    <TextField id="name" label="Name" name="name" margin="dense" variant="outlined" onChange={ (e) => { this.handleChange("name")(e) }}/>
                 </Grid>
                 <Grid item xs={4}>
                    <FormControl variant="outlined" className={classes.formControl} margin="dense">
-                        <InputLabel ref={inputLabel} htmlFor="outlined-merk-native-simple"> Merk </InputLabel>
+                        <InputLabel ref={inputLabel} htmlFor="outlined-brand-native-simple"> Merk </InputLabel>
 
-                        <Select native value={ this.state.brand } onChange={ this.handChangeBrand } onClick = {this.handleClickBrand} 
-                                input={<OutlinedInput name="merk" labelWidth={this.state.labelWidth} id="outlined-merk-native-simple"/> }> 
-                        <option value="" />>
+                        <Select native value={ this.state.brand }  onChange={ (e) => { this.handleChange("brand")(e) }}
+                                input={<OutlinedInput name="brand" labelWidth={this.state.labelWidth} id="outlined-brand-native-simple"/> }> 
+                        <option value="" />
                         {
                             Object.values(dataBrand).map((v, i) =>{
                                 return(
@@ -77,9 +92,106 @@ class FormProduct extends Component {
                     </FormControl>
                 </Grid>
                 <Grid item xs={4}>
-                    <TextField id="stock" label="Stock" name="stock" margin="dense" variant="outlined" />
+                    <FormControl variant="outlined" className={classes.formControl} margin="dense">
+                        <InputLabel ref={inputLabel} htmlFor="outlined-category-native-simple"> Kategori </InputLabel>
+
+                        <Select native value={ this.state.category } onChange={ (e) => { this.handleChange("brand")(e) }}
+                                input={<OutlinedInput name="category" labelWidth={this.state.labelWidth} id="outlined-category-native-simple"/> }> 
+                        <option value="" />
+                        {
+                            Object.values(dataCategory).map((v, i) =>{
+                                return(
+                                    <option value={v.id} key={i}> {v.name} </option>
+                                )
+                            })
+                        }
+                        </Select>
+                    </FormControl>
                 </Grid>
             </ Grid>
+            <Grid container spacing={2}>
+                <Grid item xs={4}>
+                <TextField
+                    id="outlined-adornment-sprice"
+                    variant="outlined"
+                    label="Jual"
+                    margin="dense"
+                    value={this.state.sprice}
+                    onChange={ (e) => { this.handleChange("sprice")(e) }}
+                    InputProps={{ startAdornment: <InputAdornment position="start">$</InputAdornment> }}
+                />
+                </Grid>
+                <Grid item xs={4}>
+                <TextField
+                    id="outlined-adornment-bprice"
+                    variant="outlined"
+                    label="Beli"
+                    margin="dense"
+                    value={this.state.bprice}
+                    onChange={ (e) => { this.handleChange("bprice")(e) }}
+                    InputProps={{ startAdornment: <InputAdornment position="start">$</InputAdornment> }}
+                />
+                </Grid>
+                <Grid item xs={2}>
+                 <TextField id="stock" label="Stok" name="stock" margin="dense" variant="outlined" onChange={ (e) => { this.handleChange("stock")(e) }}/>
+                </Grid>
+                <Grid item xs={2}>
+                    <FormControl variant="outlined" className={classes.formControl} margin="dense">
+                        <InputLabel ref={inputLabel} htmlFor="outlined-qtytype-native-simple"> Satuan </InputLabel>
+
+                        <Select native value={ this.state.qtytype } onChange={ (e) => { this.handleChange("qtytype")(e) }}
+                                input={<OutlinedInput name="qtytype" labelWidth={this.state.labelWidth} id="outlined-qtytype-native-simple"/> }> 
+                        <option value="" />
+                        {
+                            Object.values(dataQtytype).map((v, i) =>{
+                                return(
+                                    <option value={v.id} key={i}> {v.name} </option>
+                                )
+                            })
+                        }
+                        </Select>
+                    </FormControl>
+                </Grid>
+            </Grid>
+            <Grid container spacing={2}>
+                <Grid item xs={4}>
+                    <FormControl variant="outlined" className={classes.formControl} margin="dense">
+                        <InputLabel ref={inputLabel} htmlFor="outlined-supplier-native-simple"> Satuan </InputLabel>
+
+                        <Select native value={ this.state.supplier } onChange={ (e) => { this.handleChange("supplier")(e) }}
+                                input={<OutlinedInput name="supplier" labelWidth={this.state.labelWidth} id="outlined-supplier-native-simple"/> }> 
+                        <option value="" />
+                        {
+                            Object.values(dataSupplier).map((v, i) =>{
+                                return(
+                                    <option value={v.id} key={i}> {v.name} </option>
+                                )
+                            })
+                        }
+                        </Select>
+                    </FormControl>
+                </Grid>
+                <Grid item xs={4}>
+                    <FormControl variant="outlined" className={classes.formControl} margin="dense">
+                        <InputLabel ref={inputLabel} htmlFor="outlined-color-native-simple"> Satuan </InputLabel>
+
+                        <Select native value={ this.state.color } onChange={ (e) => { this.handleChange("color")(e) }}
+                                input={<OutlinedInput name="color" labelWidth={this.state.labelWidth} id="outlined-color-native-simple"/> }> 
+                        <option value="" />
+                        {
+                            Object.values(dataColor).map((v, i) =>{
+                                return(
+                                    <option value={v.id} key={i}> {v.name} </option>
+                                )
+                            })
+                        }
+                        </Select>
+                    </FormControl>
+                </Grid>
+            </Grid>
+            <Grid container spacing={2}>
+                    <DropzoneArea  onChange={(e) => { this.handleChange("image")(e) }} />
+            </Grid>
             </form>
             </React.Fragment>
         )

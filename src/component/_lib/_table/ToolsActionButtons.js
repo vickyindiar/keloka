@@ -84,32 +84,32 @@ export class ToolsActionButtons extends Component {
         return (
             <React.Fragment>
                 <ButtonGroup size="small" aria-label="small outlined button group">
-                        <Button variant="outlined" color="primary" onClick={(e) => this.handleClickOpen(e, 'Tambah')}>
-                            <Icon>playlist_add</Icon>
-                            TAMBAH
-                        </Button>
-                        <Button variant="outlined" className={classes.btnEdit} onClick={(e) => this.handleClickOpen(e, 'Ubah')}>
-                            <Icon>edit</Icon>
-                            UBAH
-                        </Button>
-                        <Button variant="outlined" color="secondary">
-                            <Icon>delete_forever</Icon>
-                            DELETE
-                        </Button>
+                    <Button variant="outlined" color="primary" onClick={(e) => this.handleClickOpen(e, 'Tambah')}>
+                        <Icon>playlist_add</Icon>
+                        TAMBAH
+                    </Button>
+                    <Button variant="outlined" className={classes.btnEdit} onClick={(e) => this.handleClickOpen(e, 'Ubah')}>
+                        <Icon>edit</Icon>
+                        UBAH
+                    </Button>
+                    <Button variant="outlined" color="secondary">
+                        <Icon>delete_forever</Icon>
+                        DELETE
+                    </Button>
                 </ButtonGroup>
 
                 <Dialog open={this.state.openModal} onClose={this.handleClose} aria-labelledby="form-dialog-title">
                     <DialogTitle id="form-dialog-title"> { this.state.titleModal } </DialogTitle>
-                    <DialogContent>
+                    <DialogContent dividers>
                         { this.props.children }
                     </DialogContent>
                     <DialogActions>
-                    <Button onClick={this.handleClose} color="primary">
-                        Cancel
-                    </Button>
-                    <Button onClick={this.handleClose} color="primary">
-                        Subscribe
-                    </Button>
+                        <Button onClick={this.handleClose} color="primary">
+                            Cancel
+                        </Button>
+                        <Button onClick={this.handleClose} color="primary">
+                            Subscribe
+                        </Button>
                     </DialogActions>
                 </Dialog>
             </React.Fragment>

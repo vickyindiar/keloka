@@ -4,7 +4,8 @@ import { CHANGE_TAB,
   GET_CUSTOMER,
   GET_BRAND,
   GET_CATEGORY,
-  GET_QTYTYPE
+  GET_QTYTYPE,
+  GET_COLOR
 } from "../types/dataType";
 import axios from 'axios';
 
@@ -87,6 +88,15 @@ const qtytypesTable =  {
   ]
 }
 
+const colorTable =  {
+  url : 'http://127.0.0.1:8000/api/color',
+  columns : [
+    { id: "number", field: "number", caption: "No.", align: "center", disablePadding: false },
+    { id: "name", field: "name", caption: "Nama", align: "center", disablePadding: true },
+    { id: "desc", field: "desc", caption: "Ket.", align: "center", disablePadding: false },
+  ]
+}
+
 const generateNumber = (dataSource) => {
   let number = 1;
   dataSource.forEach(d => { d.number = number++; });  
@@ -101,6 +111,7 @@ const getAction = (index, res, columns) => {
     else if(index === 3) { return { type: GET_BRAND, payload: { dataSource: generateNumber(res.data.data),    columns: columns, isLoading: false  } }; }
     else if(index === 4) { return { type: GET_CATEGORY, payload: { dataSource: generateNumber(res.data.data), columns: columns, isLoading: false  } }; }
     else if(index === 5) { return { type: GET_QTYTYPE, payload: { dataSource: generateNumber(res.data.data),  columns: columns, isLoading: false  } }; }
+    else if(index === 6) { return { type: GET_COLOR, payload:  { dataSource: generateNumber(res.data.data),    columns: columns, isLoading: false  } }; }
     else return {}
 }
 
@@ -121,6 +132,7 @@ export const getData = (tab) => dispatch => {
      else if(tab === 3) { url = brandsTable.url; columns = brandsTable.columns; }
      else if(tab === 4) { url = categoriesTable.url; columns = categoriesTable.columns; }
      else if(tab === 5) { url = qtytypesTable.url; columns = qtytypesTable.columns; }
+     else if(tab === 6) { url = colorTable.url; columns = colorTable.columns; }
      else { url = productsTable.url; columns = productsTable.columns; }
     axios.get(url, config).then(res =>{
         if(res.status === 200){

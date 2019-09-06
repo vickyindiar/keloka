@@ -111,7 +111,7 @@ const getAction = (index, res, columns) => {
     else if(index === 3) { return { type: GET_BRAND, payload: { dataSource: generateNumber(res.data.data),    columns: columns, isLoading: false  } }; }
     else if(index === 4) { return { type: GET_CATEGORY, payload: { dataSource: generateNumber(res.data.data), columns: columns, isLoading: false  } }; }
     else if(index === 5) { return { type: GET_QTYTYPE, payload: { dataSource: generateNumber(res.data.data),  columns: columns, isLoading: false  } }; }
-    else if(index === 6) { return { type: GET_COLOR, payload:  { dataSource: generateNumber(res.data.data),    columns: columns, isLoading: false  } }; }
+    else if(index === 6) { return { type: GET_COLOR, payload:  { dataSource: generateNumber(res.data.data),   columns: columns, isLoading: false  } }; }
     else return {}
 }
 

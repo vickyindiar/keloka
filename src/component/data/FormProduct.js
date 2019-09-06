@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withStyles } from "@material-ui/core/styles";
-import { Grid, FormControl, InputLabel, Input, Select, OutlinedInput, TextField, InputAdornment } from '@material-ui/core';
+import { Grid, FormControl, InputLabel, Select, OutlinedInput, TextField, InputAdornment } from '@material-ui/core';
 import { getData } from "../../services/actions/dataAction";
-import { DropzoneArea } from 'material-ui-dropzone'
-
+import { DropzoneArea } from 'material-ui-dropzone';
+import { TOOGLE_LOADING } from '../../services/types/dataType';
+import LoadingDot from "../_lib/_spinner/LoadingDot";
 
 const styles = theme => ({
     formControl: {
@@ -27,7 +28,7 @@ class FormProduct extends Component {
             color: '',
             image: '',
             labelWidth: 0,
-            inputLabel : React.createRef()
+            inputLabel : React.createRef(),
         }
     }
 
@@ -44,6 +45,7 @@ class FormProduct extends Component {
     }
 
     componentDidMount = () => {
+        this.props.showLoading(true);
         this.setLabelWidth(this.state.inputLabel.current.offsetWidth);
         if(this.props.dt.dataSupplier.length === 0){
             this.props.setDataSource(1);
@@ -60,15 +62,18 @@ class FormProduct extends Component {
         if(this.props.dt.dataColor.length === 0){
             this.props.setDataSource(6);
         }
-   
+        setTimeout(() => {
+            this.props.showLoading(false);
+        }, 5000);
     }
 
     render() {
         const { classes } = this.props;
-        const { dataSupplier, dataBrand, dataCategory, dataQtytype, dataColor } = this.props.dt;
+        const { dataSupplier, dataBrand, dataCategory, dataQtytype, dataColor, isLoading } = this.props.dt;
         const { inputLabel } = this.state;
         return (
-            <React.Fragment>        
+            <React.Fragment> 
+            { isLoading && <LoadingDot nclass="form-modal"/> }       
             <form>
             <Grid container spacing={2}>
                 <Grid item xs={4}>
@@ -173,7 +178,7 @@ class FormProduct extends Component {
                 </Grid>
                 <Grid item xs={4}>
                     <FormControl variant="outlined" className={classes.formControl} margin="dense">
-                        <InputLabel ref={inputLabel} htmlFor="outlined-color-native-simple"> Satuan </InputLabel>
+                        <InputLabel ref={inputLabel} htmlFor="outlined-color-native-simple"> Warna </InputLabel>
 
                         <Select native value={ this.state.color } onChange={ (e) => { this.handleChange("color")(e) }}
                                 input={<OutlinedInput name="color" labelWidth={this.state.labelWidth} id="outlined-color-native-simple"/> }> 
@@ -190,7 +195,7 @@ class FormProduct extends Component {
                 </Grid>
             </Grid>
             <Grid container spacing={2}>
-                    <DropzoneArea  onChange={(e) => { this.handleChange("image")(e) }} />
+                    <DropzoneArea  onChange={(e) => { this.handleChange("image")(e) }} showPreviewsInDropzone={false} />
             </Grid>
             </form>
             </React.Fragment>
@@ -201,7 +206,7 @@ const propsState = state => ({ dt : state.dataReducer });
 
 const propsAction = dispatch => ({
     setDataSource: tab => dispatch(getData(tab)), 
-   // showLoading: () => dispatch({type: TOOGLE_LOADING, payload: true}) 
+    showLoading: (v) => dispatch({type: TOOGLE_LOADING, payload: v}) 
 });
 
 export default withStyles(styles)(connect( propsState , propsAction)(FormProduct))

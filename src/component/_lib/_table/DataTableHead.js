@@ -29,21 +29,20 @@ class DataTableHead extends React.Component {
     };
 
     selectAllHandler = (e) => {
-      alert('nyoh');
-      //this.props.onSelectAllClick(e);
+      this.props.onSelectAllClick(e);
     }
-
+    
     render() {
       const { classes, columns, dataSource } = this.props;
       const { order, orderBy, selected } = this.props.dataConfig;
-      const rowCount = dataSource.length;
+      const rowCount = Object.values(dataSource).length;
       return (
         <TableHead >
           <TableRow > 
             <TableCell padding="checkbox"  className={classes.root} >
               <Checkbox
                 indeterminate={selected.length > 0 && selected.length < rowCount}
-                checked={selected.length === rowCount && rowCount > 0}
+                checked={selected.length === Object.values(dataSource).length && rowCount > 0 }
                 onChange={this.selectAllHandler }
                 className={classes.cell}
               />

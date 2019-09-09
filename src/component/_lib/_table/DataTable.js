@@ -67,6 +67,7 @@ class DataTable extends React.Component {
       order: "asc",
       orderBy: "",
       selected: [],
+      selectedAll: false,
       page: 0,
       rowsPerPage: 7,
       selectTable: false,
@@ -88,10 +89,10 @@ class DataTable extends React.Component {
 
   handleSelectAllClick = event => {
     if (event.target.checked) {
-      this.setState(state => ({ selected: this.state.dataSource.map(n => n.id) }));
+      this.setState({ selected: Object.values(this.state.dataSource).map(n => n.id), selectedAll : !this.state.selectedAll });
       return;
     }
-    this.setState({ selected: [] });
+    this.setState({ selected: [], selectedAll: false });
   };
 
   handleClick = (event, id) => {
@@ -158,6 +159,9 @@ class DataTable extends React.Component {
       filtered = [];
     }
     this.setState({ dataSource: filtered });
+    if(this.state.selectedAll){
+      this.setState({ selected: Object.values(filtered).map(n => n.id)});
+    }
   };
   isSelected = id => this.state.selected.indexOf(id) !== -1;
   
@@ -173,13 +177,13 @@ class DataTable extends React.Component {
 
         { isLoading && <LoadingDot nclass="data-table"/> }
 
-        <DataTableTools dataState={this.state} onFilterChanged={this.handleFilterChange}>
+        <DataTableTools dataConfig={this.state} onFilterChanged={this.handleFilterChange}>
           { this.props.children }
         </DataTableTools>
 
         <div className={classes.tableWrapper}>
           <Table className={classes.table} aria-labelledby="tableTitle">
-            <DataTableHead  dataConfig={this.state} columns={columns} dataSource={dataSource} onSelectAllClick={this.handleSelectAllClick} onRequestSort={this.handleRequestSort} />
+            <DataTableHead dataConfig={this.state} columns={columns} dataSource={dataSource} onSelectAllClick={this.handleSelectAllClick.bind(this)} onRequestSort={this.handleRequestSort} />
             <TableBody>
               {
                 slicingData.map((n, i) => {

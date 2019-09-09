@@ -30,36 +30,12 @@ const styles = theme => ({
     },
 });
 
-// const CssTextField = withStyles({
-//     root: {
-//       '& label.Mui-focused': {
-//         color: 'green',
-//       },
-//       '& .MuiInput-underline:after': {
-//         borderBottomColor: 'green',
-//       },
-//       '& .MuiOutlinedInput-root': {
-//         '& fieldset': {
-//           borderColor: 'red',
-//         },
-//         '&:hover fieldset': {
-//           borderColor: 'yellow',
-//         },
-//         '&.Mui-focused fieldset': {
-//           borderColor: 'green',
-//         },
-//       },
-//     },
-//   })(TextField);
-  
-
-
 export class ToolsActionButtons extends Component {
     constructor(props){
         super(props);
         this.state = {
             openModal : false,
-            titleModal: ''
+            titleModal: '',
         }
     }
 
@@ -79,26 +55,28 @@ export class ToolsActionButtons extends Component {
         this.setOpen(false);
     }
 
+
+
     render() {
-        const { classes } = this.props;
+        const { classes, selected } = this.props;
         return (
             <React.Fragment>
                 <ButtonGroup size="small" aria-label="small outlined button group">
-                    <Button variant="outlined" color="primary" onClick={(e) => this.handleClickOpen(e, 'Tambah')}>
+                    <Button variant="outlined" color="primary" onClick={(e) => this.handleClickOpen(e, 'Tambah')} disabled={false}>
                         <Icon>playlist_add</Icon>
                         TAMBAH
                     </Button>
-                    <Button variant="outlined" className={classes.btnEdit} onClick={(e) => this.handleClickOpen(e, 'Ubah')}>
+                    <Button variant="outlined" className={classes.btnEdit} onClick={(e) => this.handleClickOpen(e, 'Ubah')} disabled={!selected.length > 0}>
                         <Icon>edit</Icon>
                         UBAH
                     </Button>
-                    <Button variant="outlined" color="secondary">
+                    <Button variant="outlined" color="secondary" disabled={!selected.length > 0}>
                         <Icon>delete_forever</Icon>
                         DELETE
                     </Button>
                 </ButtonGroup>
 
-                <Dialog open={this.state.openModal} onClose={this.handleClose} aria-labelledby="form-dialog-title">
+                <Dialog open={this.state.openModal} onClose={this.handleClose} aria-labelledby="form-dialog-title" maxWidth={'md'}>
                     <DialogTitle id="form-dialog-title"> { this.state.titleModal } </DialogTitle>
                     <DialogContent dividers>
                         { this.props.children }

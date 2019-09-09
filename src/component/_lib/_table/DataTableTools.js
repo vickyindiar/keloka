@@ -75,7 +75,8 @@ const toolbarStyles = theme => ({
 
 class DataTableTools extends React.Component {
   state = {
-    valueSearch: ""
+    valueSearch: "",
+    dataSet: this.props.dataSet
   };
 
   FilterChange = e => {
@@ -84,7 +85,7 @@ class DataTableTools extends React.Component {
   };
   render() {
     const { classes } = this.props;
-    const { selected, title } = this.props.dataState;
+    const { selected, title } = this.props.dataConfig;
 
     const showFilterSearch = (
       <div className={classes.search}>
@@ -133,7 +134,7 @@ class DataTableTools extends React.Component {
             </div>
           </a>
         </div> */}
-        <ToolsActionButtons>
+        <ToolsActionButtons selected={selected}>
           {this.props.children}
         </ToolsActionButtons>
         {showFilterSearch}

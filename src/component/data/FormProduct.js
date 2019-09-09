@@ -6,11 +6,20 @@ import { getData } from "../../services/actions/dataAction";
 import { DropzoneArea } from 'material-ui-dropzone';
 import { TOOGLE_LOADING } from '../../services/types/dataType';
 import LoadingDot from "../_lib/_spinner/LoadingDot";
+import { minHeight } from '@material-ui/system';
+import { NONAME } from 'dns';
 
 const styles = theme => ({
     formControl: {
         width: '100%'
     },
+    containerDrozone:{
+        height: '30%',
+        minHeight: '106px',
+        marginTop: '10px',
+        border: 'none'
+
+    }
 });
 
 class FormProduct extends Component {
@@ -77,14 +86,14 @@ class FormProduct extends Component {
             <form>
             <Grid container spacing={2}>
                 <Grid item xs={4}>
-                    <TextField id="name" label="Name" name="name" margin="dense" variant="outlined" onChange={ (e) => { this.handleChange("name")(e) }}/>
+                    <TextField className={classes.formControl} id="name" label="Name" name="name" margin="dense" variant="outlined" onChange={ (e) => { this.handleChange("name")(e) }}/>
                 </Grid>
                 <Grid item xs={4}>
                    <FormControl variant="outlined" className={classes.formControl} margin="dense">
                         <InputLabel ref={inputLabel} htmlFor="outlined-brand-native-simple"> Merk </InputLabel>
 
                         <Select native value={ this.state.brand }  onChange={ (e) => { this.handleChange("brand")(e) }}
-                                input={<OutlinedInput name="brand" labelWidth={this.state.labelWidth} id="outlined-brand-native-simple"/> }> 
+                                input={<OutlinedInput name="brand" labelWidth={40} id="outlined-brand-native-simple"/> }> 
                         <option value="" />
                         {
                             Object.values(dataBrand).map((v, i) =>{
@@ -101,7 +110,7 @@ class FormProduct extends Component {
                         <InputLabel ref={inputLabel} htmlFor="outlined-category-native-simple"> Kategori </InputLabel>
 
                         <Select native value={ this.state.category } onChange={ (e) => { this.handleChange("brand")(e) }}
-                                input={<OutlinedInput name="category" labelWidth={this.state.labelWidth} id="outlined-category-native-simple"/> }> 
+                                input={<OutlinedInput name="category" labelWidth={75} id="outlined-category-native-simple"/> }> 
                         <option value="" />
                         {
                             Object.values(dataCategory).map((v, i) =>{
@@ -123,7 +132,7 @@ class FormProduct extends Component {
                     margin="dense"
                     value={this.state.sprice}
                     onChange={ (e) => { this.handleChange("sprice")(e) }}
-                    InputProps={{ startAdornment: <InputAdornment position="start">$</InputAdornment> }}
+                    InputProps={{ startAdornment: <InputAdornment position="start">Rp.</InputAdornment> }}
                 />
                 </Grid>
                 <Grid item xs={4}>
@@ -134,7 +143,7 @@ class FormProduct extends Component {
                     margin="dense"
                     value={this.state.bprice}
                     onChange={ (e) => { this.handleChange("bprice")(e) }}
-                    InputProps={{ startAdornment: <InputAdornment position="start">$</InputAdornment> }}
+                    InputProps={{ startAdornment: <InputAdornment position="start">Rp.</InputAdornment> }}
                 />
                 </Grid>
                 <Grid item xs={2}>
@@ -145,7 +154,7 @@ class FormProduct extends Component {
                         <InputLabel ref={inputLabel} htmlFor="outlined-qtytype-native-simple"> Satuan </InputLabel>
 
                         <Select native value={ this.state.qtytype } onChange={ (e) => { this.handleChange("qtytype")(e) }}
-                                input={<OutlinedInput name="qtytype" labelWidth={this.state.labelWidth} id="outlined-qtytype-native-simple"/> }> 
+                                input={<OutlinedInput name="qtytype" labelWidth={60} id="outlined-qtytype-native-simple"/> }> 
                         <option value="" />
                         {
                             Object.values(dataQtytype).map((v, i) =>{
@@ -161,10 +170,10 @@ class FormProduct extends Component {
             <Grid container spacing={2}>
                 <Grid item xs={4}>
                     <FormControl variant="outlined" className={classes.formControl} margin="dense">
-                        <InputLabel ref={inputLabel} htmlFor="outlined-supplier-native-simple"> Satuan </InputLabel>
+                        <InputLabel ref={inputLabel} htmlFor="outlined-supplier-native-simple"> Pemasok </InputLabel>
 
                         <Select native value={ this.state.supplier } onChange={ (e) => { this.handleChange("supplier")(e) }}
-                                input={<OutlinedInput name="supplier" labelWidth={this.state.labelWidth} id="outlined-supplier-native-simple"/> }> 
+                                input={<OutlinedInput name="supplier" labelWidth={78} id="outlined-supplier-native-simple"/> }> 
                         <option value="" />
                         {
                             Object.values(dataSupplier).map((v, i) =>{
@@ -181,7 +190,7 @@ class FormProduct extends Component {
                         <InputLabel ref={inputLabel} htmlFor="outlined-color-native-simple"> Warna </InputLabel>
 
                         <Select native value={ this.state.color } onChange={ (e) => { this.handleChange("color")(e) }}
-                                input={<OutlinedInput name="color" labelWidth={this.state.labelWidth} id="outlined-color-native-simple"/> }> 
+                                input={<OutlinedInput name="color" labelWidth={57} id="outlined-color-native-simple"/> }> 
                         <option value="" />
                         {
                             Object.values(dataColor).map((v, i) =>{
@@ -195,7 +204,30 @@ class FormProduct extends Component {
                 </Grid>
             </Grid>
             <Grid container spacing={2}>
-                    <DropzoneArea  onChange={(e) => { this.handleChange("image")(e) }} showPreviewsInDropzone={false} />
+                <Grid item xs={4}>
+                    <TextField
+                        className={classes.formControl}
+                        id="desc"
+                        label="Keterangan"
+                        // className={}
+                        margin="dense"
+                        variant="outlined"
+                        multiline
+                        defaultValue=" "
+                        rows="4"
+                        rowsMax="4"
+                    />
+                </Grid>
+                <Grid item xs={4}>
+                    <DropzoneArea
+                        onChange={(e) => { this.handleChange("image")(e) }} 
+                        showPreviewsInDropzone={true} 
+                        acceptedFiles={['image/jpeg', 'image/png', 'image/bmp']}
+                        maxFileSize={5000000}
+                        dropzoneClass={classes.containerDrozone}
+                        dropzoneText={'Tarik Gambar Atau Klik'}
+                    />
+                </Grid>  
             </Grid>
             </form>
             </React.Fragment>

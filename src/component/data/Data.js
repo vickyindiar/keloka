@@ -55,7 +55,7 @@ export class Data extends Component {
               <SwipeableViews index={value} onChangeIndex={this.handleChangeIndex}>
                 <div id="tabpanel-0" aria-labelledby="tab-0" value={value}  hidden={value !== 0} index={0} key={0}  >
                   <DataTable title="Data Barang" columns={columns}  dataSource={dataProduct} isLoading={isLoading}  key={0} >
-                     <FormProduct title="Barang"/>
+                      <FormProduct title="Barang" />
                    </DataTable>
                 </div>
                 <div id="tabpanel-1" aria-labelledby="tab-1" value={value}  hidden={value !== 1} index={1} key={1}  >

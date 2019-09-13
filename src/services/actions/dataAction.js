@@ -148,7 +148,12 @@ export const getData = (tab) => dispatch => {
 
 export const changeTabIndex = tab => dispatch => {
      dispatch({ type: CHANGE_TAB, payload: { tabActive: tab, isLoading: false } });
-  };
+};
+
+
+export const storeData = () => dispatch => {
+
+}
 
 
   

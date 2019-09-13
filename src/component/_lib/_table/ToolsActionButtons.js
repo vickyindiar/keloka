@@ -36,6 +36,7 @@ export class ToolsActionButtons extends Component {
         this.state = {
             openModal : false,
             titleModal: '',
+            isSubmited: false
         }
     }
 
@@ -55,8 +56,14 @@ export class ToolsActionButtons extends Component {
         this.setOpen(false);
     }
 
+    handleOnSubmit = (e) => {
+        e.preventDefault();
+        this.setState({isSubmited: true});
+    }
 
-
+    submitDone = () => {
+        this.setState({isSubmited: false});
+    }
     render() {
         const { classes, selected } = this.props;
         return (
@@ -72,24 +79,29 @@ export class ToolsActionButtons extends Component {
                     </Button>
                     <Button variant="outlined" color="secondary" disabled={!selected.length > 0}>
                         <Icon>delete_forever</Icon>
-                        DELETE
+                        HAPUS
                     </Button>
                 </ButtonGroup>
 
                 <Dialog open={this.state.openModal} onClose={this.handleClose} aria-labelledby="form-dialog-title" maxWidth={'md'}>
+                    <form onSubmit={this.handleOnSubmit}>
                     <DialogTitle id="form-dialog-title"> { this.state.titleModal } </DialogTitle>
                     <DialogContent dividers>
-                        { this.props.children }
+                         { 
+                             this.props.children !== undefined &&
+                             React.cloneElement(this.props.children, { isSubmited: this.state.isSubmited, submitDone: () => this.submitDone() }) } 
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={this.handleClose} color="primary">
-                            Cancel
+                            Batal
                         </Button>
-                        <Button onClick={this.handleClose} color="primary">
-                            Subscribe
+                        <Button type="submit" color="primary">
+                            Simpan
                         </Button>
                     </DialogActions>
+                    </form>
                 </Dialog>
+         
             </React.Fragment>
         )
     }

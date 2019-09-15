@@ -36,7 +36,7 @@ export class ToolsActionButtons extends Component {
         this.state = {
             openModal : false,
             titleModal: '',
-            isSubmited: false
+            isSubmited: false,
         }
     }
 
@@ -62,10 +62,21 @@ export class ToolsActionButtons extends Component {
     }
 
     submitDone = () => {
-        this.setState({isSubmited: false});
+        this.setState({isSubmited: false} , () => { this.handleClose() });
     }
+
+    handleDelete = (e) =>{
+        this.props.doDelete(this.props.selected);
+    }
+
+
     render() {
         const { classes, selected } = this.props;
+        const dialogProps = {
+            isSubmited : this.state.isSubmited,
+            submitDone : () => this.submitDone(),
+
+        }
         return (
             <React.Fragment>
                 <ButtonGroup size="small" aria-label="small outlined button group">
@@ -77,7 +88,7 @@ export class ToolsActionButtons extends Component {
                         <Icon>edit</Icon>
                         UBAH
                     </Button>
-                    <Button variant="outlined" color="secondary" disabled={!selected.length > 0}>
+                    <Button variant="outlined" color="secondary" disabled={!selected.length > 0} onClick={(e) => this.handleDelete(e) }>
                         <Icon>delete_forever</Icon>
                         HAPUS
                     </Button>
@@ -87,9 +98,10 @@ export class ToolsActionButtons extends Component {
                     <form onSubmit={this.handleOnSubmit}>
                     <DialogTitle id="form-dialog-title"> { this.state.titleModal } </DialogTitle>
                     <DialogContent dividers>
-                         { 
+                        { 
                              this.props.children !== undefined &&
-                             React.cloneElement(this.props.children, { isSubmited: this.state.isSubmited, submitDone: () => this.submitDone() }) } 
+                             React.cloneElement(this.props.children, { ...dialogProps }) 
+                        } 
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={this.handleClose} color="primary">

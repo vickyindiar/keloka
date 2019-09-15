@@ -5,12 +5,13 @@ import { CHANGE_TAB,
   GET_BRAND,
   GET_CATEGORY,
   GET_QTYTYPE,
-  GET_COLOR
+  GET_COLOR,
 } from "../types/dataType";
 import axios from 'axios';
 
 const productsTable =  {
     url : 'http://127.0.0.1:8000/api/product', 
+    urlDeleteAll : 'http://127.0.0.1:8000/api/productDeleteAll', 
     columns : [
       { id: "number", field: "number", caption: "No.", align: "center", disablePadding: false },
       { id: "name", field: "name", caption: "Nama", align: "center", disablePadding: true },
@@ -97,14 +98,19 @@ const colorTable =  {
   ]
 }
 
-const generateNumber = (dataSource) => {
-  let number = 1;
-  dataSource.forEach(d => { d.number = number++; });  
-  return dataSource;
-}
 
+export const changeTabIndex = tab => dispatch => {
+  dispatch({ type: CHANGE_TAB, payload: { tabActive: tab, isLoading: false } });
+};
 
 const getAction = (index, res, columns) => {
+
+    const generateNumber = (dataSource) => {
+      let number = 1;
+      dataSource.forEach(d => { d.number = number++; });  
+      return dataSource;
+    }
+
     if(index === 0)      { return { type: GET_PRODUCT, payload: { dataSource: generateNumber(res.data.data),  columns: columns, isLoading: false  } }; } 
     else if(index === 1) { return { type: GET_SUPPLIER, payload: { dataSource: generateNumber(res.data.data), columns: columns, isLoading: false  } }; } 
     else if(index === 2) { return { type: GET_CUSTOMER, payload: { dataSource: generateNumber(res.data.data), columns: columns, isLoading: false  } }; }
@@ -146,13 +152,89 @@ export const getData = (tab) => dispatch => {
     });
 }
 
-export const changeTabIndex = tab => dispatch => {
-     dispatch({ type: CHANGE_TAB, payload: { tabActive: tab, isLoading: false } });
-};
+
+export const storeData = (tab, param) => dispatch => {
+  let url = '';
+  let token = localStorage.getItem('jwt');
+  let config = {
+    headers: { Authorization: token },
+   }
+   if(tab === 0) {      url = productsTable.url;  } 
+   else if(tab === 1) { url = suppliersTable.url; } 
+   else if(tab === 2) { url = customersTable.url; }
+   else if(tab === 3) { url = brandsTable.url;    }
+   else if(tab === 4) { url = categoriesTable.url;}
+   else if(tab === 5) { url = qtytypesTable.url;  }
+   else if(tab === 6) { url = colorTable.url;     }
+   else {               url = productsTable.url;  }
+
+    axios.post(url, param, config).then(res => {
+      if(res.status === 201){
+        dispatch(getData(tab));
+      }else{
+        console.log('error store data !');
+      }
+    })
+    .catch(err => {
+      console.log('error store data !');
+    })
+}
 
 
-export const storeData = () => dispatch => {
+export const deleteData = (tab, param ) => dispatch => {
+  let url = '';
+  let token = localStorage.getItem('jwt');
+  let config = {
+    headers: {
+        'Accept' : 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: token
+      },
+   }
+   if(tab === 0) {      url = productsTable.url;  } 
+   else if(tab === 1) { url = suppliersTable.url; } 
+   else if(tab === 2) { url = customersTable.url; }
+   else if(tab === 3) { url = brandsTable.url;    }
+   else if(tab === 4) { url = categoriesTable.url;}
+   else if(tab === 5) { url = qtytypesTable.url;  }
+   else if(tab === 6) { url = colorTable.url;     }
+   else {               url = productsTable.url;  }
 
+   const deleteOne = () => {
+    axios.delete(url+'/'+param, config).then(res => {
+      if(res.status === 200){
+        dispatch(getData(tab));
+      }else{
+        console.log('error delete data !');
+      }
+    })
+    .catch(err => {
+      console.log('error delete data !');
+    })
+   }
+
+   const deleteAll = () => {
+    let cUrl = `${url}DeleteMany`;
+    axios.delete(cUrl, param, config).then(res => {
+      if(res.status === 200){
+        dispatch(getData(tab));
+      }else{
+        console.log('error delete data !');
+      }
+    })
+    .catch(err => {
+      console.log('error delete data !');
+    })
+   }
+
+   if(typeof(param) === 'object'){
+     deleteAll();
+   }
+   else{
+     deleteOne();
+   }
+
+   
 }
 
 

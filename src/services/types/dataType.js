@@ -14,6 +14,7 @@ export const STORE_CUSTOMER = "STORE_CUSTOMER";
 export const STORE_BRAND    = "STORE_BRAND";
 export const STORE_CATEGORY = "STORE_CATEGORY";
 export const STORE_QTYTYPE  = "STORE_QTYTYPE";
+export const STORE_COLOR = "GET_COLOR";
 
 export const UPDATE_PRODUCT = "UPDATE_PRODUCT";
 export const UPDATE_SUPPLIER = "UPDATE_SUPPLIER";

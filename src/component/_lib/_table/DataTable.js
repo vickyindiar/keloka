@@ -171,13 +171,30 @@ class DataTable extends React.Component {
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, Object.values(dataSource).length - page * rowsPerPage);
     const sortingData = stableSort(dataSource, getSorting(order, orderBy));
     const slicingData = sortingData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+
+    const cell = (n, i) => {
+      let component = [];
+      Object.values(columns).map((col, index) => {
+        if( typeof(n[col.field]) === 'object' && n[col.field] !== null){
+          component.push( <TableCell align="center" key={col.id+index}> { n[col.field].name } </TableCell> );
+        }
+        else if( (col.field === 'image' || col.field === 'photo') && n[col.field] !== null){
+          component.push( <TableCell align="center" key={col.id+index}> <img alt="harus disini ada gambar" height="70" width="70" src={`http://127.0.0.1:8000${n[col.field] }`}></img> </TableCell> );
+        }
+        else{
+          component.push( <TableCell align="center" key={col.id+index}> {  n[col.field] } </TableCell> );
+        }
+       });
+       return component;
+    }
+
+
     return (
-  
       <Paper className={classes.root}>
 
         { isLoading && <LoadingDot nclass="data-table"/> }
 
-        <DataTableTools dataConfig={this.state} onFilterChanged={this.handleFilterChange}>
+        <DataTableTools dataConfig={this.state} onFilterChanged={this.handleFilterChange} doDelete={(selected) => this.props.doDelete(selected) }>
           { this.props.children }
         </DataTableTools>
 
@@ -194,13 +211,7 @@ class DataTable extends React.Component {
                        <Checkbox checked={isSelected} />
                     </TableCell>
                     {
-                      Object.values(columns).map((col, index) => {
-                       return <TableCell align="center" key={col.id+index}> 
-                                {
-                                 typeof(n[col.field]) === 'object' && n[col.field] !== null ? n[col.field].name : n[col.field]
-                                }
-                              </TableCell>;
-                      })
+                        cell(n, i)
                     }
                   </TableRow>
                 );

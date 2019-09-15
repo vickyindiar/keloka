@@ -50,7 +50,7 @@ class DataTableHead extends React.Component {
             {
               Object.values(columns).map(
               row => (
-                <TableCell  className={classes.root} key={row.id}  align={row.align}  padding="none" /* padding={row.disablePadding ? 'none' : 'default'} */ sortDirection={orderBy === row.id ? order : false} >
+                <TableCell className={classes.root} key={row.id}  align={row.align}  padding="none" /* padding={row.disablePadding ? 'none' : 'default'} */ sortDirection={orderBy === row.id ? order : false} variant="head" >
                     <TableSortLabel className={classes.root}  active={orderBy === row.id} direction={order} onClick={this.createSortHandler(row.id)} >
                       {row.caption}
                     </TableSortLabel>

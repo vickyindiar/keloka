@@ -4,13 +4,14 @@ import { withStyles } from "@material-ui/core/styles";
 import { Grid, FormControl, InputLabel, FormControlLabel, Select, OutlinedInput,
          TextField, InputAdornment, IconButton, Icon, DialogContent, Box,
          Switch,  } from '@material-ui/core';
-import { getData } from "../../services/actions/dataAction";
-import { DropzoneArea } from 'material-ui-dropzone';
+import { getData, storeData } from "../../services/actions/dataAction";
 import { TOOGLE_LOADING } from '../../services/types/dataType';
 import LoadingDot from "../_lib/_spinner/LoadingDot";
-
-import { minHeight } from '@material-ui/system';
-import { NONAME } from 'dns';
+import { FilePond, registerPlugin } from 'react-filepond';
+import 'filepond/dist/filepond.min.css';
+// import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation'
+import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
+import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css'
 
 const styles = theme => ({
     formControl: {
@@ -26,6 +27,8 @@ const styles = theme => ({
         border: 'none'
     }
 });
+
+registerPlugin(FilePondPluginImagePreview)
 
 class FormProduct extends Component {
     constructor(props){
@@ -71,6 +74,9 @@ class FormProduct extends Component {
         else if(prop === 'isMultiple'){
             this.setState({ ...this.state, [prop]: e.target.checked } );   
         }
+        else if(prop === 'image'){
+            this.setState({ ...this.state, [prop]: e[0].file } ); 
+        }
         else{
             this.setState({ ...this.state, [prop]: e.target.value } ); 
         }
@@ -82,7 +88,19 @@ class FormProduct extends Component {
 
 
     doSubmit = () => {
-        console.log('do submit');
+        const paramater = new FormData();
+        paramater.append('name', this.state.name);
+        paramater.append('brand', this.state.brand);
+        paramater.append('category', this.state.category);
+        paramater.append('sprice', this.state.sprice);
+        paramater.append('bprice', this.state.bprice);
+        paramater.append('stock', this.state.stock);
+        paramater.append('qtytype', this.state.qtytype);
+        paramater.append('supplier', this.state.supplier);
+        paramater.append('color', this.state.color);
+        paramater.append('desc', this.state.desc);
+        paramater.append('image', this.state.image);
+        this.props.storeDataSource(this.props.dt.tabActive, paramater)
     }
 
     static getDerivedStateFromProps(nextProps, prevState){
@@ -103,7 +121,6 @@ class FormProduct extends Component {
     }
 
     componentDidMount = () => {
-        console.log(this.props.isSubmited);
         this.props.showLoading(true);
         this.setLabelWidth(this.state.inputLabel.current.offsetWidth);
         if(this.props.dt.dataSupplier.length === 0){
@@ -158,7 +175,7 @@ class FormProduct extends Component {
                     <FormControl variant="outlined" className={classes.formControl} margin="dense">
                         <InputLabel ref={inputLabel} htmlFor="outlined-category"> Kategori </InputLabel>
 
-                        <Select native value={ this.state.category } onChange={ (e) => { this.handleChange("brand")(e) }} input={<OutlinedInput name="category" labelWidth={75} id="outlined-category"/> }> 
+                        <Select native value={ this.state.category } onChange={ (e) => { this.handleChange("category")(e) }} input={<OutlinedInput name="category" labelWidth={75} id="outlined-category"/> }> 
                         <option value="" />
                         {
                             Object.values(dataCategory).map((v, i) =>{
@@ -268,17 +285,22 @@ class FormProduct extends Component {
                         rows="4"
                         rowsMax="4"
                         value={this.state.desc}
+                        onChange={ (e) => { this.handleChange("desc")(e) }} 
                     />
                 </Grid>
                 <Grid item xs={4}>
-                    <DropzoneArea
+                    {/* <DropzoneArea
                         onChange={(e) => { this.handleChange("image")(e) }} 
                         showPreviewsInDropzone={true} 
                         acceptedFiles={['image/jpeg', 'image/png', 'image/bmp']}
                         maxFileSize={5000000}
                         dropzoneClass={classes.containerDrozone}
                         dropzoneText={'Tarik Gambar Atau Klik'}
-                    />
+                    /> */}
+                      <FilePond
+                      onupdatefiles={  (e) => { this.handleChange("image")(e) }}
+                      labelIdle='Tarik Gambar Atau <span class="filepond--label-action">Klik </span>'
+                      />
                 </Grid>  
             </Grid>
             <Box m={4} />
@@ -299,10 +321,8 @@ class FormProduct extends Component {
                             </div>
                         )
                     }
-                   
                 </Grid>
             </DialogContent>
-            
             </React.Fragment>
         )
     }
@@ -311,7 +331,8 @@ const propsState = state => ({ dt : state.dataReducer });
 
 const propsAction = dispatch => ({
     setDataSource: tab => dispatch(getData(tab)), 
+    storeDataSource: (tab, data) => dispatch(storeData(tab, data)),
     showLoading: (v) => dispatch({type: TOOGLE_LOADING, payload: v}) 
 });
 
-export default withStyles(styles)(connect( propsState , propsAction)(FormProduct))
+export default withStyles(styles)(connect(propsState , propsAction)(FormProduct))

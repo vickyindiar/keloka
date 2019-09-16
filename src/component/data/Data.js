@@ -4,7 +4,7 @@ import Header from '../template/Header';
 import SwipeableViews from "react-swipeable-views";
 import { AppBar, Tabs, Tab } from "@material-ui/core";
 import { connect } from "react-redux";
-import { changeTabIndex, getData } from "../../services/actions/dataAction";
+import { changeTabIndex, getData, deleteData } from "../../services/actions/dataAction";
 import { TOOGLE_LOADING } from '../../services/types/dataType';
 
 import DataTable from "../_lib/_table/DataTable";
@@ -33,6 +33,17 @@ export class Data extends Component {
 
     handleChangeIndex = index => { this.setState({ value: index }); };
 
+    doDelete = (selected) => {
+      let paramater = '';
+      if(selected.length === 1){ paramater = Number(selected[0]); } //delete One
+      else if(selected.length > 1) { //delete all
+        paramater = {
+          id: [...selected]
+        }
+      }
+      this.props.deleteDataSource(this.props.dt.tabActive, paramater);
+    }
+
     render() {
       const { value } = this.state;
       const { columns, dataProduct, dataSupplier, dataCustomer, dataBrand, dataCategory, dataQtytype, isLoading } = this.props.dt;
@@ -54,8 +65,8 @@ export class Data extends Component {
               </AppBar>
               <SwipeableViews index={value} onChangeIndex={this.handleChangeIndex}>
                 <div id="tabpanel-0" aria-labelledby="tab-0" value={value}  hidden={value !== 0} index={0} key={0}  >
-                  <DataTable title="Data Barang" columns={columns}  dataSource={dataProduct} isLoading={isLoading}  key={0} >
-                     <FormProduct title="Barang"/>
+                  <DataTable title="Data Barang" columns={columns}  dataSource={dataProduct} isLoading={isLoading} doDelete={(selected) => { this.doDelete(selected) }}  key={0} >
+                      <FormProduct title="Barang" />
                    </DataTable>
                 </div>
                 <div id="tabpanel-1" aria-labelledby="tab-1" value={value}  hidden={value !== 1} index={1} key={1}  >
@@ -89,6 +100,7 @@ const propsState = state => ({ dt : state.dataReducer });
 const propsAction = dispatch => ({
  setTabActive: tab => dispatch(changeTabIndex(tab)),
  setDataSource: tab => dispatch(getData(tab)), 
+ deleteDataSource: (tab, data) => dispatch(deleteData(tab, data)), 
  showLoading: () => dispatch({type: TOOGLE_LOADING, payload: true}) 
 });
 

@@ -134,7 +134,7 @@ class DataTableTools extends React.Component {
             </div>
           </a>
         </div> */}
-        <ToolsActionButtons selected={selected}>
+        <ToolsActionButtons selected={selected} doDelete={(selected) => this.props.doDelete(selected) }>
           {this.props.children}
         </ToolsActionButtons>
         {showFilterSearch}

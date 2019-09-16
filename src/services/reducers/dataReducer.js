@@ -6,6 +6,14 @@ import {  CHANGE_TAB,
           GET_CATEGORY,
           GET_QTYTYPE,
           GET_COLOR,
+
+          STORE_PRODUCT,
+          STORE_SUPPLIER,
+          STORE_CUSTOMER,
+          STORE_BRAND,
+          STORE_CATEGORY,
+          STORE_QTYTYPE,
+          STORE_COLOR,
           TOOGLE_LOADING } from "../types/dataType";
 
 const initialState = {
@@ -68,8 +76,52 @@ const initialState = {
         return {
           ...state,
           columns: {...action.payload.columns },
+          dataColor: {...action.payload.dataSource,  },
+        }
+      
+
+      case STORE_PRODUCT:
+        return{
+          ...state,
+          dataProduct: Object.assign(state.dataProduct, action.payload)
+        }
+      case STORE_SUPPLIER:
+        return {
+          ...state,
+          columns: {...action.payload.columns },
+          dataSupplier: {...action.payload.dataSource },
+        }
+      case STORE_CUSTOMER:
+        return {
+          ...state,
+          columns: {...action.payload.columns },
+          dataCustomer: {...action.payload.dataSource },
+        }
+      case STORE_BRAND:
+        return {
+          ...state,
+          columns: {...action.payload.columns },
+          dataBrand: {...action.payload.dataSource },
+        }
+      case STORE_CATEGORY: 
+        return {
+          ...state,
+          columns: {...action.payload.columns },
+          dataCategory: {...action.payload.dataSource },
+        }
+      case STORE_QTYTYPE:
+          return {
+            ...state,
+            columns: {...action.payload.columns },
+            dataQtytype: {...action.payload.dataSource },
+          }
+      case STORE_COLOR:
+        return {
+          ...state,
+          columns: {...action.payload.columns },
           dataColor: {...action.payload.dataSource },
         }
+
       case TOOGLE_LOADING: 
         return{
             ...state,

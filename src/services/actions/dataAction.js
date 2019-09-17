@@ -214,8 +214,8 @@ export const deleteData = (tab, param ) => dispatch => {
    }
 
    const deleteAll = () => {
-    let cUrl = `${url}DeleteMany`;
-    axios.delete(cUrl, param, config).then(res => {
+    let cUrl = `${url}Deletemany`;
+    axios.delete(cUrl, config).then(res => {
       if(res.status === 200){
         dispatch(getData(tab));
       }else{
@@ -228,6 +228,7 @@ export const deleteData = (tab, param ) => dispatch => {
    }
 
    if(typeof(param) === 'object'){
+     config.data = param;
      deleteAll();
    }
    else{

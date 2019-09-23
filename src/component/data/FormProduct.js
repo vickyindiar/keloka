@@ -10,8 +10,8 @@ import LoadingDot from "../_lib/_spinner/LoadingDot";
 import { FilePond, registerPlugin } from 'react-filepond';
 import 'filepond/dist/filepond.min.css';
 // import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation'
-import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
-import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css'
+import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
+import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
 
 const styles = theme => ({
     formControl: {
@@ -121,31 +121,31 @@ class FormProduct extends Component {
     }
 
     componentDidMount = () => {
-        this.props.showLoading(true);
+       // this.props.showLoading(true);
         this.setLabelWidth(this.state.inputLabel.current.offsetWidth);
-        if(this.props.dt.dataSupplier.length === 0){
+        if(this.props.dR.dataSupplier.length === 0){
             this.props.setDataSource(1);
         }
-        if(this.props.dt.dataBrand.length === 0){
+        if(this.props.dR.dataBrand.length === 0){
           this.props.setDataSource(3);
         }
-        if(this.props.dt.dataCategory.length === 0){
+        if(this.props.dR.dataCategory.length === 0){
             this.props.setDataSource(4);
         }
-        if(this.props.dt.dataQtytype.length === 0){
+        if(this.props.dR.dataQtytype.length === 0){
             this.props.setDataSource(5);
         }
-        if(this.props.dt.dataColor.length === 0){
+        if(this.props.dR.dataColor.length === 0){
             this.props.setDataSource(6);
         }
         setTimeout(() => {
-            this.props.showLoading(false);
+       //     this.props.showLoading(false);
         }, 3000);
     }
 
     render() {
         const { classes } = this.props;
-        const { dataSupplier, dataBrand, dataCategory, dataQtytype, dataColor, isLoading } = this.props.dt;
+        const { dataSupplier, dataBrand, dataCategory, dataQtytype, dataColor, isLoading } = this.props.dR;
         const { inputLabel } = this.state;
         return (
             <React.Fragment> 
@@ -289,14 +289,6 @@ class FormProduct extends Component {
                     />
                 </Grid>
                 <Grid item xs={4}>
-                    {/* <DropzoneArea
-                        onChange={(e) => { this.handleChange("image")(e) }} 
-                        showPreviewsInDropzone={true} 
-                        acceptedFiles={['image/jpeg', 'image/png', 'image/bmp']}
-                        maxFileSize={5000000}
-                        dropzoneClass={classes.containerDrozone}
-                        dropzoneText={'Tarik Gambar Atau Klik'}
-                    /> */}
                       <FilePond
                       onupdatefiles={  (e) => { this.handleChange("image")(e) }}
                       labelIdle='Tarik Gambar Atau <span class="filepond--label-action">Klik </span>'
@@ -327,7 +319,7 @@ class FormProduct extends Component {
         )
     }
 }
-const propsState = state => ({ dt : state.dataReducer });
+const propsState = state => ({ dR : state.dataReducer });
 
 const propsAction = dispatch => ({
     setDataSource: tab => dispatch(getData(tab)), 

@@ -5,8 +5,10 @@ import SwipeableViews from "react-swipeable-views";
 import { AppBar, Tabs, Tab } from "@material-ui/core";
 import { connect } from "react-redux";
 import { changeTabIndex, getData, deleteData } from "../../services/actions/dataAction";
-import { TOOGLE_LOADING } from '../../services/types/dataType';
+import { setDataTable } from '../../services/actions/tableAction';
 
+import { TOOGLE_LOADING } from '../../services/types/dataType';
+import LoadingDot from "../_lib/_spinner/LoadingDot";
 import DataTable from "../_lib/_table/DataTable";
 import FormProduct from './FormProduct';
 import FormSupplier from './FormSupplier';
@@ -20,15 +22,19 @@ export class Data extends Component {
     }
 
     componentDidMount = () =>{
-      if(this.props.dt.tabActive === -1){
+      if(this.props.dR.tabActive === -1){
+        this.props.showLoading();
         this.props.setTabActive(0);
-        this.props.setDataSource(0);
+        this.props.getData(0, (d, c) => this.props.setDataTable(d, c) );
       }
     }
 
     handleChange = (event, newValue) => {
       this.props.showLoading(); 
-      this.setState({ value: newValue }, this.props.setTabActive(newValue), this.props.setDataSource(newValue)); 
+      this.setState({ value: newValue }, 
+        this.props.setTabActive(newValue),
+        this.props.getData(newValue, (d, c) => this.props.setDataTable(d, c))
+      ); 
     };
 
     handleChangeIndex = index => { this.setState({ value: index }); };
@@ -44,9 +50,35 @@ export class Data extends Component {
       this.props.deleteDataSource(this.props.dt.tabActive, paramater);
     }
 
+
+
     render() {
       const { value } = this.state;
-      const { columns, dataProduct, dataSupplier, dataCustomer, dataBrand, dataCategory, dataQtytype, isLoading } = this.props.dt;
+      const { isLoading } = this.props.dR;
+
+      const loadElement = (load, value, tab) =>{
+        if(load){
+          return ( <LoadingDot nclass="data-table"/> )
+        }
+        else{
+          if(tab === 0){
+            return (value === tab) && ( 
+              <DataTable title="Data Barang" key={tab} >
+                <FormProduct />
+              </DataTable>
+               )
+          }
+          else{
+            return (value === tab) && ( 
+              <DataTable title="Data Barang" key={tab} >
+                <FormProduct />
+              </DataTable>
+               )
+          }
+        }
+      }
+
+
     return (
       <React.Fragment>
       <div className="content-container data">
@@ -64,27 +96,35 @@ export class Data extends Component {
                 </Tabs>
               </AppBar>
               <SwipeableViews index={value} onChangeIndex={this.handleChangeIndex}>
-                <div id="tabpanel-0" aria-labelledby="tab-0" value={value}  hidden={value !== 0} index={0} key={0}  >
-                  <DataTable title="Data Barang" columns={columns}  dataSource={dataProduct} isLoading={isLoading} doDelete={(selected) => { this.doDelete(selected) }}  key={0} >
-                      <FormProduct title="Barang" />
-                   </DataTable>
+                <div id="tabpanel-0" aria-labelledby="tab-0" value={value}  hidden={value !== 0} index={0} key={0} >
+                  {
+                    loadElement(isLoading, value, 0)
+                  }
                 </div>
                 <div id="tabpanel-1" aria-labelledby="tab-1" value={value}  hidden={value !== 1} index={1} key={1}  >
-                  <DataTable title="Data Supplier" columns={columns} dataSource={dataSupplier} isLoading={isLoading} key={1}>
-                   <FormSupplier />
-                  </DataTable>
+                  {
+                    loadElement(isLoading, value, 1)
+                  }
                 </div>
                 <div id="tabpanel-2" aria-labelledby="tab-2" value={value}  hidden={value !== 2} index={2} key={2}  >
-                  <DataTable title="Data Pelanggan" columns={columns} dataSource={dataCustomer} isLoading={isLoading} key={2}  />
+                  {
+                    loadElement(isLoading, value, 2)
+                  }
                 </div>
                 <div id="tabpanel-3" aria-labelledby="tab-3" value={value}  hidden={value !== 3} index={3} key={3}  >
-                  <DataTable title="Data Merk" columns={columns} dataSource={dataBrand} isLoading={isLoading} key={3}  />
+                  {
+                    loadElement(isLoading, value, 3)
+                  }
                 </div>
                 <div id="tabpanel-4" aria-labelledby="tab-4" value={value}  hidden={value !== 4} index={4} key={4}  >
-                  <DataTable title="Data Kategori" columns={columns} dataSource={dataCategory} isLoading={isLoading} key={4}  />
+                  {
+                    loadElement(isLoading, value, 4)
+                  }
                 </div>
                 <div id="tabpanel-5" aria-labelledby="tab-5" value={value}  hidden={value !== 5} index={5} key={5}  >
-                  <DataTable title="Data Satuan" columns={columns} dataSource={dataQtytype} isLoading={isLoading} key={5}  />
+                  {
+                    loadElement(isLoading, value, 5)
+                  }
                 </div>
               </SwipeableViews>
           </div>
@@ -95,11 +135,15 @@ export class Data extends Component {
   }
 }
 
-const propsState = state => ({ dt : state.dataReducer });
+const propsState = state => ({ 
+  dR: state.dataReducer,
+  tR: state.tableReducer 
+});
 
 const propsAction = dispatch => ({
  setTabActive: tab => dispatch(changeTabIndex(tab)),
- setDataSource: tab => dispatch(getData(tab)), 
+ getData: (tab, callback) => dispatch(getData(tab, callback)), 
+ setDataTable: (data, columns) => dispatch(setDataTable(data, columns)),
  deleteDataSource: (tab, data) => dispatch(deleteData(tab, data)), 
  showLoading: () => dispatch({type: TOOGLE_LOADING, payload: true}) 
 });

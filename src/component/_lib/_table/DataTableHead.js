@@ -8,14 +8,12 @@ import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 // import Tooltip from '@material-ui/core/Tooltip';
 import red from '@material-ui/core/colors/red';
+import { selectAll, handleSort } from '../../../services/actions/tableAction'
+import { connect } from 'react-redux';
 
 const style = theme => ({
     root:{
          backgroundColor: red[100]
-        // color: theme.palette.common.white,
-        // '&:hover': {
-        //   color: red,
-        // },
     },
     cell:{
         color: theme.palette.common.white,
@@ -23,18 +21,10 @@ const style = theme => ({
 })
 
 class DataTableHead extends React.Component {
-
-    createSortHandler = property => event => {
-      this.props.onRequestSort(event, property);
-    };
-
-    selectAllHandler = (e) => {
-      this.props.onSelectAllClick(e);
-    }
     
     render() {
-      const { classes, columns, dataSource } = this.props;
-      const { order, orderBy, selected } = this.props.dataConfig;
+      const { classes } = this.props;
+      const { dataSource, columns, order, orderBy, selected } = this.props.tR;
       const rowCount = Object.values(dataSource).length;
       return (
         <TableHead >
@@ -43,7 +33,7 @@ class DataTableHead extends React.Component {
               <Checkbox
                 indeterminate={selected.length > 0 && selected.length < rowCount}
                 checked={selected.length === Object.values(dataSource).length && rowCount > 0 }
-                onChange={this.selectAllHandler }
+                onChange={(e) => this.props.selectAll(e.target.checked) }
                 className={classes.cell}
               />
             </TableCell>
@@ -51,7 +41,7 @@ class DataTableHead extends React.Component {
               Object.values(columns).map(
               row => (
                 <TableCell className={classes.root} key={row.id}  align={row.align}  padding="none" /* padding={row.disablePadding ? 'none' : 'default'} */ sortDirection={orderBy === row.id ? order : false} variant="head" >
-                    <TableSortLabel className={classes.root}  active={orderBy === row.id} direction={order} onClick={this.createSortHandler(row.id)} >
+                    <TableSortLabel className={classes.root}  active={orderBy === row.id} direction={order} onClick={() => { this.props.handleSort(row.id) }} >
                       {row.caption}
                     </TableSortLabel>
                 </TableCell>
@@ -72,5 +62,14 @@ DataTableHead.propTypes = {
   // orderBy: PropTypes.string.isRequired,
   // rowCount: PropTypes.number.isRequired,
 };
+
+const propsState = state => ({
+  tR : state.tableReducer
+})
+
+const propsAction = dispatch => ({
+  selectAll: (checked) => dispatch(selectAll(checked)),
+  handleSort: (p) => dispatch(handleSort(p)),
+});
   
-export default withStyles(style)(DataTableHead)
+export default withStyles(style)(connect(propsState, propsAction)(DataTableHead))

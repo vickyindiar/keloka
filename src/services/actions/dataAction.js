@@ -1,4 +1,5 @@
 import { CHANGE_TAB, 
+  OPEN_MODAL,
   GET_PRODUCT,
   GET_SUPPLIER,
   GET_CUSTOMER,
@@ -6,6 +7,7 @@ import { CHANGE_TAB,
   GET_CATEGORY,
   GET_QTYTYPE,
   GET_COLOR,
+  TOOGLE_LOADING
 } from "../types/dataType";
 import axios from 'axios';
 
@@ -100,17 +102,16 @@ const colorTable =  {
 
 
 export const changeTabIndex = tab => dispatch => {
-  dispatch({ type: CHANGE_TAB, payload: { tabActive: tab, isLoading: false } });
+  dispatch({ type: CHANGE_TAB, payload: { tabActive: tab } });
 };
 
+const generateNumber = (dataSource) => {
+  let number = 1;
+  dataSource.forEach(d => { d.number = number++; });  
+  return dataSource;
+}
+
 const getAction = (index, res, columns) => {
-
-    const generateNumber = (dataSource) => {
-      let number = 1;
-      dataSource.forEach(d => { d.number = number++; });  
-      return dataSource;
-    }
-
     if(index === 0)      { return { type: GET_PRODUCT, payload: { dataSource: generateNumber(res.data.data),  columns: columns, isLoading: false  } }; } 
     else if(index === 1) { return { type: GET_SUPPLIER, payload: { dataSource: generateNumber(res.data.data), columns: columns, isLoading: false  } }; } 
     else if(index === 2) { return { type: GET_CUSTOMER, payload: { dataSource: generateNumber(res.data.data), columns: columns, isLoading: false  } }; }
@@ -121,7 +122,7 @@ const getAction = (index, res, columns) => {
     else return {}
 }
 
-export const getData = (tab) => dispatch => {
+export const getData = (tab, callback) => (dispatch, getState) => {
     let columns = [];
     let url = '';
     let token = localStorage.getItem('jwt');
@@ -142,7 +143,9 @@ export const getData = (tab) => dispatch => {
      else { url = productsTable.url; columns = productsTable.columns; }
     axios.get(url, config).then(res =>{
         if(res.status === 200){
-          dispatch(getAction(tab, res, columns));
+          dispatch({type: TOOGLE_LOADING, payload: false})
+          dispatch(getAction(tab, res, columns))
+          .then(callback(generateNumber(res.data.data), columns))
         }else{
           console.log('error get data !');
         }
@@ -233,9 +236,11 @@ export const deleteData = (tab, param ) => dispatch => {
    }
    else{
      deleteOne();
-   }
+   }   
+}
 
-   
+export const handleOpenModal = (v) => dispatch => {
+  return dispatch({ type: OPEN_MODAL, payload: v})
 }
 
 

@@ -8,7 +8,8 @@ import { lighten } from "@material-ui/core/styles/colorManipulator";
 import { fade } from "@material-ui/core/styles/colorManipulator";
 import SearchIcon from "@material-ui/icons/Search";
 import ToolsActionButtons from '../../_lib/_table/ToolsActionButtons';
-
+import { connect } from 'react-redux';
+import { handleFilter } from '../../../services/actions/tableAction';
 const toolbarStyles = theme => ({
   root: { paddingRight: theme.spacing() },
   highlight:
@@ -74,18 +75,10 @@ const toolbarStyles = theme => ({
 });
 
 class DataTableTools extends React.Component {
-  state = {
-    valueSearch: "",
-    dataSet: this.props.dataSet
-  };
 
-  FilterChange = e => {
-    this.setState({ valueSearch: e.target.value });
-    this.props.onFilterChanged(e.target.value);
-  };
   render() {
     const { classes } = this.props;
-    const { selected, title } = this.props.dataConfig;
+    const { selected, title } = this.props.tR;
 
     const showFilterSearch = (
       <div className={classes.search}>
@@ -95,8 +88,8 @@ class DataTableTools extends React.Component {
         <input 
           id="search-input"
           placeholder="Search"
-          value={this.state.valueSearch}
-          onChange={this.FilterChange}
+          value={this.props.tR.valueSearch}
+          onChange={(e) => this.props.changeFilter(e.target.value)}
           type="text"
           className="search-field"
           name="q"
@@ -106,11 +99,6 @@ class DataTableTools extends React.Component {
         <label htmlFor="search-input" />
       </div>
     ); 
-
-    document.addEventListener("DOMContentLoaded", function() {
-      // var elems = document.querySelectorAll(".tooltipped");
-      // var instances = M.Tooltip.init(elems);
-    });
 
     return (
       <Toolbar className={classNames(classes.root, {[classes.highlight]: selected.length > 0 })} >
@@ -147,4 +135,12 @@ DataTableTools.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(toolbarStyles)(DataTableTools);
+const propsState = state => ({
+  tR : state.tableReducer
+})
+
+const propsAction = dispatch => ({
+    changeFilter: (value) => dispatch(handleFilter(value))
+});
+
+export default withStyles(toolbarStyles)(connect(propsState, propsAction)(DataTableTools));

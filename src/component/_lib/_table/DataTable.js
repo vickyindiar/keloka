@@ -1,7 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import "../../../styles/sass/component/_lib/_table/_dataTable.scss";
+import {connect} from 'react-redux';
 import { withStyles } from "@material-ui/core/styles";
+import { handlePage, handleRowPage, handleRowClick } from '../../../services/actions/tableAction'
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -11,7 +13,8 @@ import Paper from "@material-ui/core/Paper";
 import Checkbox from "@material-ui/core/Checkbox";
 import DataTableTools from "./DataTableTools";
 import DataTableHead from "./DataTableHead";
-import LoadingDot from "../_spinner/LoadingDot";
+
+
 
 function desc(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -57,121 +60,12 @@ const styles = theme => ({
 });
 
 class DataTable extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      title: this.props.title,
-      prevDataSource: [],
-      dataSource: [],
-      columns: [],
-      order: "asc",
-      orderBy: "",
-      selected: [],
-      selectedAll: false,
-      page: 0,
-      rowsPerPage: 7,
-      selectTable: false,
-      showFilter: true,
-      isLoading: this.props.isLoading,
-    };
-  }
-
-  handleRequestSort = (event, property) => {
-    const orderBy = property;
-    let order = "desc";
-
-    if (this.state.orderBy === property && this.state.order === "desc") {
-      order = "asc";
-    }
-
-    this.setState({ order, orderBy });
-  };
-
-  handleSelectAllClick = event => {
-    if (event.target.checked) {
-      this.setState({ selected: Object.values(this.state.dataSource).map(n => n.id), selectedAll : !this.state.selectedAll });
-      return;
-    }
-    this.setState({ selected: [], selectedAll: false });
-  };
-
-  handleClick = (event, id) => {
-    const { selected } = this.state;
-    const selectedIndex = selected.indexOf(id);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-
-    this.setState({ selected: newSelected });
-  };
-
-  handleChangePage = (event, page) => {
-    this.setState({ page });
-  };
-
-  handleChangeRowsPerPage = event => {
-    this.setState({ rowsPerPage: event.target.value });
-  };
-
-  static getDerivedStateFromProps(nextProps, prevState){
-    if (JSON.stringify(nextProps.dataSource) !== JSON.stringify(prevState.prevDataSource)) {
-        return { 
-          prevDataSource: nextProps.dataSource,
-          dataSource: nextProps.dataSource, 
-          columns: nextProps.columns 
-        };
-    }
-    else return null; // Triggers no change in the state
-  }
-
-  handleFilterChange = (value) => {
-    let filtered = [];
-    let cols = [];
-    let { dataSource, columns } = this.props;
-
-    for(var prop in columns){ 
-      cols.push(columns[prop].field);
-    }
-    if ( Object.values(dataSource).length > 0) {
-      filtered = Object.values(dataSource).filter(e => {
-        return Object.keys(e).some(s => {
-          if (cols.includes(s)) {
-            if(e[s] === undefined || e[s] === null){  return false;  }
-            else if(typeof(e[s]) === 'object'){return e[s].name.toString().toUpperCase().includes(value.toString().toUpperCase()); }
-            else{ return e[s].toString().toUpperCase().includes(value.toString().toUpperCase()); }
-          } else {
-            return false;
-          }
-        });
-      });
-    } else {
-      filtered = [];
-    }
-    this.setState({ dataSource: filtered });
-    if(this.state.selectedAll){
-      this.setState({ selected: Object.values(filtered).map(n => n.id)});
-    }
-  };
-  isSelected = id => this.state.selected.indexOf(id) !== -1;
-  
   render() {
-    const { classes, isLoading } = this.props;
-    const { rowsPerPage, page, order, orderBy, dataSource, columns } = this.state;
+    const { classes } = this.props;
+    const { dataSource, columns, selected, rowsPerPage, page, order, orderBy } = this.props.tR;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, Object.values(dataSource).length - page * rowsPerPage);
     const sortingData = stableSort(dataSource, getSorting(order, orderBy));
     const slicingData = sortingData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
-
     const cell = (n, i) => {
       let component = [];
       Object.values(columns).map((col, index) => {
@@ -179,7 +73,7 @@ class DataTable extends React.Component {
           component.push( <TableCell align="center" key={col.id+index}> { n[col.field].name } </TableCell> );
         }
         else if( (col.field === 'image' || col.field === 'photo') && n[col.field] !== null){
-          component.push( <TableCell align="center" key={col.id+index}> <img alt="harus disini ada gambar" height="70" width="70" src={`http://127.0.0.1:8000${n[col.field] }`}></img> </TableCell> );
+          component.push( <TableCell align="center" key={col.id+index}> <img alt="harusnya disini ada gambar" height="70" width="70" src={`http://127.0.0.1:8000${n[col.field] }`}></img> </TableCell> );
         }
         else{
           component.push( <TableCell align="center" key={col.id+index}> {  n[col.field] } </TableCell> );
@@ -188,25 +82,23 @@ class DataTable extends React.Component {
        return component;
     }
 
-
+    
     return (
       <Paper className={classes.root}>
 
-        { isLoading && <LoadingDot nclass="data-table"/> }
-
-        <DataTableTools dataConfig={this.state} onFilterChanged={this.handleFilterChange} doDelete={(selected) => this.props.doDelete(selected) }>
-          { this.props.children }
-        </DataTableTools>
+        <DataTableTools  doDelete={(selected) => this.props.doDelete(selected) }> { this.props.children } </DataTableTools>
 
         <div className={classes.tableWrapper}>
           <Table className={classes.table} aria-labelledby="tableTitle">
-            <DataTableHead dataConfig={this.state} columns={columns} dataSource={dataSource} onSelectAllClick={this.handleSelectAllClick.bind(this)} onRequestSort={this.handleRequestSort} />
+
+            <DataTableHead />
+            
             <TableBody>
               {
                 slicingData.map((n, i) => {
-                const isSelected = this.isSelected(n.id);
+                const isSelected = selected.indexOf(n.id) !== -1;
                 return (
-                  <TableRow hover role="checkbox" key={n.id} tabIndex={-1} onClick={event => this.handleClick(event, n.id)} aria-checked={isSelected} selected={isSelected} >
+                  <TableRow hover role="checkbox" key={n.id} tabIndex={-1} onClick={event => this.props.rowClick(n.id)} aria-checked={isSelected} selected={isSelected} >
                     <TableCell padding="checkbox" key={`checkbox-row-${i}`}>
                        <Checkbox checked={isSelected} />
                     </TableCell>
@@ -228,15 +120,15 @@ class DataTable extends React.Component {
           </Table>
         </div>
         <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
+          rowsPerPageOptions={[10, 15, 20, 25]}
           component="div"
           count={Object.values(dataSource).length}
           rowsPerPage={rowsPerPage}
           page={page}
           backIconButtonProps={{ "aria-label": "Previous Page" }}
           nextIconButtonProps={{ "aria-label": "Next Page" }}
-          onChangePage={this.handleChangePage}
-          onChangeRowsPerPage={this.handleChangeRowsPerPage}
+          onChangePage={(e, p) =>  this.props.changePage(p)}
+          onChangeRowsPerPage={(e) => this.props.changeRowPage(e.target.value)}
         />
       </Paper>
     );
@@ -247,4 +139,14 @@ DataTable.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(DataTable);
+const propsState = state => ({
+  tR : state.tableReducer
+})
+
+const propsAction = dispatch => ({
+    changePage: (page) => dispatch(handlePage(page)), 
+    changeRowPage: (value) => dispatch(handleRowPage(value)),
+    rowClick: (value) => dispatch(handleRowClick(value)),
+});
+
+export default withStyles(styles)(connect(propsState, propsAction)(DataTable));

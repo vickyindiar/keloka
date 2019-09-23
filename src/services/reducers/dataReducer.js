@@ -1,4 +1,6 @@
-import {  CHANGE_TAB, 
+import {  CHANGE_TAB,
+          OPEN_MODAL, 
+          
           GET_PRODUCT,
           GET_SUPPLIER,
           GET_CUSTOMER,
@@ -26,7 +28,9 @@ const initialState = {
     dataCategory: [],
     dataQtytype: [],
     dataColor: [],
-    isLoading: true
+    isLoading: false,
+
+    openModal: false,
  };
   export default function(state = initialState, action) {
     switch (action.type) {
@@ -34,7 +38,11 @@ const initialState = {
         return {
           ...state,
           tabActive: action.payload.tabActive,
-          isLoading: action.payload.isLoading
+        }
+      case OPEN_MODAL:
+        return {
+          ...state,
+          openModal: action.payload
         }
       case GET_PRODUCT:
         return{

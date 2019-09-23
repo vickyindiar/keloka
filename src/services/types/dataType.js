@@ -1,4 +1,5 @@
 export const CHANGE_TAB = "CHANGE_TAB";
+export const OPEN_MODAL = "OPEN_MODAL";
 
 export const GET_PRODUCT = "GET_PRODUCT";
 export const GET_SUPPLIER = "GET_SUPPLIER";

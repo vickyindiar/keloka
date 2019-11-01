@@ -4,7 +4,8 @@ import { withStyles } from "@material-ui/core/styles";
 import { Grid, FormControl, InputLabel, FormControlLabel, Select, OutlinedInput,
          TextField, InputAdornment, IconButton, Icon, DialogContent, Box,
          Switch,  } from '@material-ui/core';
-import { getData, storeData } from "../../services/actions/dataAction";
+import { getData, storeData,  } from "../../services/actions/dataAction";
+import { updateForm } from '../../services/actions/tableAction';
 import { TOOGLE_LOADING } from '../../services/types/dataType';
 import LoadingDot from "../_lib/_spinner/LoadingDot";
 import { FilePond, registerPlugin } from 'react-filepond';
@@ -48,7 +49,9 @@ class FormProduct extends Component {
             labelWidth: 0,
             inputLabel : React.createRef(),
             isMultiple: false,
-            isSubmited: false,
+            pgInput: 1,
+            dafaultState: {},
+            validationMsg : ''
         }
     }
 
@@ -64,65 +67,138 @@ class FormProduct extends Component {
         return Number(value);
     }
 
+    validationPgInput = () => {
+        let result = false;
+        if(this.state.name === ''){ result = 'Nama tidak boleh dikosongkan !'}
+        else if(this.state.brand === ''){ result =  'Merk tidak boleh dikosongkan !'}
+        else if(this.state.category === ''){ result =  'Kategori tidak boleh dikosongkan !' }
+        else if(this.state.sprice === ''){ result =  'Harga Jual tidak boleh dikosongkan !'}
+        else if(this.state.bprice === ''){ result =  'Harga Beli tidak boleh dikosongkan !'}
+        else if(this.state.stock === ''){ result =  'Stock tidak boleh dikosongkan !'}
+        else if(this.state.qtytype === ''){result =  'Satuan tidak boleh dikosongkan !' }
+        else if(this.state.supplier === ''){ result =  'Pemasok tidak boleh dikosongkan !'}
+        return result;
+    }
+
+    resetAllState = () => {
+        this.setState({
+            name:'',
+            brand:'',
+            category: '',
+            sprice: '',
+            bprice: '',
+            stock:'',
+            qtytype: '',
+            supplier: '',
+            color: '',
+            desc:'',
+            image: ''
+        });
+    }
+
+    handleAddPgInput = (e) => {
+        if(this.state.pgInput > 4){
+            alert('tidak bisa tambah data lebih dari 5 record !')
+        }
+        else{
+            let isValid = this.validationPgInput();
+            if(!isValid){
+                this.setState({...this.state, pgInput: this.state.pgInput + 1 },
+                () => { 
+                 //   this.props.0({...this.state});
+                    this.resetAllState();
+                }); 
+            }
+            else{
+                alert(isValid);
+            }
+        }        
+    }
+
+    handleDelPgInput = (e) => {
+        if(this.props.tR.cDataStore.hasOwnProperty((this.state.pgInput).toString())){
+            
+        }
+    }
+
+
+    handleBackPgInput = (e) => {
+        const { cDataStore } = this.props.tR;
+        debugger;
+        const callback = () => {
+            let row = {...cDataStore[this.state.pgInput.toString()]}
+            this.setState({...row });
+        }
+
+        if(this.state.pgInput - 1 > 0){
+            this.setState({pgInput: this.state.pgInput - 1}, () => { callback(); } )
+        }
+        else{
+            e.preventDefault();
+        }
+
+    }
+
+    handleNextPgInput = (e) => {
+
+        const callback = () => {
+            let row = {...this.props.tR.cDataStore[this.state.pgInput.toString()]}
+            this.setState({...row });
+        }
+
+        if(this.props.tR.cDataStore.hasOwnProperty( (this.state.pgInput + 1).toString())){
+            if(this.state.pgInput + 1 < 6){
+                this.setState({pgInput: this.state.pgInput + 1}, () => { callback(); } )
+            }
+            else{
+                e.preventDefault();
+            }
+        }
+    }
 
     handleChange = prop => e => {
         let numberField = ['sprice', 'bprice', 'stock', 'pgInput'];
-
+        let isValid = this.validationPgInput();
         if(numberField.includes(prop)){
-            this.setState({...this.state, [prop]: this.validationNumber(e) } );
+            if(prop === 'pgInput'){
+                if(!isValid){
+                    this.setState({...this.state, [prop]: this.validationNumber(e) }, 
+                    () => { 
+                        this.props.updateFormProduct({...this.state});
+                        setTimeout(() => {
+                          this.resetAllState();
+                        }, 50);
+                    });
+                }
+                else{
+                    e.preventDefault();
+                    alert(isValid);
+                }
+            }
+            else{
+                this.setState({...this.state, [prop]: this.validationNumber(e) }, ()=>{ this.props.updateFormProduct({...this.state}) });
+
+            }
         }
         else if(prop === 'isMultiple'){
-            this.setState({ ...this.state, [prop]: e.target.checked } );   
+            this.setState({ ...this.state, [prop]: e.target.checked }, ()=>{ this.props.updateFormProduct({...this.state}) });   
         }
         else if(prop === 'image'){
-            this.setState({ ...this.state, [prop]: e[0].file } ); 
+            this.setState({ ...this.state, [prop]: e[0].file }, ()=>{ this.props.updateFormProduct({...this.state}) } ); 
         }
         else{
-            this.setState({ ...this.state, [prop]: e.target.value } ); 
-        }
+            this.setState({ ...this.state, [prop]: e.target.value }, ()=>{ this.props.updateFormProduct({...this.state}) } ); 
+        }   
     }
 
     setLabelWidth = (v) =>{
         this.setState({ labelWidth : v });
     }
 
-
-    doSubmit = () => {
-        const paramater = new FormData();
-        paramater.append('name', this.state.name);
-        paramater.append('brand', this.state.brand);
-        paramater.append('category', this.state.category);
-        paramater.append('sprice', this.state.sprice);
-        paramater.append('bprice', this.state.bprice);
-        paramater.append('stock', this.state.stock);
-        paramater.append('qtytype', this.state.qtytype);
-        paramater.append('supplier', this.state.supplier);
-        paramater.append('color', this.state.color);
-        paramater.append('desc', this.state.desc);
-        paramater.append('image', this.state.image);
-        this.props.storeDataSource(this.props.dt.tabActive, paramater)
-    }
-
-    static getDerivedStateFromProps(nextProps, prevState){
-        if (nextProps.isSubmited !== prevState.isSubmited) {
-            return { 
-              isSubmited: nextProps.isSubmited,
-            };
-        }
-        else return null; // Triggers no change in the state
-    }
-
-    componentDidUpdate() {
-      if(this.state.isSubmited){
-        this.doSubmit();
-        this.props.submitDone();
-        this.setState({isSubmited: false});
-      }
-    }
-
     componentDidMount = () => {
        // this.props.showLoading(true);
         this.setLabelWidth(this.state.inputLabel.current.offsetWidth);
+        this.props.updateFormProduct(null);
         if(this.props.dR.dataSupplier.length === 0){
             this.props.setDataSource(1);
         }
@@ -138,9 +214,6 @@ class FormProduct extends Component {
         if(this.props.dR.dataColor.length === 0){
             this.props.setDataSource(6);
         }
-        setTimeout(() => {
-       //     this.props.showLoading(false);
-        }, 3000);
     }
 
     render() {
@@ -305,11 +378,21 @@ class FormProduct extends Component {
                     {
                         this.state.isMultiple && (
                             <div>
-                                <IconButton><Icon> chevron_left </Icon></IconButton>
-                                <TextField className={classes.pgInput} id="pgInput" label="Data" name="pgInput" margin="dense" variant="outlined"  type="number" inputProps={{min: 1, max: 999999999}} onChange={ (e) => { this.handleChange("pgInput")(e) }}/>
-                                <IconButton><Icon> chevron_right </Icon></IconButton>
-                                <IconButton><Icon> add </Icon></IconButton>
-                                <IconButton><Icon> delete_sweep </Icon></IconButton>
+                                <IconButton onClick = {e => { this.handleBackPgInput(e) }}><Icon> chevron_left </Icon></IconButton>
+                                <TextField className={classes.pgInput}
+                                    id="pgInput"
+                                    label="Data" 
+                                    name="pgInput" 
+                                    margin="dense"
+                                    variant="outlined" 
+                                    type="tel" 
+                                    inputProps={{min: 1, max: 999999999}} 
+                                    value={this.state.pgInput} 
+                                    onChange={ (e) => { this.handleChange("pgInput")(e) }}
+                                 />
+                                <IconButton onClick = {e => { this.handleNextPgInput(e) }}><Icon> chevron_right </Icon></IconButton>
+                                <IconButton onClick={ e => { this.handleAddPgInput(e) } }><Icon> add </Icon></IconButton>
+                                <IconButton onClick={ e => { this.handleDelPgInput(e) } }><Icon> delete_sweep </Icon></IconButton>
                             </div>
                         )
                     }
@@ -319,11 +402,12 @@ class FormProduct extends Component {
         )
     }
 }
-const propsState = state => ({ dR : state.dataReducer });
+const propsState = state => ({ dR : state.dataReducer, tR: state.tableReducer });
 
 const propsAction = dispatch => ({
     setDataSource: tab => dispatch(getData(tab)), 
     storeDataSource: (tab, data) => dispatch(storeData(tab, data)),
+    updateFormProduct: (v) => dispatch(updateForm(v)),
     showLoading: (v) => dispatch({type: TOOGLE_LOADING, payload: v}) 
 });
 

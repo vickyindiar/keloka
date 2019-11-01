@@ -8,7 +8,8 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Icon from '@material-ui/core/Icon';
-import { handleOpenModal } from '../../../services/actions/dataAction';
+import { handleOpenModal, deleteData, storeData } from '../../../services/actions/dataAction';
+import { setDataTable } from '../../../services/actions/tableAction';
 
 
 const styles = theme => ({
@@ -44,27 +45,28 @@ export class ToolsActionButtons extends Component {
 
     handleOnSubmit = (e) => {
         e.preventDefault();
-        this.setState({isSubmited: true});
-    }
+        debugger;
+        let data = null;
+        let row = null;
+        let st = this.props.tR.cDataStore;
+        let paramater = [];
+        for (let index = 0; index < st.length; index++) {
+            data = new FormData();
+            row = st[index];
+            for(var key in row){
+                data.append(key, st[index][key]);
+            }
+            paramater.push(data);
+        }
 
-    submitDone = () => {
-        this.setState({isSubmited: false} , () => { this.handleClose() });
+        this.props.storeDataSource(this.props.dR.tabActive, paramater)
     }
-
-    handleDelete = (e) =>{
-        this.props.doDelete(this.props.selected);
-    }
-
 
     render() {
         const { classes } = this.props;
         const { selected } = this.props.tR;
         const { openModal } = this.props.dR;
-        const dialogProps = {
-            isSubmited : this.state.isSubmited,
-            submitDone : () => this.submitDone(),
 
-        }
         return (
             <React.Fragment>
                 <ButtonGroup size="small" aria-label="small outlined button group">
@@ -76,20 +78,16 @@ export class ToolsActionButtons extends Component {
                         <Icon>edit</Icon>
                         UBAH
                     </Button>
-                    <Button variant="outlined" color="secondary" disabled={!selected.length > 0} onClick={(e) => this.handleDelete(e) }>
+                    <Button variant="outlined" color="secondary" disabled={!selected.length > 0} onClick={(e) => this.props.deleteData(this.props.dR.tabActive, selected) }>
                         <Icon>delete_forever</Icon>
                         HAPUS
                     </Button>
                 </ButtonGroup>
 
-                <Dialog open={openModal} aria-labelledby="form-dialog-title" maxWidth={'md'}>
-                    <form onSubmit={this.handleOnSubmit}>
+                <Dialog open={openModal} aria-labelledby="form-dialog-title" maxWidth={'md'} disableEscapeKeyDown={false} disableBackdropClick={false} onClose={(e) => this.props.openModal(false)}>
+                    <form onSubmit={(e) => this.handleOnSubmit(e)}>
                     <DialogTitle id="form-dialog-title"> { this.state.titleModal } </DialogTitle>
                     <DialogContent dividers>
-                        {/* { 
-                             this.props.children !== undefined &&
-                             React.cloneElement(this.props.children, { ...dialogProps }) 
-                        }  */}
                         { this.props.children }
                     </DialogContent>
                     <DialogActions>
@@ -114,7 +112,9 @@ const propsState = state => ({
 })
 
 const propsAction = dispatch => ({
-    openModal : (v) => dispatch(handleOpenModal(v))
+    openModal : (v) => dispatch(handleOpenModal(v)),
+    deleteData: (v, p) => dispatch(deleteData(v, p, (d, c) => dispatch(setDataTable(d, c)))),
+    storeDataSource: (t, v) => dispatch(storeData(t, v))
 });
 
 export default withStyles(styles)(connect(propsState, propsAction)(ToolsActionButtons))

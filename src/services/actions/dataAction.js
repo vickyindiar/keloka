@@ -9,6 +9,7 @@ import { CHANGE_TAB,
   GET_COLOR,
   TOOGLE_LOADING
 } from "../types/dataType";
+import { setDataTable } from '../actions/tableAction'
 import axios from 'axios';
 
 const productsTable =  {
@@ -159,21 +160,38 @@ export const getData = (tab, callback) => (dispatch, getState) => {
 export const storeData = (tab, param) => dispatch => {
   let url = '';
   let token = localStorage.getItem('jwt');
-  let config = {
-    headers: { Authorization: token },
-   }
-   if(tab === 0) {      url = productsTable.url;  } 
-   else if(tab === 1) { url = suppliersTable.url; } 
-   else if(tab === 2) { url = customersTable.url; }
-   else if(tab === 3) { url = brandsTable.url;    }
-   else if(tab === 4) { url = categoriesTable.url;}
-   else if(tab === 5) { url = qtytypesTable.url;  }
-   else if(tab === 6) { url = colorTable.url;     }
-   else {               url = productsTable.url;  }
+  let config = { headers: { Authorization: token } };
+  let x = [];
 
+  if(tab === 0) {      url = productsTable.url;  } 
+  else if(tab === 1) { url = suppliersTable.url; } 
+  else if(tab === 2) { url = customersTable.url; }
+  else if(tab === 3) { url = brandsTable.url;    }
+  else if(tab === 4) { url = categoriesTable.url;}
+  else if(tab === 5) { url = qtytypesTable.url;  }
+  else if(tab === 6) { url = colorTable.url;     }
+  else {               url = productsTable.url;  }
+
+   if(param.length > 0){
+    for (let index = 0; index < param.length; index++) {
+      x.push(axios.post(url, param[index], config));
+    }
+    debugger;
+    axios.all(x)
+    .then(
+      axios.spread(function (acct, perms) {
+        dispatch(getData(tab, (d, c) => setDataTable(d, c) ));
+      })
+    )
+    .catch(err => {
+      console.log('error store data !');
+    })
+   }
+   else
+   {
     axios.post(url, param, config).then(res => {
       if(res.status === 201){
-        dispatch(getData(tab));
+        dispatch(getData(tab, (d, c) => setDataTable(d, c) ));
       }else{
         console.log('error store data !');
       }
@@ -181,10 +199,11 @@ export const storeData = (tab, param) => dispatch => {
     .catch(err => {
       console.log('error store data !');
     })
+   }
 }
 
 
-export const deleteData = (tab, param ) => dispatch => {
+export const deleteData = (tab, param, callback ) => dispatch => {
   let url = '';
   let token = localStorage.getItem('jwt');
   let config = {
@@ -202,11 +221,11 @@ export const deleteData = (tab, param ) => dispatch => {
    else if(tab === 5) { url = qtytypesTable.url;  }
    else if(tab === 6) { url = colorTable.url;     }
    else {               url = productsTable.url;  }
-
+   dispatch({type: TOOGLE_LOADING, payload: true})
    const deleteOne = () => {
-    axios.delete(url+'/'+param, config).then(res => {
+    axios.delete(url+'/'+param[0], config).then(res => {
       if(res.status === 200){
-        dispatch(getData(tab));
+        dispatch(getData(tab, callback));
       }else{
         console.log('error delete data !');
       }
@@ -220,7 +239,7 @@ export const deleteData = (tab, param ) => dispatch => {
     let cUrl = `${url}Deletemany`;
     axios.delete(cUrl, config).then(res => {
       if(res.status === 200){
-        dispatch(getData(tab));
+        dispatch(getData(tab, callback));
       }else{
         console.log('error delete data !');
       }
@@ -230,7 +249,7 @@ export const deleteData = (tab, param ) => dispatch => {
     })
    }
 
-   if(typeof(param) === 'object'){
+   if(typeof(param) === 'object' && param.length > 1){
      config.data = param;
      deleteAll();
    }

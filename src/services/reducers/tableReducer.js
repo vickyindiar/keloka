@@ -1,7 +1,7 @@
 import { 
           TOOGLE_LOADING, LOAD_DATA, SELECT_ALL, 
           CHANGE_SORT, CHANGE_PAGE, CHANGE_ROW_PAGE, 
-          CHANGE_FILTER, ROW_CLICK } from '../types/tableType';
+          CHANGE_FILTER, ROW_CLICK, RESELECT, UPDATE_FORM } from '../types/tableType';
 
 const initialState = {
     title: '',
@@ -18,6 +18,7 @@ const initialState = {
     selectTable: false,
     showFilter: true,
     isLoading: false,
+    cDataStore: {}
 }
 
 export default function(state = initialState, action) {
@@ -27,7 +28,8 @@ export default function(state = initialState, action) {
           ...state, 
           columns: {...action.payload.columns },
           originDataSource: {...action.payload.data },
-          dataSource: {...action.payload.data }
+          dataSource: {...action.payload.data },
+          selected: []
         }
       case SELECT_ALL:
           if (action.checked) {
@@ -116,6 +118,27 @@ export default function(state = initialState, action) {
             ...state,
             selected: [...newSelected] 
         }
+      case RESELECT:
+        return {
+            ...state,
+            selected: [...action.checked] 
+        }
+      case UPDATE_FORM:
+        debugger;
+        if(action.payload){
+          let data = {[action.payload.pgInput] : {...action.payload}}
+          return{
+            ...state,
+            cDataStore: {...state.cDataStore, ...data}
+          }
+        }
+        else{
+          return {
+            ...state,
+            cDataStore: {}
+          }
+        }
+    
       case TOOGLE_LOADING: 
         return{
             ...state,

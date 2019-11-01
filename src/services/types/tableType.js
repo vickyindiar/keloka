@@ -5,5 +5,6 @@ export const CHANGE_PAGE = "CHANGE_PAGE";
 export const CHANGE_ROW_PAGE = "CHANGE_ROW_PAGE";
 export const CHANGE_FILTER = "CHANGE_FILTER";
 export const ROW_CLICK = "ROW_CLICK";
-
+export const RESELECT = "RESELECT";
+export const UPDATE_FORM = "UPDATE_FORM";
 export const TOOGLE_LOADING = "TOOGLE_LOADING";

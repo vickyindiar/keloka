@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import "../../../styles/sass/component/_lib/_table/_dataTable.scss";
 import {connect} from 'react-redux';
 import { withStyles } from "@material-ui/core/styles";
-import { handlePage, handleRowPage, handleRowClick } from '../../../services/actions/tableAction'
+import { handlePage, handleRowPage, handleRowClick, reSelect } from '../../../services/actions/tableAction'
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -60,6 +60,7 @@ const styles = theme => ({
 });
 
 class DataTable extends React.Component {
+
   render() {
     const { classes } = this.props;
     const { dataSource, columns, selected, rowsPerPage, page, order, orderBy } = this.props.tR;
@@ -73,7 +74,7 @@ class DataTable extends React.Component {
           component.push( <TableCell align="center" key={col.id+index}> { n[col.field].name } </TableCell> );
         }
         else if( (col.field === 'image' || col.field === 'photo') && n[col.field] !== null){
-          component.push( <TableCell align="center" key={col.id+index}> <img alt="harusnya disini ada gambar" height="70" width="70" src={`http://127.0.0.1:8000${n[col.field] }`}></img> </TableCell> );
+          component.push( <TableCell align="center" key={col.id+index}> <img alt="harusnya disini ada gambar" height="70" width="70" src={`http://127.0.0.1:8000${n[col.field]}`}></img> </TableCell> );
         }
         else{
           component.push( <TableCell align="center" key={col.id+index}> {  n[col.field] } </TableCell> );
@@ -81,12 +82,10 @@ class DataTable extends React.Component {
        });
        return component;
     }
-
-    
     return (
       <Paper className={classes.root}>
 
-        <DataTableTools  doDelete={(selected) => this.props.doDelete(selected) }> { this.props.children } </DataTableTools>
+        <DataTableTools > { this.props.children } </DataTableTools>
 
         <div className={classes.tableWrapper}>
           <Table className={classes.table} aria-labelledby="tableTitle">
@@ -107,8 +106,9 @@ class DataTable extends React.Component {
                     }
                   </TableRow>
                 );
-              })
+                })
               }
+                   
               {
                 emptyRows > 0 && (
                 <TableRow style={{ height: 49 * emptyRows }}>
@@ -147,6 +147,7 @@ const propsAction = dispatch => ({
     changePage: (page) => dispatch(handlePage(page)), 
     changeRowPage: (value) => dispatch(handleRowPage(value)),
     rowClick: (value) => dispatch(handleRowClick(value)),
+    reSelect: (value) => dispatch(reSelect(value))
 });
 
 export default withStyles(styles)(connect(propsState, propsAction)(DataTable));

@@ -25,7 +25,7 @@ export class Data extends Component {
       if(this.props.dR.tabActive === -1){
         this.props.showLoading();
         this.props.setTabActive(0);
-        this.props.getData(0, (d, c) => this.props.setDataTable(d, c) );
+        this.props.getData(0);
       }
     }
 
@@ -33,24 +33,11 @@ export class Data extends Component {
       this.props.showLoading(); 
       this.setState({ value: newValue }, 
         this.props.setTabActive(newValue),
-        this.props.getData(newValue, (d, c) => this.props.setDataTable(d, c))
+        this.props.getData(newValue)
       ); 
     };
 
     handleChangeIndex = index => { this.setState({ value: index }); };
-
-    doDelete = (selected) => {
-      let paramater = '';
-      if(selected.length === 1){ paramater = Number(selected[0]); } //delete One
-      else if(selected.length > 1) { //delete all
-        paramater = {
-          id: [...selected]
-        }
-      }
-      this.props.deleteDataSource(this.props.dt.tabActive, paramater);
-    }
-
-
 
     render() {
       const { value } = this.state;
@@ -142,8 +129,7 @@ const propsState = state => ({
 
 const propsAction = dispatch => ({
  setTabActive: tab => dispatch(changeTabIndex(tab)),
- getData: (tab, callback) => dispatch(getData(tab, callback)), 
- setDataTable: (data, columns) => dispatch(setDataTable(data, columns)),
+ getData: (tab) => dispatch(getData(tab, (d, c) => dispatch(setDataTable(d, c)))), 
  deleteDataSource: (tab, data) => dispatch(deleteData(tab, data)), 
  showLoading: () => dispatch({type: TOOGLE_LOADING, payload: true}) 
 });

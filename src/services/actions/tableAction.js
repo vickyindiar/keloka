@@ -1,6 +1,6 @@
 import { LOAD_DATA, SELECT_ALL, CHANGE_SORT, 
          CHANGE_PAGE, CHANGE_ROW_PAGE, CHANGE_FILTER,
-         ROW_CLICK 
+         ROW_CLICK, RESELECT, UPDATE_FORM 
         } from '../types/tableType'
 
 export const setDataTable = (data, columns) => dispatch => {
@@ -9,6 +9,10 @@ export const setDataTable = (data, columns) => dispatch => {
 
 export const selectAll = (checked) => dispatch => {
     return dispatch({type: SELECT_ALL, checked });
+}
+
+export const reSelect = (checked) => dispatch => {
+    return dispatch({type: RESELECT, checked});
 }
 
 export const handleSort = (p) => dispatch => {
@@ -30,3 +34,8 @@ export const handleFilter = (p) => dispatch => {
 export const handleRowClick = (p) => dispatch => {
     return dispatch({type: ROW_CLICK, payload: p});
 }
+
+export const updateForm = (p) => dispatch => {
+    return dispatch({type: UPDATE_FORM, payload: p });
+}
+
